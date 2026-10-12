@@ -1,20 +1,22 @@
 Table users {
   id integer [primary key]
   name varchar
+  token uuid [unique]
   created_at timestamp
   updated_at timestamp
 }
 
-Table categories {
+Table love_languages {
   id integer [primary key]
   name varchar
+  description text
   created_at timestamp
   updated_at timestamp
 }
 
 Table statements {
   id integer [primary key]
-  category_id integer [ref: ?> categories.id]
+  love_language_id integer [ref: > love_languages.id]
   body text
   created_at timestamp
   updated_at timestamp
@@ -22,18 +24,18 @@ Table statements {
 
 Table answers {
   id integer [primary key]
-  user_id integer [ref: ?> users.id]
-  statement_id integer [ref: ?> statements.id]
-  value integer
+  user_id integer [ref: > users.id]
+  statement_id integer [ref: > statements.id]
+  value tinyint [note: 'Likert 1-5, database CHECK constraint']
   created_at timestamp
   updated_at timestamp
 }
 
 Table results {
   id integer [primary key]
-  user_id integer [ref: ?> users.id]
-  category_id integer [ref: ?> categories.id]
-  value float
+  user_id integer [ref: > users.id]
+  love_language_id integer [ref: > love_languages.id]
+  value float [note: 'average Likert score']
   created_at timestamp
   updated_at timestamp
 }
