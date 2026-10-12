@@ -1,0 +1,39 @@
+Table users {
+  id integer [primary key]
+  name varchar
+  created_at timestamp
+  updated_at timestamp
+}
+
+Table categories {
+  id integer [primary key]
+  name varchar
+  created_at timestamp
+  updated_at timestamp
+}
+
+Table statements {
+  id integer [primary key]
+  category_id integer [ref: ?> categories.id]
+  body text
+  created_at timestamp
+  updated_at timestamp
+}
+
+Table answers {
+  id integer [primary key]
+  user_id integer [ref: ?> users.id]
+  statement_id integer [ref: ?> statements.id]
+  value integer
+  created_at timestamp
+  updated_at timestamp
+}
+
+Table results {
+  id integer [primary key]
+  user_id integer [ref: ?> users.id]
+  category_id integer [ref: ?> categories.id]
+  value float
+  created_at timestamp
+  updated_at timestamp
+}
