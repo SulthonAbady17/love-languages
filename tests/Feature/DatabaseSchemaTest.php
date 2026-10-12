@@ -87,6 +87,10 @@ class DatabaseSchemaTest extends TestCase
 
         $this->assertContains(Schema::getColumnType('results', 'value'), ['float', 'double', 'real']);
 
+        $this->assertTrue(collect(Schema::getIndexes('results'))->contains(
+            fn (array $index) => $index['unique'] && $index['columns'] === ['user_id', 'love_language_id'],
+        ));
+
         $this->assertHasForeignKey('results', 'user_id', 'users');
         $this->assertHasForeignKey('results', 'love_language_id', 'love_languages');
     }

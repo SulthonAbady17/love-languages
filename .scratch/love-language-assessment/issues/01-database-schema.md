@@ -29,3 +29,4 @@ The default Laravel users migration must be replaced (not extended) so it does n
 - `sessions` table kept (SESSION_DRIVER=database); `password_reset_tokens` dropped (no email auth).
 - Consistency follow-through: `UserFactory` now emits `name` + `token`, `User` model no longer references email/password, `DatabaseSeeder` no longer seeds a scaffold user.
 - `ERD.dbml` updated to match the implemented schema (it still used the pre-glossary `categories` naming and lacked `users.token`); `GLOSSARY.md` and `README.md` already agreed.
+- Follow-up: `results` has a composite unique index on (`user_id`, `love_language_id`) so a user gets exactly one score-summary row per Love Language.

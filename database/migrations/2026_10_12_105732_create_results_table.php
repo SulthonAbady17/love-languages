@@ -17,6 +17,7 @@ return new class extends Migration
             $table->foreignId('love_language_id')->constrained();
             $table->float('value');
             $table->timestamps();
+            $table->unique(['user_id', 'love_language_id']);
         });
     }
 

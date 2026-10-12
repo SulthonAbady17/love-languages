@@ -38,4 +38,6 @@ Table results {
   value float [note: 'average Likert score']
   created_at timestamp
   updated_at timestamp
+
+  Index (user_id, love_language_id) [unique]
 }
