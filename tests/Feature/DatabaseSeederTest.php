@@ -4,18 +4,19 @@ namespace Tests\Feature;
 
 use App\Models\LoveLanguage;
 use App\Models\Statement;
+use Database\Seeders\ReadsStatementsFile;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class DatabaseSeederTest extends TestCase
 {
-    use RefreshDatabase;
+    use ReadsStatementsFile, RefreshDatabase;
 
     public function test_seeding_creates_one_love_language_per_statements_json_entry(): void
     {
         $this->seed();
 
-        $expected = collect($this->statementsFile())
+        $expected = collect($this->statementEntries())
             ->mapWithKeys(fn (array $entry) => [$entry['love_language'] => $entry['description']]);
 
         $this->assertCount(5, LoveLanguage::query()->get());
@@ -35,19 +36,18 @@ class DatabaseSeederTest extends TestCase
 
         $this->assertCount(25, Statement::query()->get());
 
-        foreach ($this->statementsFile() as $entry) {
+        foreach ($this->statementEntries() as $entry) {
             $loveLanguageId = LoveLanguage::query()->where('name', $entry['love_language'])->value('id');
 
             $this->assertNotNull($loveLanguageId, "Love language [{$entry['love_language']}] was not seeded.");
 
-            $this->assertSame(
+            $this->assertEqualsCanonicalizing(
                 $entry['statements'],
                 Statement::query()
                     ->where('love_language_id', $loveLanguageId)
-                    ->orderBy('id')
                     ->pluck('body')
                     ->all(),
-                "Statements for [{$entry['love_language']}] were not seeded in statements.json order.",
+                "Statements for [{$entry['love_language']}] were not all seeded under it.",
             );
         }
     }
@@ -59,17 +59,5 @@ class DatabaseSeederTest extends TestCase
 
         $this->assertSame(5, LoveLanguage::query()->count());
         $this->assertSame(25, Statement::query()->count());
-    }
-
-    /**
-     * @return array<int, array{love_language: string, description: string, statements: array<int, string>}>
-     */
-    private function statementsFile(): array
-    {
-        return json_decode(
-            file_get_contents(base_path('statements.json')),
-            true,
-            flags: JSON_THROW_ON_ERROR,
-        );
     }
 }

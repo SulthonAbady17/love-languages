@@ -13,31 +13,17 @@ class LoveLanguageModelTest extends TestCase
 
     public function test_a_love_language_has_many_statements(): void
     {
-        $loveLanguage = LoveLanguage::query()->create([
-            'name' => 'Quality Time',
-            'description' => 'Waktu berkualitas.',
-        ]);
-
-        Statement::query()->create([
-            'love_language_id' => $loveLanguage->id,
-            'body' => 'Saya senang menghabiskan waktu berdua.',
-        ]);
+        $loveLanguage = LoveLanguage::factory()->create();
+        $statement = Statement::factory()->for($loveLanguage)->create();
 
         $this->assertCount(1, $loveLanguage->statements);
-        $this->assertSame('Saya senang menghabiskan waktu berdua.', $loveLanguage->statements->first()->body);
+        $this->assertTrue($loveLanguage->statements->first()->is($statement));
     }
 
     public function test_a_statement_belongs_to_a_love_language(): void
     {
-        $loveLanguage = LoveLanguage::query()->create([
-            'name' => 'Physical Touch',
-            'description' => 'Sentuhan fisik.',
-        ]);
-
-        $statement = Statement::query()->create([
-            'love_language_id' => $loveLanguage->id,
-            'body' => 'Saya senang saat pasangan memegang tangan saya.',
-        ]);
+        $loveLanguage = LoveLanguage::factory()->create();
+        $statement = Statement::factory()->for($loveLanguage)->create();
 
         $this->assertTrue($statement->loveLanguage->is($loveLanguage));
     }
