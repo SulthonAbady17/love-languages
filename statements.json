@@ -1,0 +1,57 @@
+[
+  {
+    "love_language": "Kata-kata Penegasan",
+    "description": "Menunjukkan rasa hormat dan kasih sayang melalui kata-kata positif dan pujian.",
+    "statements": [
+      "Saya merasa dihargai ketika pasangan memberi pujian secara tulus.",
+      "Saya lebih bahagia ketika pasangan mengungkapkan rasa sayangnya dengan kata-kata.",
+      "Saya merasa lebih dekat ketika pasangan mengucapkan terima kasih atas hal kecil.",
+      "Saya termotivasi ketika pasangan memotivasi saya dengan kata-kata positif.",
+      "Saya merasa aman ketika pasangan menegaskan komitmennya secara verbal."
+    ]
+  },
+  {
+    "love_language": "Waktu Berkualitas",
+    "description": "Membangun ikatan melalui kebersamaan yang penuh perhatian dan fokus.",
+    "statements": [
+      "Saya merasa dicintai ketika pasangan meluangkan waktu khusus tanpa gangguan.",
+      "Saya menikmati saat kami berbagi kegiatan yang berarti bersama.",
+      "Saya merasa terhubung ketika pasangan mendengarkan saya dengan penuh perhatian.",
+      "Saya lebih puas dalam hubungan ketika kami merencanakan kencan rutin.",
+      "Saya merasa dihargai ketika pasangan membuat waktu untuk berbicara tentang hari kami."
+    ]
+  },
+  {
+    "love_language": "Menerima Hadiah",
+    "description": "Menunjukkan kepedulian lewat pemberian hadiah yang bermakna.",
+    "statements": [
+      "Saya merasa diapresiasi ketika pasangan memberi hadiah tanpa alasan khusus.",
+      "Saya senang menerima kejutan kecil yang menunjukkan pasangan memikirkan saya.",
+      "Saya merasa dicintai ketika pasangan mempersembahkan hadiah yang sesuai dengan minat saya.",
+      "Saya merasa dihormati ketika pasangan memberi hadiah pada hari istimewa.",
+      "Saya merasa lebih dekat ketika pasangan memberi benda simbolik yang memiliki nilai sentimental."
+    ]
+  },
+  {
+    "love_language": "Tindakan Pelayanan",
+    "description": "Menunjukkan kasih sayang dengan tindakan membantu dan melayani.",
+    "statements": [
+      "Saya merasa dicintai ketika pasangan membantu menyelesaikan pekerjaan rumah.",
+      "Saya menghargai ketika pasangan memasak makanan favorit saya.",
+      "Saya merasa dihargai ketika pasangan mengantar saya ke tempat penting.",
+      "Saya merasa lebih aman ketika pasangan memperhatikan kebutuhan saya tanpa diminta.",
+      "Saya merasa terhubung ketika pasangan menawarkan bantuan saat saya stres."
+    ]
+  },
+  {
+    "love_language": "Sentuhan Fisik",
+    "description": "Menyampaikan kasih sayang melalui sentuhan yang lembut dan hangat.",
+    "statements": [
+      "Saya merasa dicintai ketika pasangan memeluk saya secara spontan.",
+      "Saya merasa nyaman ketika pasangan menyentuh bahu saya saat saya lelah.",
+      "Saya merasa terhubung ketika pasangan mengusap punggung saya dengan lembut.",
+      "Saya merasa tenang ketika pasangan menahan tangan saya di tempat umum.",
+      "Saya merasa aman ketika pasangan mencium saya pada pagi hari."
+    ]
+  }
+]
