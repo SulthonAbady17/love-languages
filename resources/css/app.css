@@ -2,8 +2,77 @@
 
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../storage/framework/views/*.php';
+@source '../views/**/*.blade.php';
 
 @theme {
-    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
-        'Segoe UI Symbol', 'Noto Color Emoji';
+    --color-black: #000000;
+    --color-white: #ffffff;
+    --color-blue: #0000ff;
+    --color-success: #008000;
+    --color-warning: #ffa500;
+    --color-error: #ff0000;
+    --color-info: #0000ff;
+    --color-surface-base: #ffffff;
+    --color-surface-inverted: #000000;
+    --color-surface-sunken: #f0f0f0;
+
+    --font-headline: 'Archivo Black', sans-serif;
+    --font-sans: 'Work Sans', ui-sans-serif, system-ui, sans-serif;
+    --font-body: 'Work Sans', ui-sans-serif, system-ui, sans-serif;
+    --font-mono: 'Space Mono', ui-monospace, monospace;
+    --font-archivo: 'Archivo Black', sans-serif;
+    --font-work: 'Work Sans', sans-serif;
+    --font-space: 'Space Mono', monospace;
+
+    --spacing-sp-1: 4px;
+    --spacing-sp-2: 8px;
+    --spacing-sp-3: 16px;
+    --spacing-sp-4: 24px;
+    --spacing-sp-5: 40px;
+    --spacing-sp-6: 64px;
+    --spacing-sp-7: 80px;
+    --spacing-sp-8: 120px;
+
+    --border-width-thin: 1px;
+    --border-width-thick: 3px;
+    --border-width-heavy: 5px;
+
+    --radius-*: initial;
+    --radius: 0px;
+    --radius-xs: 0px;
+    --radius-sm: 0px;
+    --radius-md: 0px;
+    --radius-lg: 0px;
+    --radius-xl: 0px;
+    --radius-2xl: 0px;
+    --radius-3xl: 0px;
+    --radius-full: 0px;
+
+    --shadow-*: initial;
+    --shadow: none;
+    --shadow-xs: none;
+    --shadow-sm: none;
+    --shadow-md: none;
+    --shadow-lg: none;
+    --shadow-xl: none;
+    --shadow-2xl: none;
+    --inset-shadow-*: initial;
+    --drop-shadow-*: initial;
+}
+
+@layer base {
+    *, ::before, ::after {
+        border-radius: 0 !important;
+        box-shadow: none !important;
+    }
+
+    body {
+        font-family: var(--font-body);
+        background-color: var(--color-white);
+        color: var(--color-black);
+    }
+
+    a {
+        color: var(--color-blue);
+    }
 }

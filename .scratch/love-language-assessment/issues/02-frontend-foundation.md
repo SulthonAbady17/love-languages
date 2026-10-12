@@ -11,12 +11,12 @@ Specifics:
 
 **Blocked by:** None (can start immediately)
 
-**Status:** ready-for-agent
+**Status:** completed
 
-- [ ] Tailwind CSS is installed and `npm run build` produces a compiled stylesheet
-- [ ] Alpine.js is available in the browser (no console errors)
-- [ ] RawBlock colour palette is available as Tailwind utilities (e.g. `bg-black`, `text-error`)
-- [ ] All three fonts load correctly in the browser
-- [ ] `border-radius: 0` is the default for all elements (no rounding anywhere)
-- [ ] `layouts/app.blade.php` exists and is the base layout
-- [ ] `GET /` renders without errors using the new layout
+- [x] Tailwind CSS is installed and `npm run build` produces a compiled stylesheet
+- [x] Alpine.js is available in the browser (no console errors)
+- [x] RawBlock colour palette is available as Tailwind utilities (e.g. `bg-black`, `text-error`)
+- [x] All three fonts load correctly in the browser
+- [x] `border-radius: 0` is the default for all elements (no rounding anywhere)
+- [x] `layouts/app.blade.php` exists and is the base layout
+- [x] `GET /` renders without errors using the new layout
