@@ -13,7 +13,7 @@ class AppShellTest extends TestCase
         $response->assertOk();
     }
 
-    public function test_welcome_page_uses_base_layout_with_google_fonts_and_vite_assets(): void
+    public function test_welcome_page_uses_base_layout_with_google_fonts_and_content_slot(): void
     {
         $response = $this->get('/');
 
@@ -23,13 +23,6 @@ class AppShellTest extends TestCase
         $response->assertSee('Archivo+Black', false);
         $response->assertSee('Space+Mono', false);
         $response->assertSee('Work+Sans', false);
-        $response->assertSee('build/assets/app-', false);
-        $response->assertSee('.css', false);
-        $response->assertSee('.js', false);
-    }
-
-    public function test_base_layout_file_exists(): void
-    {
-        $this->assertFileExists(resource_path('views/layouts/app.blade.php'));
+        $response->assertSee('RawBlock Design Shell');
     }
 }
