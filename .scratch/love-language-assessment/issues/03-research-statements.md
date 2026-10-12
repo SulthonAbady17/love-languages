@@ -36,8 +36,8 @@ The five Love Languages and their Indonesian names:
 
 **Status:** ready-for-agent
 
-- [ ] `statements.json` exists at the repo root
-- [ ] File contains exactly 5 Love Language objects
-- [ ] Each Love Language object has a `love_language` name, a `description` (in Bahasa Indonesia), and exactly 5 `statements`
-- [ ] All statements are in Bahasa Indonesia
-- [ ] Statements are distinct and clearly anchored to their Love Language
+- [x] `statements.json` exists at the repo root
+- [x] File contains exactly 5 Love Language objects
+- [x] Each Love Language object has a `love_language` name, a `description` (in Bahasa Indonesia), and exactly 5 `statements`
+- [x] All statements are in Bahasa Indonesia
+- [x] Statements are distinct and clearly anchored to their Love Language
