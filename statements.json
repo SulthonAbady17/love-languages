@@ -1,6 +1,6 @@
 [
   {
-    "love_language": "Kata-kata Penegasan",
+    "love_language": "Word of Affirmation",
     "description": "Menunjukkan rasa hormat dan kasih sayang melalui kata-kata positif dan pujian.",
     "statements": [
       "Saya merasa dihargai ketika pasangan memberi pujian secara tulus.",
@@ -11,7 +11,7 @@
     ]
   },
   {
-    "love_language": "Waktu Berkualitas",
+    "love_language": "Quality Time",
     "description": "Membangun ikatan melalui kebersamaan yang penuh perhatian dan fokus.",
     "statements": [
       "Saya merasa dicintai ketika pasangan meluangkan waktu khusus tanpa gangguan.",
@@ -22,7 +22,7 @@
     ]
   },
   {
-    "love_language": "Menerima Hadiah",
+    "love_language": "Receiving Gifts",
     "description": "Menunjukkan kepedulian lewat pemberian hadiah yang bermakna.",
     "statements": [
       "Saya merasa diapresiasi ketika pasangan memberi hadiah tanpa alasan khusus.",
@@ -33,7 +33,7 @@
     ]
   },
   {
-    "love_language": "Tindakan Pelayanan",
+    "love_language": "Acts of Service",
     "description": "Menunjukkan kasih sayang dengan tindakan membantu dan melayani.",
     "statements": [
       "Saya merasa dicintai ketika pasangan membantu menyelesaikan pekerjaan rumah.",
@@ -44,13 +44,13 @@
     ]
   },
   {
-    "love_language": "Sentuhan Fisik",
+    "love_language": "Physical Touch",
     "description": "Menyampaikan kasih sayang melalui sentuhan yang lembut dan hangat.",
     "statements": [
       "Saya merasa dicintai ketika pasangan memeluk saya secara spontan.",
       "Saya merasa nyaman ketika pasangan menyentuh bahu saya saat saya lelah.",
       "Saya merasa terhubung ketika pasangan mengusap punggung saya dengan lembut.",
-      "Saya merasa tenang ketika pasangan menahan tangan saya di tempat umum.",
+      "Saya merasa tenang ketika pasangan menggenggam tangan saya di tempat umum.",
       "Saya merasa aman ketika pasangan mencium saya pada pagi hari."
     ]
   }
