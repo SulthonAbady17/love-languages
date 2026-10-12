@@ -1,5 +1,5 @@
 {
-  "$schema": "https://opencode.ai/config.json",
+    "$schema": "https://opencode.ai/config.json",
     "mcp": {
         "lerd": {
             "command": [
@@ -8,6 +8,15 @@
             ],
             "enabled": true,
             "type": "local"
+        },
+        "laravel-boost": {
+            "type": "local",
+            "enabled": true,
+            "command": [
+                "php",
+                "artisan",
+                "boost:mcp"
+            ]
         }
     }
 }
