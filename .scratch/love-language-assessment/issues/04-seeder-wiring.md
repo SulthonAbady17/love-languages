@@ -11,12 +11,12 @@ Specifics:
 
 **Blocked by:** 01 (schema must exist), 03 (statements.json must be reviewed and approved by author)
 
-**Status:** ready-for-agent
+**Status:** completed
 
-- [ ] `LoveLanguage` Eloquent model exists with `hasMany(Statement::class)` relationship
-- [ ] `Statement` Eloquent model exists with `belongsTo(LoveLanguage::class)` relationship
-- [ ] `php artisan db:seed` runs without error
-- [ ] Database contains exactly 5 `love_languages` rows after seeding
-- [ ] Database contains exactly 25 `statements` rows after seeding
-- [ ] Each statement's `love_language_id` points to the correct Love Language
-- [ ] Running the seeder twice does not produce duplicate rows
+- [x] `LoveLanguage` Eloquent model exists with `hasMany(Statement::class)` relationship
+- [x] `Statement` Eloquent model exists with `belongsTo(LoveLanguage::class)` relationship
+- [x] `php artisan db:seed` runs without error
+- [x] Database contains exactly 5 `love_languages` rows after seeding
+- [x] Database contains exactly 25 `statements` rows after seeding
+- [x] Each statement's `love_language_id` points to the correct Love Language
+- [x] Running the seeder twice does not produce duplicate rows
