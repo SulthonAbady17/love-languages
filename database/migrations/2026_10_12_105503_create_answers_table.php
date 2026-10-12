@@ -18,6 +18,7 @@ return new class extends Migration
             $table->foreignId('statement_id')->constrained();
             $table->tinyInteger('value')->unsigned();
             $table->timestamps();
+            $table->unique(['user_id', 'statement_id']);
         });
 
         DB::statement('alter table answers add constraint answers_value_check check (value >= 1 and value <= 5)');

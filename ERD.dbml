@@ -29,6 +29,8 @@ Table answers {
   value tinyint [note: 'Likert 1-5, database CHECK constraint']
   created_at timestamp
   updated_at timestamp
+
+  Index (user_id, statement_id) [unique]
 }
 
 Table results {

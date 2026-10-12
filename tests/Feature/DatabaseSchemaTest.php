@@ -53,18 +53,26 @@ class DatabaseSchemaTest extends TestCase
 
         $this->assertHasForeignKey('answers', 'user_id', 'users');
         $this->assertHasForeignKey('answers', 'statement_id', 'statements');
+
+        $this->assertTrue(collect(Schema::getIndexes('answers'))->contains(
+            fn (array $index) => $index['unique'] && $index['columns'] === ['user_id', 'statement_id'],
+        ));
     }
 
     public function test_answers_value_is_constrained_to_the_likert_range(): void
     {
-        [$userId, $statementId] = $this->seedUserAndStatement();
-        $insertAnswer = fn (int $value) => DB::table('answers')->insert([
-            'user_id' => $userId,
-            'statement_id' => $statementId,
-            'value' => $value,
-            'created_at' => now(),
-            'updated_at' => now(),
-        ]);
+        [$userId, $loveLanguageId] = $this->seedUserAndLoveLanguage();
+        $insertAnswer = function (int $value) use ($userId, $loveLanguageId) {
+            $statementId = $this->createStatement($loveLanguageId);
+
+            return DB::table('answers')->insert([
+                'user_id' => $userId,
+                'statement_id' => $statementId,
+                'value' => $value,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+        };
 
         foreach ([1, 5] as $value) {
             $insertAnswer($value);
@@ -107,9 +115,9 @@ class DatabaseSchemaTest extends TestCase
     }
 
     /**
-     * @return array{0: int, 1: int} The seeded user and statement ids.
+     * @return array{0: int, 1: int} The seeded user and love language ids.
      */
-    private function seedUserAndStatement(): array
+    private function seedUserAndLoveLanguage(): array
     {
         $userId = User::factory()->create()->id;
 
@@ -120,13 +128,16 @@ class DatabaseSchemaTest extends TestCase
             'updated_at' => now(),
         ]);
 
-        $statementId = DB::table('statements')->insertGetId([
+        return [$userId, $loveLanguageId];
+    }
+
+    private function createStatement(int $loveLanguageId): int
+    {
+        return DB::table('statements')->insertGetId([
             'love_language_id' => $loveLanguageId,
             'body' => 'Saya senang menerima pujian.',
             'created_at' => now(),
             'updated_at' => now(),
         ]);
-
-        return [$userId, $statementId];
     }
 }
