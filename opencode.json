@@ -27,5 +27,6 @@
             ".env": "deny",
             "storage/*.key": "deny"
         }
-    }
+    },
+    "plugin": ["@dietrichgebert/ponytail"],
 }

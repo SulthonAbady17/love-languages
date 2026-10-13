@@ -15,14 +15,14 @@ Specifics:
 
 **Blocked by:** 04 (seed data must exist), 05 (welcome screen and session name must be in place)
 
-**Status:** ready-for-agent
+**Status:** completed
 
-- [ ] `GET /assessment` returns 200 when name is in session; redirects to `/` when not
-- [ ] All 5 Love Languages and their statements are rendered in the page source
-- [ ] Only one Love Language step is visible at a time
-- [ ] Progress indicator shows the current step number and Love Language name
-- [ ] "Lanjut" button is disabled until all 5 statements on the current step are answered
-- [ ] "Kembali" button appears from step 2 onward and returns to the previous step without losing answers
-- [ ] On step 5, the submit button is labelled "Kirim" and submits the form
-- [ ] Likert radio buttons are circular, everything else has no border-radius
-- [ ] All copy is in Bahasa Indonesia
+- [x] `GET /assessment` returns 200 when name is in session; redirects to `/` when not
+- [x] All 5 Love Languages and their statements are rendered in the page source
+- [x] Only one Love Language step is visible at a time
+- [x] Progress indicator shows the current step number and Love Language name
+- [x] "Lanjut" button is disabled until all 5 statements on the current step are answered
+- [x] "Kembali" button appears from step 2 onward and returns to the previous step without losing answers
+- [x] On step 5, the submit button is labelled "Kirim" and submits the form
+- [x] Likert radio buttons are circular, everything else has no border-radius
+- [x] All copy is in Bahasa Indonesia
