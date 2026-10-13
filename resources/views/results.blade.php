@@ -18,10 +18,10 @@
             Bahasa Cinta Utama
         </p>
         <h2 class="font-headline text-4xl md:text-6xl uppercase leading-none">
-            {{ $top->loveLanguage->name }}
+            {{ $top?->loveLanguage?->name }}
         </h2>
         <p class="font-body text-sm leading-relaxed">
-            {{ $top->loveLanguage->description }}
+            {{ $top?->loveLanguage?->description }}
         </p>
     </section>
 
@@ -59,7 +59,7 @@
             Simpan tautan ini untuk melihat hasilmu kembali
         </p>
         <p class="font-mono text-sm text-black break-all">
-            {{ url('/results/'.$user->token) }}
+            {{ route('results.show', $user->token) }}
         </p>
     </aside>
 </main>
