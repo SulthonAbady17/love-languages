@@ -23,6 +23,6 @@ class AppShellTest extends TestCase
         $response->assertSee('Archivo+Black', false);
         $response->assertSee('Space+Mono', false);
         $response->assertSee('Work+Sans', false);
-        $response->assertSee('RawBlock Design Shell');
+        $response->assertSee('Penilaian Bahasa Cinta');
     }
 }

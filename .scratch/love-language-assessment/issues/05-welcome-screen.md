@@ -11,11 +11,11 @@ Specifics:
 
 **Blocked by:** 02 (front-end foundation must be in place)
 
-**Status:** ready-for-agent
+**Status:** completed
 
-- [ ] `GET /` returns 200 and renders the welcome view
-- [ ] The page displays a name input and a submit button
-- [ ] Submitting without a name shows a validation error message in Bahasa Indonesia
-- [ ] Submitting a valid name stores it in the session and redirects to the assessment
-- [ ] Page is styled using RawBlock conventions (no rounded corners, thick borders, correct fonts)
-- [ ] All copy is in Bahasa Indonesia
+- [x] `GET /` returns 200 and renders the welcome view
+- [x] The page displays a name input and a submit button
+- [x] Submitting without a name shows a validation error message in Bahasa Indonesia
+- [x] Submitting a valid name stores it in the session and redirects to the assessment
+- [x] Page is styled using RawBlock conventions (no rounded corners, thick borders, correct fonts)
+- [x] All copy is in Bahasa Indonesia
