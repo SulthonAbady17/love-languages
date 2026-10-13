@@ -90,11 +90,11 @@
                                 <div class="grid grid-cols-1 sm:grid-cols-5 gap-2 pt-2 border-t-[2px] border-black">
                                     @php
                                         $options = [
-                                            1 => 'Sangat Tidak Setuju (1)',
-                                            2 => 'Tidak Setuju (2)',
-                                            3 => 'Netral (3)',
-                                            4 => 'Setuju (4)',
-                                            5 => 'Sangat Setuju (5)',
+                                            1 => 'Sangat Tidak Setuju',
+                                            2 => 'Tidak Setuju',
+                                            3 => 'Netral',
+                                            4 => 'Setuju',
+                                            5 => 'Sangat Setuju',
                                         ];
                                     @endphp
                                     @foreach($options as $val => $label)
