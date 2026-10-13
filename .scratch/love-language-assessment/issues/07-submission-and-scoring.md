@@ -14,12 +14,19 @@ Specifics:
 
 **Blocked by:** 06 (assessment form must exist to POST from)
 
-**Status:** ready-for-agent
+**Status:** completed
 
-- [ ] `POST /assessment` with valid answers creates 1 User, 25 Answer, and 5 Result rows
-- [ ] The User row has a non-null UUID token
-- [ ] Each Result row's `value` is the correct average for that Love Language (verified with a known input)
-- [ ] Successful submission redirects to `/results/{token}`
-- [ ] Submitting with missing or out-of-range answer values returns a validation error and does not create any rows
-- [ ] Submitting without a name in session redirects to `/`
-- [ ] Feature test covers the happy path and asserts score correctness
+- [x] `POST /assessment` with valid answers creates 1 User, 25 Answer, and 5 Result rows
+- [x] The User row has a non-null UUID token
+- [x] Each Result row's `value` is the correct average for that Love Language (verified with a known input)
+- [x] Successful submission redirects to `/results/{token}`
+- [x] Submitting with missing or out-of-range answer values returns a validation error and does not create any rows
+- [x] Submitting without a name in session redirects to `/`
+- [x] Feature test covers the happy path and asserts score correctness
+
+## Comments
+
+- Implemented in `AssessmentController::store` + `POST /assessment` route (`assessment.store`); new `Answer` and `Result` models.
+- Validation builds rules from the `statements` table: `answers` must be an array of exactly 25 entries, each a required integer 1–5; failure redirects back with errors and writes nothing.
+- Persistence runs in a `DB::transaction` (1 User with `Str::uuid()` v4 token → 25 Answers → 5 Results = sum of that language's answers ÷ count), then redirects to `/results/{token}`.
+- Feature test `tests/Feature/AssessmentSubmissionTest.php` covers the happy path with five hand-computed distinct averages (1.0, 2.2, 3.0, 4.4, 4.6), missing/out-of-range/non-integer answers, and missing session name — all asserting zero rows on rejection.
