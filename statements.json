@@ -1,57 +1,57 @@
 [
-  {
-    "love_language": "Words of Affirmation",
-    "description": "Cara seseorang menunjukkan rasa hormat dan kasih sayang lewat pujian serta kata-kata yang tulus.",
-    "statements": [
-      "Pujiannya yang tulus bikin saya merasa benar-benar dilihat.",
-      "Saya paling bahagia saat pasangan mengucapkan rasa sayangnya langsung.",
-      "Terima kasih untuk hal kecil saja sudah bikin hati saya hangat.",
-      "Kata-kata semangatnya bikin saya bersemangat menjalani hari.",
-      "Saya merasa aman saat dia menyatakan komitmennya dengan lisan."
-    ]
-  },
-  {
-    "love_language": "Quality Time",
-    "description": "Membangun ikatan lewat kebersamaan yang hadir penuh, tanpa hal yang mengalihkan perhatian.",
-    "statements": [
-      "Waktu berdua tanpa gangguan membuat saya merasa dicintai.",
-      "Saya senang saat kami mengerjakan sesuatu yang berarti bersama.",
-      "Saya merasa terhubung ketika dia benar-benar mendengarkan.",
-      "Kencan rutin bikin saya merasa puas dengan hubungan ini.",
-      "Mengobrol soal hari kami berdua bikin saya merasa diperhatikan."
-    ]
-  },
-  {
-    "love_language": "Receiving Gifts",
-    "description": "Menunjukkan kepedulian lewat hadiah yang dipilih dengan sengaja.",
-    "statements": [
-      "Hadiah tanpa alasan khusus bikin saya merasa diapresiasi.",
-      "Menerima kejutan kecil yang menunjukkan dia memikirkan saya membuat saya senang.",
-      "Hadiah yang nyambung dengan minat saya membuat saya merasa dicintai.",
-      "Hadiah di hari istimewa membuat saya merasa dihormati.",
-      "Benda simbolik yang menyimpan kenangan bikin saya merasa lebih dekat."
-    ]
-  },
-  {
-    "love_language": "Acts of Service",
-    "description": "Menunjukkan kasih sayang lewat bantuan nyata dalam keseharian.",
-    "statements": [
-      "Pasangan yang ikut menyelesaikan pekerjaan rumah bikin saya merasa dicintai.",
-      "Saya menghargai saat dia memasak makanan favorit saya.",
-      "Saya merasa dihargai ketika dia mengantar saya ke tempat penting.",
-      "Saya merasa aman saat dia memperhatikan kebutuhan saya sebelum saya minta.",
-      "Saya merasa terhubung saat dia menawarkan bantuan ketika saya sedang stres."
-    ]
-  },
-  {
-    "love_language": "Physical Touch",
-    "description": "Menyampaikan kasih sayang lewat sentuhan yang lembut.",
-    "statements": [
-      "Pelukan yang tiba-tiba bikin saya merasa dicintai.",
-      "Sentuhan di bahu saat saya lelah membuat saya nyaman.",
-      "Usapan lembut di punggung membuat saya merasa terhubung.",
-      "Saya tenang saat kami berpegangan tangan di tempat umum.",
-      "Ciuman di pagi hari membuat saya merasa aman."
-    ]
-  }
+    {
+        "love_language": "Words of Affirmation",
+        "description": "Seseorang dengan preferensi ini cenderung merasa disayangi melalui ungkapan verbal yang positif, seperti pujian tulus, ucapan terima kasih, apresiasi, dukungan, dan ungkapan kasih sayang. Kata-kata yang menunjukkan bahwa dirinya dihargai dan dipahami dapat memiliki makna emosional yang besar baginya.",
+        "statements": [
+            "Saya merasa disayangi ketika pasangan mengungkapkan rasa sayangnya kepada saya melalui kata-kata.",
+            "Saya merasa dihargai ketika pasangan memberikan pujian yang tulus atas diri atau usaha saya.",
+            "Saya merasa lebih percaya diri dalam hubungan ketika pasangan memberikan dukungan melalui kata-kata.",
+            "Saya merasa berarti ketika pasangan mengungkapkan hal-hal yang mereka hargai dari diri saya.",
+            "Ungkapan seperti 'aku bangga padamu' atau 'terima kasih sudah berusaha' membuat saya merasa disayangi."
+        ]
+    },
+    {
+        "love_language": "Quality Time",
+        "description": "Seseorang dengan preferensi ini cenderung merasa disayangi ketika pasangan meluangkan waktu dan memberikan perhatian penuh. Hal ini dapat berupa percakapan mendalam, melakukan kegiatan bersama, atau sekadar menikmati kebersamaan tanpa banyak gangguan.",
+        "statements": [
+            "Saya merasa disayangi ketika pasangan meluangkan waktu khusus untuk bersama saya.",
+            "Saya merasa dihargai ketika pasangan mendengarkan cerita saya dengan penuh perhatian tanpa terdistraksi oleh hal lain.",
+            "Saya merasa dekat dengan pasangan ketika kami melakukan kegiatan bersama yang dapat dinikmati oleh kami berdua.",
+            "Saya merasa diperhatikan ketika pasangan menyediakan waktu untuk berbincang secara mendalam dengan saya.",
+            "Saya merasa hubungan kami bermakna ketika pasangan hadir dan memberikan perhatian penuh selama kami menghabiskan waktu bersama."
+        ]
+    },
+    {
+        "love_language": "Receiving Gifts",
+        "description": "Seseorang dengan preferensi ini cenderung merasakan kasih sayang melalui pemberian yang menunjukkan perhatian dan bahwa dirinya diingat. Makna hadiah tidak terutama ditentukan oleh harga atau kemewahannya, melainkan oleh relevansi, ketulusan, dan pemikiran di balik pemberian tersebut.",
+        "statements": [
+            "Saya merasa disayangi ketika pasangan memberikan hadiah kecil yang sesuai dengan kesukaan saya.",
+            "Saya merasa diingat ketika pasangan memberikan sesuatu yang berkaitan dengan hal yang pernah saya ceritakan.",
+            "Saya merasa bahagia ketika pasangan memberikan hadiah sederhana tanpa harus menunggu hari istimewa.",
+            "Saya merasa dihargai ketika pasangan memberikan sesuatu yang menunjukkan bahwa mereka memahami diri saya.",
+            "Bagi saya, hadiah yang memiliki makna pribadi membuat saya merasa istimewa dalam hubungan."
+        ]
+    },
+    {
+        "love_language": "Acts of Service",
+        "description": "Seseorang dengan preferensi ini cenderung merasa disayangi melalui tindakan nyata yang menunjukkan kepedulian, inisiatif, dan kesediaan membantu. Bantuan yang meringankan beban atau pembagian tanggung jawab dapat menjadi bentuk perhatian yang lebih bermakna daripada sekadar ucapan.",
+        "statements": [
+            "Saya merasa disayangi ketika pasangan membantu menyelesaikan tugas yang sedang membebani saya.",
+            "Saya merasa diperhatikan ketika pasangan menawarkan bantuan tanpa harus saya minta terlebih dahulu.",
+            "Saya merasa dihargai ketika pasangan menepati janji dan melakukan hal-hal yang telah mereka sepakati dengan saya.",
+            "Saya merasa disayangi ketika pasangan bersedia berbagi tanggung jawab dalam kegiatan atau urusan bersama.",
+            "Saya merasa diperhatikan ketika pasangan mengambil inisiatif untuk membantu saya menghadapi kesulitan sehari-hari."
+        ]
+    },
+    {
+        "love_language": "Physical Touch",
+        "description": "Seseorang dengan preferensi ini cenderung merasakan kedekatan dan kasih sayang melalui sentuhan fisik yang nyaman dan disepakati bersama, seperti bergandengan tangan, berpelukan, atau sentuhan lembut. Sentuhan menjadi sarana untuk menyampaikan perhatian dan kedekatan emosional.",
+        "statements": [
+            "Saya merasa disayangi ketika pasangan menggenggam tangan saya dengan penuh perhatian.",
+            "Saya merasa lebih dekat secara emosional ketika pasangan memeluk saya dengan nyaman dan penuh kasih sayang.",
+            "Saya merasa diperhatikan ketika pasangan memberikan sentuhan lembut yang membuat saya nyaman.",
+            "Saya merasa dekat dengan pasangan ketika kami duduk berdekatan sambil menikmati waktu bersama.",
+            "Sentuhan fisik yang saya sukai dan sepakati bersama pasangan membuat saya merasa terhubung secara emosional."
+        ]
+    }
 ]
