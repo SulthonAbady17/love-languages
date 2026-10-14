@@ -23,3 +23,6 @@ A unique, opaque string (UUID) generated when an Assessment is completed. Embedd
 
 ## Result Page
 The page at `/results/{token}` that displays a Participant's ranked Love Language Results. The top-scoring Love Language is highlighted. Each Love Language shows a short description. This URL is the Participant's permanent link.
+
+## Advice
+AI-generated guidance in Bahasa Indonesia about a Participant's top-ranked Love Language, written to address their full score ranking. Generated exactly once when the Assessment is completed, stored with it, and shown on the Result Page. Never regenerated for an Assessment that already has one; an Assessment may have none.
