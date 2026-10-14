@@ -68,6 +68,39 @@ class ResultPageTest extends TestCase
         $this->assertStringContainsString('font-headline', $highlight);
     }
 
+    public function test_stored_advice_renders_a_bordered_block_directly_under_the_top_love_language(): void
+    {
+        $this->seed();
+        $user = $this->completedParticipant('Budi Santoso');
+        $user->update(['advice' => 'Luangkan waktu berkualitas setiap hari. Sapa pasanganmu dengan pujian tulus di pagi hari.']);
+
+        $response = $this->get('/results/'.$user->token);
+        $response->assertOk();
+
+        $html = $response->getContent();
+        $block = $this->adviceBlock($html);
+
+        $this->assertNotSame('', $block);
+        $this->assertStringContainsString('Luangkan waktu berkualitas setiap hari.', $block);
+        $this->assertStringContainsString('border-[3px] border-black', $block);
+        $this->assertStringContainsString('font-mono', $block);
+        $this->assertGreaterThan(
+            strpos($html, 'id="top-love-language"'),
+            strpos($html, 'id="advice"'),
+        );
+    }
+
+    public function test_participant_without_advice_renders_no_advice_block(): void
+    {
+        $this->seed();
+        $user = $this->completedParticipant('Budi Santoso');
+
+        $response = $this->get('/results/'.$user->token);
+        $response->assertOk();
+
+        $this->assertSame('', $this->adviceBlock($response->getContent()));
+    }
+
     public function test_unknown_token_returns_404(): void
     {
         $this->seed();
@@ -93,6 +126,16 @@ class ResultPageTest extends TestCase
     private function highlightBlock(string $html): string
     {
         preg_match('/<section id="top-love-language".*?<\/section>/s', $html, $matches);
+
+        return $matches[0] ?? '';
+    }
+
+    /**
+     * The Advice block shown under the highlighted top Love Language.
+     */
+    private function adviceBlock(string $html): string
+    {
+        preg_match('/<section id="advice".*?<\/section>/s', $html, $matches);
 
         return $matches[0] ?? '';
     }

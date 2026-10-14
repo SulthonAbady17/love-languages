@@ -25,6 +25,18 @@
         </p>
     </section>
 
+    @if($user->advice)
+        {{-- Advice for the highlighted top Love Language --}}
+        <section id="advice" class="border-[3px] border-black bg-white p-6 space-y-3">
+            <p class="font-mono text-xs uppercase tracking-widest">
+                Saran
+            </p>
+            <p class="font-body text-sm leading-relaxed text-black">
+                {!! nl2br(e($user->advice)) !!}
+            </p>
+        </section>
+    @endif
+
     {{-- All 5 Love Languages, ranked --}}
     <section class="space-y-4">
         <h2 class="font-headline text-2xl uppercase leading-tight text-black">
