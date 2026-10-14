@@ -66,13 +66,51 @@
     </section>
 
     {{-- Permanent link note --}}
-    <aside class="border-[3px] border-black bg-[#F0F0F0] p-4 space-y-2">
+    <aside
+        id="permanent-link"
+        x-data="{
+            copied: false,
+            linkUrl: @js(route('results.show', $user->token)),
+            async copyLink() {
+                let success = false;
+                try {
+                    await navigator.clipboard.writeText(this.linkUrl);
+                    success = true;
+                } catch {
+                    // navigator.clipboard needs a secure context; fall back for http://*.test
+                    const textarea = document.createElement('textarea');
+                    textarea.value = this.linkUrl;
+                    textarea.style.position = 'fixed';
+                    textarea.style.opacity = '0';
+                    document.body.appendChild(textarea);
+                    textarea.select();
+                    success = document.execCommand('copy');
+                    textarea.remove();
+                }
+                if (success) {
+                    this.copied = true;
+                    setTimeout(() => { this.copied = false; }, 2000);
+                }
+            }
+        }"
+        class="border-[3px] border-black bg-[#F0F0F0] p-4 space-y-2"
+    >
         <p class="font-body text-sm text-black">
             Simpan tautan ini untuk melihat hasilmu kembali
         </p>
-        <p class="font-mono text-sm text-black break-all">
-            {{ route('results.show', $user->token) }}
-        </p>
+        <div class="flex flex-wrap items-center gap-3">
+            <p class="font-mono text-sm text-black break-all flex-1 min-w-0">
+                {{ route('results.show', $user->token) }}
+            </p>
+            <button
+                type="button"
+                @click="copyLink()"
+                class="font-mono text-xs uppercase tracking-wider border-[2px] border-black px-3 py-1.5 shrink-0 bg-black text-white hover:bg-white hover:text-black transition-none cursor-pointer"
+                x-text="copied ? 'Tersalin' : 'Salin Tautan'"
+            >
+                Salin Tautan
+            </button>
+        </div>
     </aside>
 </main>
 @endsection

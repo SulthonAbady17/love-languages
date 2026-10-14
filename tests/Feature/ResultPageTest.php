@@ -105,6 +105,22 @@ class ResultPageTest extends TestCase
         $this->assertSame('', $this->adviceBlock($response->getContent()));
     }
 
+    public function test_permanent_link_aside_renders_a_copy_to_clipboard_button(): void
+    {
+        $this->seed();
+        $user = $this->completedParticipant('Budi Santoso');
+
+        $response = $this->get('/results/'.$user->token);
+        $response->assertOk();
+        $response->assertSee('Salin Tautan');
+
+        $html = $response->getContent();
+        $aside = $this->permanentLinkAside($html);
+
+        $this->assertStringContainsString('copyLink', $aside);
+        $this->assertStringContainsString(route('results.show', $user->token), $aside);
+    }
+
     public function test_unknown_token_returns_404(): void
     {
         $this->seed();
@@ -140,6 +156,16 @@ class ResultPageTest extends TestCase
     private function adviceBlock(string $html): string
     {
         preg_match('/<section id="advice".*?<\/section>/s', $html, $matches);
+
+        return $matches[0] ?? '';
+    }
+
+    /**
+     * The permanent link aside with the copy-to-clipboard button.
+     */
+    private function permanentLinkAside(string $html): string
+    {
+        preg_match('/<aside[^>]*id="permanent-link"[^>]*>.*?<\/aside>/s', $html, $matches);
 
         return $matches[0] ?? '';
     }
