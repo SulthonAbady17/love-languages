@@ -115,7 +115,7 @@ class AssessmentController extends Controller
     private function generateAdvice(User $user): void
     {
         try {
-            $results = $user->results()->with('loveLanguage')->orderByDesc('value')->get();
+            $results = $user->rankedResults()->get();
 
             if ($results->isEmpty()) {
                 return;

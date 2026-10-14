@@ -13,7 +13,7 @@ class ResultController extends Controller
 
         return view('results', [
             'user' => $user,
-            'results' => $user->results()->with('loveLanguage')->orderByDesc('value')->get(),
+            'results' => $user->rankedResults()->get(),
         ]);
     }
 }

@@ -20,4 +20,15 @@ class User extends Authenticatable
     {
         return $this->hasMany(Result::class);
     }
+
+    /**
+     * The Participant's Results in display order: score descending, then id
+     * ascending so ties resolve to the same Love Language everywhere.
+     *
+     * @return HasMany<Result, $this>
+     */
+    public function rankedResults(): HasMany
+    {
+        return $this->results()->with('loveLanguage')->orderByDesc('value')->orderBy('id');
+    }
 }
