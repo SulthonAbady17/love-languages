@@ -112,7 +112,7 @@ class ResultPageTest extends TestCase
 
         $response = $this->get('/results/'.$user->token);
         $response->assertOk();
-        $response->assertSee('Salin tautan');
+        $response->assertSee('Salin Tautan');
 
         $html = $response->getContent();
         $aside = $this->permanentLinkAside($html);
