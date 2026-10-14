@@ -84,10 +84,14 @@ class ResultPageTest extends TestCase
         $this->assertStringContainsString('Luangkan waktu berkualitas setiap hari.', $block);
         $this->assertStringContainsString('border-[3px] border-black', $block);
         $this->assertStringContainsString('font-mono', $block);
-        $this->assertGreaterThan(
-            strpos($html, 'id="top-love-language"'),
-            strpos($html, 'id="advice"'),
-        );
+
+        $topPosition = strpos($html, 'id="top-love-language"');
+        $advicePosition = strpos($html, 'id="advice"');
+        $rankingsPosition = strpos($html, 'Peringkat Bahasa Cinta');
+        $this->assertIsInt($topPosition);
+        $this->assertIsInt($advicePosition);
+        $this->assertIsInt($rankingsPosition);
+        $this->assertTrue($topPosition < $advicePosition && $advicePosition < $rankingsPosition);
     }
 
     public function test_participant_without_advice_renders_no_advice_block(): void

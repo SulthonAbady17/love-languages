@@ -6,10 +6,10 @@
 
 **Status:** ready-for-agent
 
-- [ ] Nullable TEXT `advice` column added to the existing Participant row, fillable on the model; migration runs clean on SQLite `:memory:`
-- [ ] Result Page renders the Advice block only when stored Advice exists: font-mono label in Bahasa Indonesia, `border-[3px]` black border, no rounded corners, plain text, placed directly beneath the highlighted top Love Language section
-- [ ] A Participant with null Advice renders the Result Page with no Advice block and no visual regression
-- [ ] Feature test in the existing Result Page test file: stored Advice renders the block with its text
-- [ ] Feature test in the existing Result Page test file: null Advice renders no block (covers legacy rows)
-- [ ] Existing Result Page assertions (highlighted-block regex, article count, ordering) still pass untouched or with only deliberate selector updates
-- [ ] GLOSSARY entry for Advice is present and matches the spec wording
+- [x] Nullable TEXT `advice` column added to the existing Participant row, fillable on the model; migration runs clean on SQLite `:memory:`
+- [x] Result Page renders the Advice block only when stored Advice exists: font-mono label in Bahasa Indonesia, `border-[3px]` black border, no rounded corners, plain text, placed directly beneath the highlighted top Love Language section
+- [x] A Participant with null Advice renders the Result Page with no Advice block and no visual regression
+- [x] Feature test in the existing Result Page test file: stored Advice renders the block with its text
+- [x] Feature test in the existing Result Page test file: null Advice renders no block (covers legacy rows)
+- [x] Existing Result Page assertions (highlighted-block regex, article count, ordering) still pass untouched or with only deliberate selector updates
+- [x] GLOSSARY entry for Advice is present and matches the spec wording
