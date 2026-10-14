@@ -107,11 +107,19 @@
             <button
                 type="button"
                 @click="copyLink()"
-                class="font-mono text-xs uppercase tracking-wider border-[2px] border-black px-3 py-1.5 shrink-0 bg-black text-white hover:bg-white hover:text-black transition-none cursor-pointer"
-                x-text="copied ? 'Tersalin' : 'Salin Tautan'"
+                aria-label="Salin Tautan"
+                title="Salin Tautan"
+                class="border-[2px] border-black p-2 shrink-0 bg-black text-white hover:bg-white hover:text-black transition-none cursor-pointer"
             >
-                Salin Tautan
+                <svg x-show="!copied" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                    <rect x="9" y="9" width="12" height="12" />
+                    <path d="M5 15H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v1" />
+                </svg>
+                <svg x-show="copied" x-cloak class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                    <path d="M4 12.5l5 5L20 6" />
+                </svg>
             </button>
+            <span class="sr-only" aria-live="polite" x-text="copied ? 'Tersalin' : ''"></span>
         </div>
     </aside>
 </main>

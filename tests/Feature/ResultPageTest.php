@@ -105,20 +105,31 @@ class ResultPageTest extends TestCase
         $this->assertSame('', $this->adviceBlock($response->getContent()));
     }
 
-    public function test_permanent_link_aside_renders_a_copy_to_clipboard_button(): void
+    public function test_permanent_link_aside_renders_an_icon_only_copy_button(): void
     {
         $this->seed();
         $user = $this->completedParticipant('Budi Santoso');
 
         $response = $this->get('/results/'.$user->token);
         $response->assertOk();
-        $response->assertSee('Salin Tautan');
 
-        $html = $response->getContent();
-        $aside = $this->permanentLinkAside($html);
+        $aside = $this->permanentLinkAside($response->getContent());
 
         $this->assertStringContainsString('copyLink', $aside);
         $this->assertStringContainsString(route('results.show', $user->token), $aside);
+
+        $this->assertMatchesRegularExpression('/<button[^>]*aria-label="Salin Tautan"/', $aside);
+        $this->assertMatchesRegularExpression('/<button[^>]*title="Salin Tautan"/', $aside);
+
+        preg_match('/<button[^>]*>.*?<\/button>/s', $aside, $button);
+        $this->assertNotSame([], $button);
+        $this->assertStringContainsString('<svg', $button[0]);
+        $this->assertStringContainsString('x-show="!copied"', $button[0]);
+        $this->assertStringContainsString('x-show="copied"', $button[0]);
+        $this->assertStringNotContainsString('>Salin Tautan<', $button[0]);
+
+        $this->assertMatchesRegularExpression('/<span class="sr-only" aria-live="polite"/', $aside);
+        $this->assertStringContainsString('Tersalin', $aside);
     }
 
     public function test_unknown_token_returns_404(): void
