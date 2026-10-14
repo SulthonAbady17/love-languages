@@ -2,17 +2,27 @@
 
 namespace Tests\Feature;
 
+use App\Ai\Agents\AdviceAgent;
 use App\Models\Answer;
 use App\Models\LoveLanguage;
 use App\Models\Result;
 use App\Models\Statement;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Laravel\Ai\Prompts\AgentPrompt;
+use RuntimeException;
 use Tests\TestCase;
 
 class AssessmentSubmissionTest extends TestCase
 {
     use RefreshDatabase;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        AdviceAgent::fake();
+    }
 
     /**
      * One answer set per seeded Love Language (ordered by id), with the
@@ -56,6 +66,73 @@ class AssessmentSubmissionTest extends TestCase
         }
 
         $this->assertExpectedResultAverages($user);
+    }
+
+    public function test_successful_submission_generates_advice_for_the_top_love_language_before_redirecting(): void
+    {
+        $this->seed();
+        AdviceAgent::fake(['Saran cinta untukmu hari ini.']);
+
+        $response = $this->withSession(['name' => 'Budi Santoso'])
+            ->post('/assessment', ['answers' => $this->knownAnswers()]);
+
+        $user = User::sole();
+        $response->assertRedirect('/results/'.$user->token);
+        $this->assertSame('Saran cinta untukmu hari ini.', $user->advice);
+
+        $topName = LoveLanguage::find(5)->name;
+        AdviceAgent::assertPrompted(fn (AgentPrompt $prompt) => $prompt->contains('Top Love Language: '.$topName));
+        AdviceAgent::assertNotPrompted(fn (AgentPrompt $prompt) => $prompt->contains('Budi Santoso'));
+
+        $this->get('/results/'.$user->token)
+            ->assertOk()
+            ->assertSee('id="advice"', false)
+            ->assertSee('Saran cinta untukmu hari ini.');
+    }
+
+    public function test_submission_still_succeeds_and_persists_answers_when_advice_generation_fails(): void
+    {
+        $this->seed();
+        AdviceAgent::fake(fn () => throw new RuntimeException('Groq unavailable.'));
+
+        $response = $this->withSession(['name' => 'Budi Santoso'])
+            ->post('/assessment', ['answers' => $this->knownAnswers()]);
+
+        $user = User::sole();
+        $response->assertRedirect('/results/'.$user->token);
+        $this->assertNull($user->advice);
+
+        $this->assertDatabaseCount('answers', 25);
+        $this->assertDatabaseCount('results', 5);
+        $this->assertExpectedResultAverages($user);
+
+        $this->get('/results/'.$user->token)
+            ->assertOk()
+            ->assertDontSee('id="advice"', false);
+    }
+
+    public function test_five_equal_scores_prompt_the_love_language_the_result_page_highlights(): void
+    {
+        $this->seed();
+
+        $answers = [];
+        foreach (Statement::pluck('id') as $statementId) {
+            $answers[$statementId] = 3;
+        }
+
+        $this->withSession(['name' => 'Budi Santoso'])
+            ->post('/assessment', ['answers' => $answers]);
+
+        $user = User::sole();
+        $resultValues = Result::where('user_id', $user->id)->pluck('value');
+        $this->assertCount(1, $resultValues->unique(), 'Expected all five scores to be tied.');
+
+        $page = $this->get('/results/'.$user->token)->assertOk();
+        $matched = preg_match('/<section id="top-love-language".*?<h2[^>]*>\s*(.*?)\s*<\/h2>/s', $page->getContent(), $matches);
+        $this->assertSame(1, $matched, 'Expected the Result Page to highlight a top Love Language.');
+        $highlighted = trim($matches[1]);
+
+        AdviceAgent::assertPrompted(fn (AgentPrompt $prompt) => $prompt->contains('Top Love Language: '.$highlighted));
     }
 
     public function test_submission_with_a_missing_answer_is_rejected_and_creates_no_rows(): void

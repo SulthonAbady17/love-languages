@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Ai\Agents\AdviceAgent;
 use App\Models\Answer;
 use App\Models\LoveLanguage;
 use App\Models\Result;
@@ -11,7 +12,9 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
+use Throwable;
 
 class AssessmentController extends Controller
 {
@@ -99,6 +102,28 @@ class AssessmentController extends Controller
             return $user;
         });
 
+        $this->generateAdvice($user);
+
         return redirect()->to('/results/'.$user->token);
+    }
+
+    /**
+     * Generate Advice for the top Love Language and store it on the Participant.
+     *
+     * A provider failure must never lose an Assessment, so exceptions are logged and swallowed.
+     */
+    private function generateAdvice(User $user): void
+    {
+        try {
+            $results = $user->results()->with('loveLanguage')->orderByDesc('value')->get();
+
+            if ($results->isEmpty()) {
+                return;
+            }
+
+            $user->update(['advice' => (new AdviceAgent($results))->generate()]);
+        } catch (Throwable $exception) {
+            Log::error('Advice generation failed.', ['exception' => $exception]);
+        }
     }
 }

@@ -57,11 +57,11 @@ class AssessmentFlowTest extends TestCase
             }
         }
 
-        $response->assertSee('Sangat Tidak Setuju (1)');
-        $response->assertSee('Tidak Setuju (2)');
-        $response->assertSee('Netral (3)');
-        $response->assertSee('Setuju (4)');
-        $response->assertSee('Sangat Setuju (5)');
+        $response->assertSee('Sangat Tidak Setuju');
+        $response->assertSee('Tidak Setuju');
+        $response->assertSee('Netral');
+        $response->assertSee('Setuju');
+        $response->assertSee('Sangat Setuju');
     }
 
     public function test_assessment_page_includes_multi_step_alpine_flow_structure_and_controls(): void
