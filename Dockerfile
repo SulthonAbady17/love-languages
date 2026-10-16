@@ -37,10 +37,10 @@ COPY --from=vendor /app /var/www/html
 COPY --from=assets /app/public/build /var/www/html/public/build
 RUN rm -rf /var/www/html/node_modules /var/www/html/tests /var/www/html/.git
 
-COPY docker/render-start.sh /usr/local/bin/render-start.sh
-RUN chmod +x /usr/local/bin/render-start.sh \
+COPY docker/start.sh /usr/local/bin/start.sh
+RUN chmod +x /usr/local/bin/start.sh \
     && mkdir -p storage/framework/cache storage/framework/sessions storage/framework/views storage/logs bootstrap/cache \
     && chown -R www-data:www-data storage bootstrap/cache
 
 EXPOSE 80
-CMD ["render-start.sh"]
+CMD ["start.sh"]

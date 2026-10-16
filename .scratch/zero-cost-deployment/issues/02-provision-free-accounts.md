@@ -8,9 +8,10 @@
 
 - [x] Public GitHub repository created — actual name `love-languanges` (typo vs spec's `love-languages`; rename is a human one-click, see comment)
 - [x] Neon Free Postgres project created (1 GB, no card, $0 forever) — wired into local `.env` (`pgsql` + pooler host), verified
-- [ ] Render Free Web Service created (native PHP, Free plan, 512 MB RAM)
+- [ ] ~~Render Free Web Service~~ **Retargeted:** Railway Free/Trial (no card) — Render demanded a billing card the owner cannot provide
+- [ ] Railway account + project connected to `SulthonAbady17/love-languanges` (GitHub OAuth, no card)
 - [ ] UptimeRobot account created
-- [ ] All credentials staged for pasting into host dashboards (the agent never holds them beyond local read) — Neon + app keys staged; Render/UptimeRobot still pending
+- [ ] All credentials staged for pasting into host dashboards (the agent never holds them beyond local read) — Neon + app keys staged; Railway/UptimeRobot still pending
 
 ## Comments
 
@@ -24,7 +25,7 @@
 **Neon / Render / UptimeRobot — not created; human-only per spec.** No API credentials for any of the three exist on this machine (`.env` carries only the app's own keys), and the spec lists account signups as non-delegable. Handoff for the Project Owner — all $0, card-free:
 
 1. **Neon** — neon.tech → *Sign up with GitHub* → create a project on the Free plan (1 GB, no card) → copy the pooled connection details (host ending `-pooler.neon.tech`, database name, user, password, `sslmode=require`) into a password manager. These are pasted into Render during ticket 04; the agent never sees them.
-2. **Render** — render.com → *Sign up with GitHub* → New → Web Service → connect `SulthonAbady17/love-languanges` → name the service `love-languages` (this mints the spec's `https://love-languages.onrender.com`; alternates `love-language-quiz` / `love-langs` if taken) → Environment: **Docker** (Render no longer offers native PHP; the repo has a `Dockerfile`), Plan: Free (512 MB). Create the service only; env vars and first deploy follow ticket 04.
+2. **Railway** (replaces Render) — railway.com → *Sign up with GitHub* → **no credit card** for the free trial (`$5` for 30 days, then Free `$1`/month) → New Project → deploy from GitHub → connect `SulthonAbady17/love-languanges` → Railway uses the repo's `Dockerfile` + `railway.toml` automatically → set service name `love-languages` if offered (URL becomes `https://love-languages.up.railway.app`). Create the project/service only; env vars and first deploy follow ticket 04. **Do not** add Railway Postgres — keep Neon. **Do not** enter a card.
 3. **UptimeRobot** — uptimerobot.com → sign up with email (the one new password). The monitor itself is ticket 06.
 
 **Credentials staging:** `APP_KEY` and `GROQ_API_KEY` are already in the local untracked `.env` (verified untracked and absent from history in ticket 01) — the human copies them from there into Render's Environment tab in ticket 04. Neon credentials do not exist yet; they appear when the Neon project is created.
@@ -38,4 +39,8 @@ Project Owner created the Neon Free project and connected it. Agent verified loc
 - `DB::select('select 1')` → OK
 - `php artisan migrate:status` → all 8 migrations **Ran**
 
-Still human-only: Render Free Web Service, UptimeRobot. Ticket stays `ready-for-human` until both exist.
+Still human-only: Railway web service, UptimeRobot. Ticket stays `ready-for-human` until both exist.
+
+### 2026-10-16 — Render card wall → Railway retarget (human + agent)
+
+Human could not provide a card; Render's signup demanded billing. Agent researched free card-free options (Sep/Oct 2026): Railway free trial `$5`/30 days with no card, then Free `$1`/month, supports this repo's Dockerfile + external Neon. Project retargeted to Railway (ticket 04 has dashboard steps).

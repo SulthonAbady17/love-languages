@@ -2,15 +2,21 @@
 
 **What to build:** A version gap or a proxy HTTPS quirk cannot block the deploy: if execution hits either pre-approved condition, the app ships anyway with the documented fallback, verified at the same public HTTP seam as everything else.
 
-**Blocked by:** 04 (both fallbacks are evaluated during/after first deploy; the TrustProxies leg is further gated by the HTTPS finding in 05)
+**Blocked by:** 04 (both fallbacks are evaluated during/after first deploy)
 
 **Status:** ready-for-agent
 
-- [x] Conditional: only claimed if the host's native PHP is below the composer floor of 8.3 — **claimed early:** Render has no native PHP runtime at all (Docker-only). Minimal Dockerfile (`php:8.4-apache` + opcache + pdo_pgsql) added; local image build + Neon smoke (`/` and `/up` → 200) green. Live Render deploy still human dashboard (ticket 04).
-- [ ] Conditional: only claimed if HTTPS detection misbehaves behind Render's proxy — TrustProxies middleware added, with feature-test assertions that the welcome route redirects to HTTPS and the session cookie is secure
-- [x] pint run after any PHP change — no app PHP changed (Docker/shell only)
+- [x] Conditional: only claimed if the host's native PHP is below the composer floor of 8.3 — **claimed:** Render has no native PHP runtime; Railway is Docker-only for this stack too. Minimal Dockerfile (`php:8.4-apache` + opcache + pdo_pgsql) added; local image build + Neon smoke (`/` and `/up` → 200) green.
+- [x] Conditional: only claimed if HTTPS detection misbehaves behind the host's proxy — **claimed for Railway:** Railway always terminates TLS at the edge proxy, so `request()->isSecure()` is false without TrustProxies. Added `$middleware->trustProxies(at: '*')` in `bootstrap/app.php` plus `tests/Feature/TrustProxiesTest.php` (welcome Secure under `X-Forwarded-Proto: https`; session cookie Secure).
+- [x] pint run after any PHP change
 - [ ] Result Token URLs behave identically to local development after the fallback
 
-### 2026-10-16 — Dockerfile fallback claimed (agent)
+### 2026-10-16 — Dockerfile + TrustProxies claimed (agent)
 
-Spec assumed "Native PHP" on Render; current Render docs exclude PHP from native runtimes. Shipped the pre-approved minimal image instead (`Dockerfile`, `docker/render-start.sh`, `.dockerignore`). TrustProxies not added yet — Laravel trusts proxies by default; only add if live HTTPS detection fails (ticket 05).
+Spec assumed Render native PHP; no free card-free host in this path runs native PHP without Docker. Shipped the pre-approved minimal image (`Dockerfile`, `docker/start.sh`, `.dockerignore`, `railway.toml`).
+
+TrustProxies claimed for Railway (not Render): Railway's edge proxy always strips TLS before the container sees the request. Without trusting proxies, secure cookies and HTTPS URL generation would be wrong on the live site. Feature tests cover the same HTTP seam. Pint run.
+
+### 2026-10-16 — Retarget note
+
+Host moved Render → Railway after Render demanded a card. Dockerfile and TrustProxies still apply; `docker/render-start.sh` renamed to `docker/start.sh` (uses `$PORT` from either platform).

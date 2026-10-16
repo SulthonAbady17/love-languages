@@ -9,6 +9,6 @@
 - [ ] Full flow on the live URL: name form → 25 Statements on the 1–5 Likert scale → submit → Advice generated exactly once in Bahasa Indonesia → Result Page renders with ranked Results
 - [ ] Result Token link re-loaded after a subsequent deploy still resolves (proves persistence against Neon, not ephemeral disk)
 - [ ] No account, password, or email required at any step
-- [ ] HTTPS and cookie behaviour verified behind Render's reverse proxy (identical to local development); if detection misbehaves, the pre-approved TrustProxies fallback (ticket 07) fires
+- [ ] HTTPS and cookie behaviour verified behind Railway's reverse proxy (identical to local development); TrustProxies already added for Railway (ticket 07) — re-check on live
 - [ ] Site works on a phone inside a chat app's in-app browser
 - [ ] No schema, package, or behaviour changes needed — if any were required, they are implemented with tests at the existing HTTP seam and pint run
