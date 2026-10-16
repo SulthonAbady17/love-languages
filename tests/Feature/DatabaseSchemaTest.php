@@ -62,16 +62,20 @@ class DatabaseSchemaTest extends TestCase
     public function test_answers_value_is_constrained_to_the_likert_range(): void
     {
         [$userId, $loveLanguageId] = $this->seedUserAndLoveLanguage();
-        $insertAnswer = function (int $value) use ($userId, $loveLanguageId) {
-            $statementId = $this->createStatement($loveLanguageId);
+        // Postgres aborts the whole transaction on a failed statement, so each
+        // probe runs in a savepoint that keeps the test's transaction usable.
+        $insertAnswer = function (int $value) use ($userId, $loveLanguageId): bool {
+            return DB::transaction(function () use ($userId, $loveLanguageId, $value): bool {
+                $statementId = $this->createStatement($loveLanguageId);
 
-            return DB::table('answers')->insert([
-                'user_id' => $userId,
-                'statement_id' => $statementId,
-                'value' => $value,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ]);
+                return DB::table('answers')->insert([
+                    'user_id' => $userId,
+                    'statement_id' => $statementId,
+                    'value' => $value,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ]);
+            });
         };
 
         foreach ([1, 5] as $value) {
@@ -93,7 +97,7 @@ class DatabaseSchemaTest extends TestCase
         $this->assertTrue(Schema::hasTable('results'));
         $this->assertTrue(Schema::hasColumns('results', ['id', 'user_id', 'love_language_id', 'value', 'created_at', 'updated_at']));
 
-        $this->assertContains(Schema::getColumnType('results', 'value'), ['float', 'double', 'real']);
+        $this->assertContains(Schema::getColumnType('results', 'value'), ['float', 'double', 'real', 'float8']);
 
         $this->assertTrue(collect(Schema::getIndexes('results'))->contains(
             fn (array $index) => $index['unique'] && $index['columns'] === ['user_id', 'love_language_id'],

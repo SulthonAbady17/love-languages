@@ -80,7 +80,9 @@ class AssessmentSubmissionTest extends TestCase
         $response->assertRedirect('/results/'.$user->token);
         $this->assertSame('Saran cinta untukmu hari ini.', $user->advice);
 
-        $topName = LoveLanguage::find(5)->name;
+        // knownAnswers gives the last-seeded language VALUE_SETS[4], the
+        // highest-scoring set, so it tops the ranking.
+        $topName = LoveLanguage::query()->orderBy('id')->pluck('name')->last();
         AdviceAgent::assertPrompted(fn (AgentPrompt $prompt) => $prompt->contains('Top Love Language: '.$topName));
         AdviceAgent::assertNotPrompted(fn (AgentPrompt $prompt) => $prompt->contains('Budi Santoso'));
 
@@ -231,8 +233,13 @@ class AssessmentSubmissionTest extends TestCase
 
         $this->assertCount(5, $results);
 
+        $loveLanguageIds = LoveLanguage::query()->orderBy('id')->pluck('id');
+
         foreach ($results as $result) {
-            $expected = self::VALUE_SETS[$result->love_language_id - 1]['expected'];
+            $position = $loveLanguageIds->search($result->love_language_id, strict: true);
+            $this->assertNotFalse($position, 'Result for unexpected love language id '.$result->love_language_id.'.');
+
+            $expected = self::VALUE_SETS[$position]['expected'];
             $this->assertEqualsWithDelta(
                 $expected,
                 $result->value,

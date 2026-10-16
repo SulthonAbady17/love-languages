@@ -29,7 +29,7 @@ class ResultPageTest extends TestCase
     public function test_all_five_love_languages_are_listed_in_score_order_with_one_decimal_scores_and_descriptions(): void
     {
         $this->seed();
-        $user = $this->completedParticipant('Budi Santoso', [1 => 1.0, 2 => 2.2, 3 => 3.14159, 4 => 4.4, 5 => 4.6]);
+        $user = $this->completedParticipant('Budi Santoso', [1.0, 2.2, 3.14159, 4.4, 4.6]);
 
         $response = $this->get('/results/'.$user->token);
         $response->assertOk();
@@ -52,15 +52,15 @@ class ResultPageTest extends TestCase
     public function test_top_scoring_love_language_is_shown_in_an_inverted_black_block(): void
     {
         $this->seed();
-        $values = [1 => 1.0, 2 => 2.2, 3 => 3.0, 4 => 4.4, 5 => 4.6];
+        $values = [1.0, 2.2, 3.0, 4.4, 4.6];
         $user = $this->completedParticipant('Budi Santoso', $values);
 
         $response = $this->get('/results/'.$user->token);
         $response->assertOk();
 
         $highlight = $this->highlightBlock($response->getContent());
-        $topId = (int) array_search(max($values), $values, true);
-        $topName = LoveLanguage::find($topId)->name;
+        $topPosition = array_search(max($values), $values, true);
+        $topName = LoveLanguage::query()->orderBy('id')->pluck('name')[$topPosition];
 
         $this->assertStringContainsString($topName, $highlight);
         $this->assertStringContainsString('bg-black', $highlight);
@@ -182,19 +182,21 @@ class ResultPageTest extends TestCase
     }
 
     /**
-     * A Participant with one Result per seeded Love Language (keyed by
-     * love_language_id), in the given score order.
+     * A Participant with one Result per seeded Love Language (ordered by id),
+     * each carrying the score at its position in $values.
      *
-     * @param  array<int, float>  $values
+     * @param  list<float>  $values
      */
-    private function completedParticipant(string $name, array $values = [1 => 1.0, 2 => 2.2, 3 => 3.0, 4 => 4.4, 5 => 4.6]): User
+    private function completedParticipant(string $name, array $values = [1.0, 2.2, 3.0, 4.4, 4.6]): User
     {
         $user = User::factory()->create(['name' => $name]);
 
-        foreach ($values as $loveLanguageId => $value) {
+        $loveLanguageIds = LoveLanguage::query()->orderBy('id')->pluck('id');
+
+        foreach ($values as $index => $value) {
             Result::factory()->create([
                 'user_id' => $user->id,
-                'love_language_id' => $loveLanguageId,
+                'love_language_id' => $loveLanguageIds[$index],
                 'value' => $value,
             ]);
         }

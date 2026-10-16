@@ -12,4 +12,4 @@ Route::post('/assessment/start', [AssessmentController::class, 'start'])->name('
 Route::get('/assessment', [AssessmentController::class, 'show'])->name('assessment.show');
 Route::post('/assessment', [AssessmentController::class, 'store'])->name('assessment.store');
 
-Route::get('/results/{token}', [ResultController::class, 'show'])->name('results.show');
+Route::get('/results/{token}', [ResultController::class, 'show'])->name('results.show')->whereUuid('token');
