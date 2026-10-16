@@ -4,14 +4,14 @@
 
 **Blocked by:** None (can start immediately — runs in parallel with ticket 01)
 
-**Status:** ready-for-human
+**Status:** done
 
 - [x] Public GitHub repository created — actual name `love-languanges` (typo vs spec's `love-languages`; rename is a human one-click, see comment)
 - [x] Neon Free Postgres project created (1 GB, no card, $0 forever) — wired into local `.env` (`pgsql` + pooler host), verified
-- [ ] ~~Render Free Web Service~~ **Retargeted:** Railway Free/Trial (no card) — Render demanded a billing card the owner cannot provide
-- [ ] Railway account + project connected to `SulthonAbady17/love-languanges` (GitHub OAuth, no card)
-- [ ] UptimeRobot account created
-- [ ] All credentials staged for pasting into host dashboards (the agent never holds them beyond local read) — Neon + app keys staged; Railway/UptimeRobot still pending
+- [x] ~~Render Free Web Service~~ **Retargeted:** Railway Free/Trial (no card) — Render demanded a billing card the owner cannot provide
+- [x] Railway account + project connected to `SulthonAbady17/love-languanges` (GitHub OAuth, no card) — live at `https://love-languages.up.railway.app`
+- [x] UptimeRobot account created
+- [x] All credentials staged for pasting into host dashboards (the agent never holds them beyond local read) — Neon + app keys staged; Railway vars pasted (ticket 04); UptimeRobot in the owner's password manager
 
 ## Comments
 
@@ -44,3 +44,9 @@ Still human-only: Railway web service, UptimeRobot. Ticket stays `ready-for-huma
 ### 2026-10-16 — Render card wall → Railway retarget (human + agent)
 
 Human could not provide a card; Render's signup demanded billing. Agent researched free card-free options (Sep/Oct 2026): Railway free trial `$5`/30 days with no card, then Free `$1`/month, supports this repo's Dockerfile + external Neon. Project retargeted to Railway (ticket 04 has dashboard steps).
+
+### 2026-10-17 — Railway live + UptimeRobot account (human + agent verify)
+
+Human reported: Railway deployed and online at `https://love-languages.up.railway.app`; UptimeRobot account created. Agent re-verified the live URL (`GET /` → 200, `GET /up` → 200). Every checkbox on this ticket is now satisfied — all four $0, card-free accounts exist, human-owned. Ticket closed.
+
+Remaining from the epic: ticket 05 (full live smoke walkthrough — full submit with live `GROQ_API_KEY`, token after redeploy, phone in-app browser) and ticket 06 (UptimeRobot HTTPS monitor configured at 10-minute interval against the live URL).
