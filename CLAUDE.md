@@ -149,6 +149,10 @@ This project has domain-specific skills available in `**/skills/**`. You MUST ac
 
 ## Agent skills
 
+### Git commits
+
+- Always activate the `conventional-commit` skill (`.agents/skills/conventional-commit/SKILL.md`) before creating any git commit, and write the commit message in the Conventional Commits format it defines (`type(scope): description`).
+
 ### Issue tracker
 
 Local markdown files under `.scratch/<feature-slug>/`. See `docs/agents/issue-tracker.md`.

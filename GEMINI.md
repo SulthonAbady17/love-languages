@@ -172,3 +172,9 @@ Actions: `list`, `create`, `rename`, `delete`, `assign`, `move`.
 - **Sharing a site is CLI-only and deliberate**: `lerd share` (ngrok, cloudflared, Expose, serveo, localhost.run, Pinggy) and the dashboard's share menu put a site on the public internet, the same menu's public share serves it through the user's own reverse proxy on a base domain they control instead of a tunnel service, and `lerd lan:expose` puts it on the local network. None is exposed here, so never claim you can share a site; hand the user the command and let them decide
 
 <!-- lerd:end -->
+
+## Agent skills
+
+### Git commits
+
+- Always activate the `conventional-commit` skill (`.agents/skills/conventional-commit/SKILL.md`) before creating any git commit, and write the commit message in the Conventional Commits format it defines (`type(scope): description`).
