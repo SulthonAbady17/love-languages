@@ -20,3 +20,10 @@ TrustProxies claimed for Railway (not Render): Railway's edge proxy always strip
 ### 2026-10-16 — Retarget note
 
 Host moved Render → Railway after Render demanded a card. Dockerfile and TrustProxies still apply; `docker/render-start.sh` renamed to `docker/start.sh` (uses `$PORT` from either platform).
+
+### 2026-10-16 — AH00534 More than one MPM loaded on Railway (agent)
+
+**Symptom:** Local build + Neon smoke fine; Railway deploy dies at start with `AH00534: apache2: Configuration error: More than one MPM loaded`. Known Railway-side issue ([station](https://station.railway.com/questions/more-than-one-mpm-loaded-error-on-php-8-9c836859)): their runtime enables `mpm_event`/`mpm_worker` alongside the image's `mpm_prefork`; Apache allows only one, and mod_php needs prefork.
+
+**Fix:** `docker/start.sh` now forces a single MPM before `apache2-foreground`:
+`a2dismod mpm_event mpm_worker || true` → remove leftover symlinks → `a2enmod mpm_prefork` → `apache2ctl -t`.
