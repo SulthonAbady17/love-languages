@@ -4,7 +4,7 @@
 
 **Blocked by:** None (can start immediately)
 
-**Status:** ready-for-agent
+**Status:** resolved
 
 - [x] Existing PHPUnit feature suite (assessment flow, submission scoring, result page, statements seeder, schema expectations) runs green against a Postgres connection — a Neon database or local Postgres — with zero new test files on the happy path
 - [x] The statements file at the repo root and the advice skill directory are both verified tracked in git
@@ -29,3 +29,21 @@ The first Postgres run was **13 failed / 31 passed**. Four engine-specific defec
 **Secrets:** `.env` has never been committed (0 commits touch it, gitignored). A scan of every commit in history for the live `APP_KEY` value and the `gsk_…` Groq key returns no hits; only the `GROQ_API_KEY` env *name* appears (in `config/ai.php` and the `.env.example` placeholder).
 
 **Composer floor — finding for tickets 04/07:** `composer.lock` records `platform.php: ^8.3` (matching `composer.json`), but the generated `vendor/composer/platform_check.php` requires `PHP_VERSION_ID >= 80401`, i.e. **PHP >= 8.4.1**, because the locked Symfony components declare `>=8.4.1`. The deploy target must provide 8.4.1+, not 8.3: the pre-approved `php:8.4-apache` fallback image satisfies this, and Render's native PHP version must be checked against 8.4.1 rather than 8.3.
+
+### 2026-10-16 — re-verification after the project was switched to Postgres (agent)
+
+Owner re-pointed the project at Postgres: `.env` now sets `DB_CONNECTION=pgsql`, `DB_HOST=lerd-postgres`, `DB_DATABASE=test_assessment_love_languages` (`.env` stays untracked), and `postgres` was added to `.lerd.yaml` `services` (tracked).
+
+- **App DB provisioned:** 8 migrations already ran (batch 1); seeded to 5 love languages / 25 statements. `LoveLanguageSeeder` is `firstOrCreate`, so re-seeding never duplicates.
+- **Live app verified on Postgres:** `/` → 200, `/assessment` → 302 to `/` (designed: requires a session name, asserted by `test_assessment_page_redirects_to_home_when_name_is_missing_from_session`), `/results/not-a-uuid` → 404 (`whereUuid` holds at runtime, not just in tests). `pg_stat_activity` shows the app's `sessions` inserts/selects against `test_assessment_love_languages`.
+- **Full suite on Postgres: 44/44 (341 assertions)** against `test_assessment_love_languages_testing` — RefreshDatabase left its 12 tables there, proving the connection was real; the dev DB's seed rows survived untouched.
+- **Default `php artisan test`: still 44/44 on in-memory sqlite.** `phpunit.xml` pins `DB_CONNECTION=sqlite` / `DB_DATABASE=:memory:`, and those win over `.env` in the test process — verified behaviourally, not assumed: across a full default run the seed counts on **both** the MySQL and the Postgres app DB were unchanged, so neither engine was touched. Postgres runs therefore stay explicit, and they only work because `phpunit.xml`'s `<env>` entries are **not** `force="true"` — a variable already present in the environment wins, so re-adding `force` would silently break the override:
+
+  ```
+  DB_CONNECTION=pgsql DB_HOST=lerd-postgres DB_PORT=5432 \
+  DB_DATABASE=test_assessment_love_languages_testing DB_USERNAME=postgres \
+  DB_PASSWORD=lerd DB_URL= php artisan test
+  ```
+
+  Deliberately **not** baked into the committed `phpunit.xml`: the deploy target is Neon, not lerd, and dropping the sqlite pin would make the default suite run `migrate:fresh` against the app DB, wiping dev seed data (tests roll their own seeds back, so it would be left empty).
+- **Spec note:** the spec's "leave the local lerd development setup untouched" covered this ticket's agent verification run; the owner has since deliberately re-pointed the dev setup to Postgres themselves. Of that switch only `.lerd.yaml` is tracked (`.env` stays untracked, never committed). MySQL is still listed under `services` alongside `postgres` — dropping it is the owner's call, not part of this ticket.
