@@ -7,10 +7,10 @@
 **Status:** ready-for-human
 
 - [x] Public GitHub repository created — actual name `love-languanges` (typo vs spec's `love-languages`; rename is a human one-click, see comment)
-- [ ] Neon Free Postgres project created (1 GB, no card, $0 forever)
+- [x] Neon Free Postgres project created (1 GB, no card, $0 forever) — wired into local `.env` (`pgsql` + pooler host), verified
 - [ ] Render Free Web Service created (native PHP, Free plan, 512 MB RAM)
 - [ ] UptimeRobot account created
-- [ ] All credentials staged for pasting into host dashboards (the agent never holds them beyond local read)
+- [ ] All credentials staged for pasting into host dashboards (the agent never holds them beyond local read) — Neon + app keys staged; Render/UptimeRobot still pending
 
 ## Comments
 
@@ -28,3 +28,14 @@
 3. **UptimeRobot** — uptimerobot.com → sign up with email (the one new password). The monitor itself is ticket 06.
 
 **Credentials staging:** `APP_KEY` and `GROQ_API_KEY` are already in the local untracked `.env` (verified untracked and absent from history in ticket 01) — the human copies them from there into Render's Environment tab in ticket 04. Neon credentials do not exist yet; they appear when the Neon project is created.
+
+### 2026-10-16 — Neon created and wired (human + agent verify)
+
+Project Owner created the Neon Free project and connected it. Agent verified locally (password not printed):
+
+- `.env`: `DB_CONNECTION=pgsql`, host `ep-ancient-bread-a1qmfx69-pooler.ap-southeast-1.aws.neon.tech`, `sslmode=require`
+- `php artisan db:monitor` → `pgsql .. [21] OK`
+- `DB::select('select 1')` → OK
+- `php artisan migrate:status` → all 8 migrations **Ran**
+
+Still human-only: Render Free Web Service, UptimeRobot. Ticket stays `ready-for-human` until both exist.
