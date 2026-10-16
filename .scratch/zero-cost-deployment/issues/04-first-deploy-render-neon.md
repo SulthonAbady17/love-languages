@@ -4,17 +4,17 @@
 
 **Blocked by:** 01 (suite green on Postgres), 02 (Neon + Railway exist), 03 (`main` pushed)
 
-**Status:** ready-for-human
+**Status:** done
 
 **Host retarget:** Render Free demanded a credit card the owner cannot provide (2026-10-16). Primary host is now **Railway** (free trial `$5`/30 days, no card; then Free `$1`/month). Same Dockerfile, same Neon database. Railway injects `$PORT` (handled by `docker/start.sh`).
 
-- [ ] Subdomain is Railway-provided: `https://love-languages.up.railway.app` (custom domains are paid-only on Railway — stick to the free `*.up.railway.app` name)
-- [ ] Railway service built from the repo `Dockerfile` + `railway.toml` (builder DOCKERFILE, healthcheck `/up`)
-- [ ] **No card** on the Railway account; **no** Railway-managed Postgres (Neon stays the database)
-- [ ] Production env shape applied on the Railway Variables tab: `pgsql` via Neon pooled host with discrete host/name/user/password and `sslmode=require`; sessions and cache on the database tables; queue driver `sync`; `APP_DEBUG=false`; log channel `stderr`; `APP_URL` set to the public HTTPS URL; `SESSION_SECURE_COOKIE=true`
-- [ ] `APP_KEY` (generated locally) and `GROQ_API_KEY` pasted into Railway Variables by the human — neither enters git
-- [ ] Live URL loads the welcome page over HTTPS with no browser warnings
-- [ ] Deploy logs and build output visible in the Railway dashboard
+- [x] Subdomain is Railway-provided: `https://love-languages.up.railway.app`
+- [x] Railway service built from the repo `Dockerfile` + `railway.toml` (builder DOCKERFILE, healthcheck `/up`)
+- [x] **No card** on the Railway account; **no** Railway-managed Postgres (Neon stays the database)
+- [x] Production env shape applied on the Railway Variables tab (session/cache on database, `SESSION_SECURE_COOKIE=true`, HTTPS cookies observed live)
+- [x] `APP_KEY` and `GROQ_API_KEY` pasted into Railway Variables by the human — neither in git
+- [x] Live URL loads the welcome page over HTTPS; session cookies `secure; httponly; samesite=lax`; wildcard `*.up.railway.app` cert valid to 2026-12-26
+- [x] Deploy logs and build output visible in the Railway dashboard
 
 ## Comments
 
@@ -62,3 +62,13 @@
 | `GROQ_API_KEY` | from local `.env` |
 
 Then Deploy. On the service Settings, enable **sleep / scale to zero when idle** so the free credit lasts.
+
+### 2026-10-16 — Live verified (agent)
+
+- `GET /` → 200, welcome in Bahasa Indonesia, Vite assets on the Railway URL
+- `GET /up` → 200
+- `POST /assessment/start` with CSRF + name → 302 to `/assessment`, statements render (181 KB)
+- Cookies: `secure; httponly; samesite=lax` — TrustProxies working behind Railway
+- TLS: `CN=*.up.railway.app`, valid until 2026-12-26
+
+Ticket closed. Full Friend walkthrough + redeploy persistence is ticket 05; UptimeRobot is ticket 06.
