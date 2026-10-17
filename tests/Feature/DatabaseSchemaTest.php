@@ -27,6 +27,8 @@ class DatabaseSchemaTest extends TestCase
         $this->assertTrue(Schema::hasTable('users'));
         $this->assertTrue(Schema::hasColumns('users', ['id', 'name', 'token', 'created_at', 'updated_at']));
 
+        $this->assertSame('text', Schema::getColumnType('users', 'name'));
+
         $this->assertFalse(Schema::hasColumn('users', 'email'));
         $this->assertFalse(Schema::hasColumn('users', 'password'));
         $this->assertFalse(Schema::hasColumn('users', 'remember_token'));

@@ -15,6 +15,19 @@ class User extends Authenticatable
     /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable;
 
+    /**
+     * The Participant's name is ciphertext at rest; reads inside the
+     * application still return the plaintext.
+     *
+     * @return array<string, string>
+     */
+    protected function casts(): array
+    {
+        return [
+            'name' => 'encrypted',
+        ];
+    }
+
     /** @return HasMany<Result, $this> */
     public function results(): HasMany
     {

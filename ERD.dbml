@@ -1,6 +1,6 @@
 Table users {
   id integer [primary key]
-  name varchar
+  name text
   token varchar(32) [unique]
   created_at timestamp
   updated_at timestamp

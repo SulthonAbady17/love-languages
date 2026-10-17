@@ -9,6 +9,7 @@ use App\Models\Result;
 use App\Models\Statement;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\DB;
 use Laravel\Ai\Prompts\AgentPrompt;
 use RuntimeException;
 use Tests\TestCase;
@@ -63,6 +64,19 @@ class AssessmentSubmissionTest extends TestCase
         }
 
         $this->assertExpectedResultAverages($user);
+    }
+
+    public function test_stored_name_is_ciphertext_in_the_raw_users_row(): void
+    {
+        $this->seed();
+
+        $this->withSession(['name' => 'Budi Santoso'])
+            ->post('/assessment', ['answers' => $this->knownAnswers()]);
+
+        $rawName = DB::table('users')->value('name');
+        $this->assertIsString($rawName);
+        $this->assertStringNotContainsString('Budi Santoso', $rawName);
+        $this->assertSame('Budi Santoso', User::sole()->name);
     }
 
     public function test_successful_submission_generates_advice_for_the_top_love_language_before_redirecting(): void
