@@ -4,11 +4,11 @@
 
 **Blocked by:** None (can start immediately)
 
-**Status:** ready-for-agent
+**Status:** done
 
-- [ ] The name column is text after migration and the model decrypts transparently: all existing Result Page and submission tests pass with `$user->name` returning the plaintext
-- [ ] After a real POST, the raw users row's name value does not contain the submitted plaintext name (new test at the existing submission seam)
-- [ ] Session-encrypt key is `true` in both the environment file and the environment example file
-- [ ] Likert Responses, Results, and Advice remain stored in plain form (no casts added to them)
-- [ ] ER diagram name column updated to text
-- [ ] `vendor/bin/pint --dirty --format agent` clean; full suite green via `php artisan test --compact`
+- [x] The name column is text after migration and the model decrypts transparently: all existing Result Page and submission tests pass with `$user->name` returning the plaintext
+- [x] After a real POST, the raw users row's name value does not contain the submitted plaintext name (new test at the existing submission seam)
+- [x] Session-encrypt key is `true` in both the environment file and the environment example file
+- [x] Likert Responses, Results, and Advice remain stored in plain form (no casts added to them)
+- [x] ER diagram name column updated to text
+- [x] `vendor/bin/pint --dirty --format agent` clean; full suite green via `php artisan test --compact`
