@@ -6,9 +6,9 @@
 
 **Status:** ready-for-agent
 
-- [ ] Migration creates the `feedback` table: id, unique FK to the Participant (`users`) with cascade delete, `message` text, timestamps
-- [ ] A duplicate Feedback for the same Participant is rejected at the database level (verified by test)
-- [ ] A Feedback model with a factory exists, and the Participant model exposes a `hasOne` Feedback relation
-- [ ] Glossary gains a **Feedback** entry: one per Participant, created only after Assessment completion, immutable and invisible to its author; the Result Page shows either the form or the thank-you, never the content
-- [ ] The ERD/schema documentation file mirrors the new table
-- [ ] Tests pass (`php artisan test`) and formatting is clean (`vendor/bin/pint --dirty --format agent`)
+- [x] Migration creates the `feedback` table: id, unique FK to the Participant (`users`) with cascade delete, `message` text, timestamps
+- [x] A duplicate Feedback for the same Participant is rejected at the database level (verified by test)
+- [x] A Feedback model with a factory exists, and the Participant model exposes a `hasOne` Feedback relation
+- [x] Glossary gains a **Feedback** entry: one per Participant, created only after Assessment completion, immutable and invisible to its author; the Result Page shows either the form or the thank-you, never the content
+- [x] The ERD/schema documentation file mirrors the new table
+- [x] Tests pass (`php artisan test`) and formatting is clean (`vendor/bin/pint --dirty --format agent`)
