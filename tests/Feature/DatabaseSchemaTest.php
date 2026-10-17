@@ -109,6 +109,48 @@ class DatabaseSchemaTest extends TestCase
         $this->assertHasForeignKey('results', 'love_language_id', 'love_languages');
     }
 
+    public function test_feedback_table_references_a_user_with_a_unique_constraint(): void
+    {
+        $this->assertTrue(Schema::hasTable('feedback'));
+        $this->assertTrue(Schema::hasColumns('feedback', ['id', 'user_id', 'message', 'created_at', 'updated_at']));
+
+        $this->assertSame('text', Schema::getColumnType('feedback', 'message'));
+
+        $this->assertTrue(collect(Schema::getIndexes('feedback'))->contains(
+            fn (array $index) => $index['unique'] && $index['columns'] === ['user_id'],
+        ));
+
+        $this->assertHasForeignKey('feedback', 'user_id', 'users');
+    }
+
+    public function test_a_second_feedback_for_the_same_user_is_rejected_by_the_database(): void
+    {
+        $userId = User::factory()->create()->id;
+
+        $insertFeedback = function () use ($userId): bool {
+            // Postgres aborts the transaction on a failed statement, so the
+            // probe runs in a savepoint that keeps the test's transaction usable.
+            return DB::transaction(function () use ($userId): bool {
+                return DB::table('feedback')->insert([
+                    'user_id' => $userId,
+                    'message' => 'Terima kasih atas hasil asesmen saya.',
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ]);
+            });
+        };
+
+        $this->assertTrue($insertFeedback());
+
+        try {
+            $insertFeedback();
+            $this->fail('A second Feedback for the same Participant was accepted; expected the unique constraint to reject it.');
+        } catch (QueryException $exception) {
+            $this->assertStringContainsString('user_id', $exception->getMessage());
+            $this->assertMatchesRegularExpression('/UNIQUE constraint failed.*feedback|duplicate key value/', $exception->getMessage());
+        }
+    }
+
     private function assertHasForeignKey(string $table, string $column, string $foreignTable): void
     {
         $this->assertTrue(

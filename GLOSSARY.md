@@ -26,3 +26,6 @@ The page at `/results/{token}` that displays a Participant's ranked Love Languag
 
 ## Advice
 AI-generated guidance in Bahasa Indonesia about a Participant's top-ranked Love Language, written to address their full score ranking. Generated exactly once when the Assessment is completed, stored with it, and shown on the Result Page. Never regenerated for an Assessment that already has one; an Assessment may have none.
+
+## Feedback
+A Participant's free-text message about their Assessment experience, stored one per Participant — the database itself refuses a second row for the same Participant. Created only after the Assessment is completed. Immutable once written, and invisible to its author: the Result Page shows either the feedback form or the thank-you, never the stored content.

@@ -43,3 +43,13 @@ Table results {
 
   Index (user_id, love_language_id) [unique]
 }
+
+Table feedback {
+  id integer [primary key]
+  user_id integer [ref: > users.id, note: 'cascade delete, unique — one Feedback per Participant']
+  message text
+  created_at timestamp
+  updated_at timestamp
+
+  Index (user_id) [unique]
+}
