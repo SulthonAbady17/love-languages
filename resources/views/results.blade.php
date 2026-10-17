@@ -122,5 +122,43 @@
             <span class="sr-only" aria-live="polite" x-text="copied ? 'Tersalin' : ''"></span>
         </div>
     </aside>
+
+    @if ($feedback)
+        <section id="feedback" class="border-[3px] border-black bg-[#F0F0F0] p-6 space-y-3">
+            <p class="font-body text-sm leading-relaxed text-black">
+                Terima kasih sudah mencoba aplikasi ini dan sudah memberikan feedback!
+            </p>
+        </section>
+    @else
+        <section id="feedback" class="border-[3px] border-black bg-white p-6 space-y-3">
+            <p class="font-mono text-xs uppercase tracking-widest text-black">
+                Feedback
+            </p>
+            <p class="font-body text-sm leading-relaxed text-black">
+                Sudah coba aplikasi ini? Ceritakan pengembang apa yang kamu pikirkan.
+            </p>
+            <form method="POST" action="{{ route('results.feedback', $user->token) }}" class="space-y-3">
+                @csrf
+                <label for="message" class="sr-only">Pesan Feedback</label>
+                <textarea
+                    id="message"
+                    name="message"
+                    rows="4"
+                    class="w-full bg-white text-black font-body text-sm px-3 py-2.5 border-[3px] @error('message') border-error @else border-black @enderror focus:border-[5px] focus:outline-none transition-none"
+                >{{ old('message') }}</textarea>
+                @error('message')
+                    <p class="font-body text-xs text-error">
+                        {{ $message }}
+                    </p>
+                @enderror
+                <button
+                    type="submit"
+                    class="border-[3px] border-black bg-black text-white hover:bg-white hover:text-black transition-none cursor-pointer font-mono text-xs uppercase tracking-widest px-4 py-2"
+                >
+                    KIRIM FEEDBACK
+                </button>
+            </form>
+        </section>
+    @endif
 </main>
 @endsection
