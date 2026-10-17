@@ -32,6 +32,7 @@ class AdviceAgent implements Agent, HasSkills
             Before writing, load the stop-slop skill with the LoadSkill tool and follow it.
             Produce exactly two short paragraphs of plain prose: no headings, no bullet points, no markdown of any kind.
             Be encouraging and practical. Ground every sentence only in the supplied profile — invent nothing beyond it.
+            The reply must be entirely in Bahasa Indonesia — never English, whatever language the profile uses.
             TEXT;
     }
 

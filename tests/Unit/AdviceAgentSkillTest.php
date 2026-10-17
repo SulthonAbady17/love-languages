@@ -21,4 +21,12 @@ class AdviceAgentSkillTest extends TestCase
         $this->assertContainsOnlyInstancesOf(Skill::class, $skills);
         $this->assertSame('stop-slop', $skills[0]->name);
     }
+
+    public function test_instructions_forbid_english_and_mandate_bahasa_indonesia_output(): void
+    {
+        $instructions = (new AdviceAgent(collect()))->instructions();
+
+        $this->assertStringContainsString('Bahasa Indonesia', $instructions);
+        $this->assertStringContainsString('never English', $instructions);
+    }
 }
