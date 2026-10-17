@@ -3,8 +3,8 @@
 namespace Database\Factories;
 
 use App\Models\User;
+use App\Support\ResultToken;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Str;
 
 /**
  * @extends Factory<User>
@@ -20,7 +20,7 @@ class UserFactory extends Factory
     {
         return [
             'name' => fake()->name(),
-            'token' => (string) Str::uuid(),
+            'token' => ResultToken::generate(),
         ];
     }
 }

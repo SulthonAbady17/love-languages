@@ -19,7 +19,7 @@ A Participant's rating for a single Statement. An integer from 1 (Strongly Disag
 The computed average Likert Response score for one Love Language within one Assessment. Calculated as: sum of Likert Responses for that Love Language ÷ number of Statements in that Love Language. Stored as a float.
 
 ## Result Token
-A unique, opaque string (UUID) generated when an Assessment is completed. Embedded in the result page URL. The only way for a Participant to retrieve their Results later. Not a password; not a secret — just a stable identifier.
+A unique, opaque 16-character lowercase alphanumeric string generated when an Assessment is completed. Embedded in the result page URL. The only way for a Participant to retrieve their Results later. Not a password; not a secret — just a stable identifier.
 
 ## Result Page
 The page at `/results/{token}` that displays a Participant's ranked Love Language Results. The top-scoring Love Language is highlighted. Each Love Language shows a short description. This URL is the Participant's permanent link.

@@ -8,12 +8,14 @@ use App\Models\LoveLanguage;
 use App\Models\Result;
 use App\Models\Statement;
 use App\Models\User;
+use App\Support\ResultToken;
 use Illuminate\Contracts\View\View;
+use Illuminate\Database\Eloquent\Collection as EloquentCollection;
+use Illuminate\Database\UniqueConstraintViolationException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Str;
 use Throwable;
 
 class AssessmentController extends Controller
@@ -73,38 +75,59 @@ class AssessmentController extends Controller
             'answers.*.max' => 'Jawaban harus antara 1 dan 5.',
         ]);
 
-        $user = DB::transaction(function () use ($request, $statements, $validated): User {
-            $user = User::create([
-                'name' => $request->session()->get('name'),
-                'token' => (string) Str::uuid(),
-            ]);
-
-            foreach ($statements as $statement) {
-                Answer::create([
-                    'user_id' => $user->id,
-                    'statement_id' => $statement->id,
-                    'value' => (int) $validated['answers'][$statement->id],
-                ]);
-            }
-
-            foreach ($statements->groupBy('love_language_id') as $loveLanguageId => $languageStatements) {
-                $sum = $languageStatements->sum(
-                    fn (Statement $statement) => (int) $validated['answers'][$statement->id],
-                );
-
-                Result::create([
-                    'user_id' => $user->id,
-                    'love_language_id' => (int) $loveLanguageId,
-                    'value' => $sum / $languageStatements->count(),
-                ]);
-            }
-
-            return $user;
-        });
+        $user = $this->persistAssessment($request, $statements, $validated);
 
         $this->generateAdvice($user);
 
         return redirect()->to('/results/'.$user->token);
+    }
+
+    /**
+     * Create the Participant with their Likert Responses and Results.
+     *
+     * The whole transaction is retried on the astronomically-unlikely Result
+     * Token unique-index collision, up to 5 attempts, rethrowing the last miss.
+     *
+     * @param  array{answers: array<int, int>}  $validated
+     */
+    private function persistAssessment(Request $request, EloquentCollection $statements, array $validated): User
+    {
+        for ($attempt = 1; ; $attempt++) {
+            try {
+                return DB::transaction(function () use ($request, $statements, $validated): User {
+                    $user = User::create([
+                        'name' => $request->session()->get('name'),
+                        'token' => ResultToken::generate(),
+                    ]);
+
+                    foreach ($statements as $statement) {
+                        Answer::create([
+                            'user_id' => $user->id,
+                            'statement_id' => $statement->id,
+                            'value' => (int) $validated['answers'][$statement->id],
+                        ]);
+                    }
+
+                    foreach ($statements->groupBy('love_language_id') as $loveLanguageId => $languageStatements) {
+                        $sum = $languageStatements->sum(
+                            fn (Statement $statement) => (int) $validated['answers'][$statement->id],
+                        );
+
+                        Result::create([
+                            'user_id' => $user->id,
+                            'love_language_id' => (int) $loveLanguageId,
+                            'value' => $sum / $languageStatements->count(),
+                        ]);
+                    }
+
+                    return $user;
+                });
+            } catch (UniqueConstraintViolationException $exception) {
+                if ($attempt >= 5) {
+                    throw $exception;
+                }
+            }
+        }
     }
 
     /**

@@ -1,7 +1,7 @@
 Table users {
   id integer [primary key]
   name varchar
-  token uuid [unique]
+  token varchar(32) [unique]
   created_at timestamp
   updated_at timestamp
 }

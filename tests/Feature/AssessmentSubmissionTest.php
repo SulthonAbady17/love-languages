@@ -47,10 +47,7 @@ class AssessmentSubmissionTest extends TestCase
 
         $user = User::sole();
         $this->assertSame('Budi Santoso', $user->name);
-        $this->assertMatchesRegularExpression(
-            '/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/',
-            $user->token,
-        );
+        $this->assertMatchesRegularExpression('/^[a-z0-9]{16}$/', $user->token);
         $response->assertRedirect('/results/'.$user->token);
 
         $this->assertDatabaseCount('users', 1);
