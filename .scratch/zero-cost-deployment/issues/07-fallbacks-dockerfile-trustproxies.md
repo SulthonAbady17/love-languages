@@ -4,12 +4,12 @@
 
 **Blocked by:** 04 (both fallbacks are evaluated during/after first deploy)
 
-**Status:** ready-for-agent
+**Status:** done
 
 - [x] Conditional: only claimed if the host's native PHP is below the composer floor of 8.3 — **claimed:** Render has no native PHP runtime; Railway is Docker-only for this stack too. Minimal Dockerfile (`php:8.4-apache` + opcache + pdo_pgsql) added; local image build + Neon smoke (`/` and `/up` → 200) green.
 - [x] Conditional: only claimed if HTTPS detection misbehaves behind the host's proxy — **claimed for Railway:** Railway always terminates TLS at the edge proxy, so `request()->isSecure()` is false without TrustProxies. Added `$middleware->trustProxies(at: '*')` in `bootstrap/app.php` plus `tests/Feature/TrustProxiesTest.php` (welcome Secure under `X-Forwarded-Proto: https`; session cookie Secure).
 - [x] pint run after any PHP change
-- [ ] Result Token URLs behave identically to local development after the fallback
+- [x] Result Token URLs behave identically to local development after the fallback
 
 ### 2026-10-16 — Dockerfile + TrustProxies claimed (agent)
 
@@ -27,3 +27,7 @@ Host moved Render → Railway after Render demanded a card. Dockerfile and Trust
 
 **Fix:** `docker/start.sh` now forces a single MPM before `apache2-foreground`:
 `a2dismod mpm_event mpm_worker || true` → remove leftover symlinks → `a2enmod mpm_prefork` → `apache2ctl -t`.
+
+### 2026-10-17 — Result Token parity after the fallback (agent)
+
+Ticket 05's live walkthrough supplies the last box: a Result Token minted before the redeploy (`35f2f577-…`) still returns 200 behind the Dockerfile + TrustProxies path, serving the same stored Advice and rankings a local checkout serves, with `secure; httponly; samesite=lax` cookies from the earlier proxy check. Ticket 07 closed.
