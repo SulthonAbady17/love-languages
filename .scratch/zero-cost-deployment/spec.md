@@ -66,7 +66,7 @@ The app ships to a free public HTTPS URL on Render's Free Web Service at a platf
 - User accounts, authentication, email, queues/workers, websockets, and file uploads — the app uses none of these.
 - Rate limiting or bot protection for Groq quota (a public URL is guessable and Advice costs quota; a possible future follow-up, not this deploy).
 - CI pipelines, preview/staging environments, infrastructure-as-code.
-- Any change to app behaviour, copy, scoring, or the Advice feature itself.
+- Any change to app behaviour, copy, scoring, or the Advice feature itself. *(Sole exception, approved by the owner during ticket 05 on 2026-10-17: one instruction line in `AdviceAgent` pinning the reply to Bahasa Indonesia, after live smoke returned English advice in 1 of 2 runs — this enforces story 20 rather than changing what Advice does.)*
 - Changes to the local lerd development setup.
 - Analytics, APM, or monitoring beyond the single free uptime ping.
 - Database backups beyond Neon's free instant-restore window (6 hours).
