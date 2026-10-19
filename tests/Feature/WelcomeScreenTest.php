@@ -56,4 +56,56 @@ class WelcomeScreenTest extends TestCase
         $response->assertRedirect('/');
         $response->assertSessionHasErrors(['name']);
     }
+
+    public function test_welcome_page_uses_relationship_project_design_system_and_eyebrow(): void
+    {
+        $response = $this->get('/');
+
+        $response->assertOk();
+        // Eyebrow label in terracotta, uppercase, tracked
+        $response->assertSee('text-terracotta', false);
+        $response->assertSee('uppercase', false);
+        $response->assertSee('tracking-[0.15em]', false);
+        $response->assertSee('Penilaian Relasi');
+
+        // Display typography scale
+        $response->assertSee('text-3xl', false);
+        $response->assertSee('md:text-[64px]', false);
+        $response->assertSee('font-medium', false);
+        $response->assertSee('tracking-[-0.02em]', false);
+
+        // Form wrapping card
+        $response->assertSee('bg-white', false);
+        $response->assertSee('border-line', false);
+        $response->assertSee('rounded-lg', false);
+
+        // Name input card treatment and touch target
+        $response->assertSee('w-full', false);
+        $response->assertSee('rounded-sm', false);
+        $response->assertSee('min-h-[44px]', false);
+
+        // Primary submit button
+        $response->assertSee('bg-navy', false);
+        $response->assertSee('text-cream', false);
+        $response->assertSee('sm:w-auto', false);
+
+        // No brutalist legacy tokens
+        $response->assertDontSee('font-headline', false);
+        $response->assertDontSee('border-black', false);
+        $response->assertDontSee('border-[5px]', false);
+        $response->assertDontSee('border-[3px]', false);
+        $response->assertDontSee('bg-[#F0F0F0]', false);
+    }
+
+    public function test_name_input_error_state_uses_error_token_and_not_black_border(): void
+    {
+        $response = $this->from('/')->post('/assessment/start', [
+            'name' => '',
+        ]);
+
+        $followUp = $this->get('/');
+        $followUp->assertSee('border-error', false);
+        $followUp->assertSee('text-error', false);
+        $followUp->assertDontSee('border-black', false);
+    }
 }
