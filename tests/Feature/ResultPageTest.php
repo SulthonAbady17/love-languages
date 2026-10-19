@@ -49,7 +49,7 @@ class ResultPageTest extends TestCase
         }
     }
 
-    public function test_top_scoring_love_language_is_shown_in_an_inverted_black_block(): void
+    public function test_top_scoring_love_language_is_shown_in_an_inverted_navy_block(): void
     {
         $this->seed();
         $values = [1.0, 2.2, 3.0, 4.4, 4.6];
@@ -63,9 +63,9 @@ class ResultPageTest extends TestCase
         $topName = LoveLanguage::query()->orderBy('id')->pluck('name')[$topPosition];
 
         $this->assertStringContainsString($topName, $highlight);
-        $this->assertStringContainsString('bg-black', $highlight);
-        $this->assertStringContainsString('text-white', $highlight);
-        $this->assertStringContainsString('font-headline', $highlight);
+        $this->assertStringContainsString('bg-navy', $highlight);
+        $this->assertStringContainsString('text-cream', $highlight);
+        $this->assertStringContainsString('font-editorial', $highlight);
     }
 
     public function test_stored_advice_renders_a_bordered_block_directly_under_the_top_love_language(): void
@@ -82,8 +82,8 @@ class ResultPageTest extends TestCase
 
         $this->assertNotSame('', $block);
         $this->assertStringContainsString('Luangkan waktu berkualitas setiap hari.', $block);
-        $this->assertStringContainsString('border-[3px] border-black', $block);
-        $this->assertStringContainsString('font-mono', $block);
+        $this->assertStringContainsString('border border-line', $block);
+        $this->assertStringContainsString('font-body', $block);
 
         $topPosition = strpos($html, 'id="top-love-language"');
         $advicePosition = strpos($html, 'id="advice"');
