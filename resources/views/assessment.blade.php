@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<main class="min-h-screen p-6 md:p-12 max-w-4xl mx-auto flex flex-col justify-between">
+<main class="max-w-3xl mx-auto px-4 py-8 sm:py-12 space-y-8">
     <div
         x-data="{
             currentStep: 1,
@@ -39,18 +39,32 @@
         class="w-full space-y-8"
     >
         {{-- Progress Header --}}
-        <header class="border-b-[5px] border-black pb-6 space-y-3">
-            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
-                <span class="font-mono text-xs uppercase tracking-wider text-black">
+        <header class="border-b border-line pb-6 space-y-4">
+            <div class="flex items-center justify-between gap-2">
+                <span class="font-sans font-medium text-xs uppercase tracking-[0.15em] text-terracotta">
                     Langkah <span x-text="currentStep">1</span> dari 5
                 </span>
-                <span class="font-mono text-xs uppercase text-black" x-text="'Peserta: ' + participantName">
+                <span class="font-sans text-xs text-muted" x-text="'Peserta: ' + participantName">
                     Peserta: {{ $name }}
                 </span>
             </div>
 
+            {{-- 5-dot step indicator --}}
+            <div class="flex items-center justify-center gap-3 py-1" aria-label="Indikator langkah">
+                @for($step = 1; $step <= $loveLanguages->count(); $step++)
+                    <div
+                        class="w-2.5 h-2.5 rounded-full transition-colors"
+                        :class="{
+                            'bg-navy': {{ $step }} < currentStep,
+                            'bg-sage': {{ $step }} === currentStep,
+                            'bg-transparent border border-line': {{ $step }} > currentStep
+                        }"
+                    ></div>
+                @endfor
+            </div>
+
             <h1
-                class="font-headline text-3xl md:text-5xl uppercase leading-none text-black"
+                class="font-sans font-medium text-2xl sm:text-4xl md:text-5xl text-navy leading-tight tracking-[-0.01em]"
                 x-text="stepNames[currentStep]"
             >
                 {{ $loveLanguages->first()?->name }}
@@ -67,27 +81,27 @@
                     x-cloak
                     class="space-y-6"
                 >
-                    <div class="border-[3px] border-black p-4 bg-[#F0F0F0]">
-                        <p class="font-body text-sm text-black leading-relaxed">
+                    <div class="bg-cream border border-line rounded-lg p-4 sm:p-5">
+                        <p class="font-sans text-sm sm:text-base text-muted leading-relaxed">
                             {{ $loveLanguage->description }}
                         </p>
                     </div>
 
                     <div class="space-y-6">
                         @foreach($loveLanguage->statements as $statementIndex => $statement)
-                            <fieldset class="border-[3px] border-black p-5 bg-white space-y-4">
+                            <fieldset class="bg-white border border-line rounded-lg p-4 sm:p-6 space-y-4">
                                 <legend class="sr-only">Pernyataan {{ $statementIndex + 1 }}</legend>
 
                                 <div class="flex items-start gap-3">
-                                    <span class="font-mono text-xs font-bold border-[2px] border-black px-2 py-0.5 bg-black text-white shrink-0">
+                                    <span class="inline-flex items-center justify-center px-2 py-0.5 bg-navy text-cream font-sans font-medium text-xs rounded-sm shrink-0">
                                         #{{ ($loop->parent->index * 5) + $loop->iteration }}
                                     </span>
-                                    <p class="font-body text-base text-black font-medium leading-snug">
+                                    <p class="font-sans text-base text-navy font-medium leading-snug">
                                         {{ $statement->body }}
                                     </p>
                                 </div>
 
-                                <div class="grid grid-cols-1 sm:grid-cols-5 gap-2 pt-2 border-t-[2px] border-black">
+                                <div class="grid grid-cols-1 sm:grid-cols-5 gap-2.5 sm:gap-2 pt-4 border-t border-line">
                                     @php
                                         $options = [
                                             1 => 'Sangat Tidak Setuju',
@@ -99,8 +113,8 @@
                                     @endphp
                                     @foreach($options as $val => $label)
                                         <label
-                                            class="flex sm:flex-col items-center justify-start sm:justify-center gap-2 p-2 border-[2px] border-black cursor-pointer hover:bg-[#F0F0F0] text-center transition-none"
-                                            :class="answers[{{ $statement->id }}] == {{ $val }} ? 'bg-black text-white hover:bg-black' : 'bg-white text-black'"
+                                            class="min-h-[44px] flex sm:flex-col items-center justify-start sm:justify-center gap-2.5 sm:gap-1.5 p-3 sm:p-2.5 rounded-sm border cursor-pointer transition-colors text-center"
+                                            :class="answers[{{ $statement->id }}] == {{ $val }} ? 'bg-navy text-cream border-navy' : 'bg-white text-navy border-line hover:border-navy/40'"
                                         >
                                             <input
                                                 type="radio"
@@ -109,7 +123,7 @@
                                                 x-model="answers[{{ $statement->id }}]"
                                                 class="radio-circle shrink-0"
                                             >
-                                            <span class="font-body text-xs leading-tight">
+                                            <span class="font-sans text-xs font-medium leading-tight">
                                                 {{ $label }}
                                             </span>
                                         </label>
@@ -122,25 +136,25 @@
             @endforeach
 
             {{-- Navigation Buttons --}}
-            <nav class="flex items-center justify-between pt-6 border-t-[3px] border-black gap-4">
+            <nav class="flex flex-col gap-3 sm:flex-row sm:justify-between sm:items-center pt-6 border-t border-line">
                 <div>
                     <button
                         type="button"
                         x-show="currentStep > 1"
                         @click="prevStep()"
-                        class="px-8 py-3.5 bg-white text-black font-headline text-base uppercase tracking-[2px] border-[3px] border-black hover:bg-black hover:text-white active:border-[5px] transition-none cursor-pointer"
+                        class="w-full sm:w-auto min-h-[44px] px-8 py-3 bg-white text-navy font-sans font-medium text-base rounded-sm border border-navy hover:bg-navy hover:text-cream transition-colors cursor-pointer flex items-center justify-center"
                     >
                         Kembali
                     </button>
                 </div>
 
-                <div class="flex items-center gap-4">
+                <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4">
                     <button
                         type="button"
                         x-show="currentStep < totalSteps"
                         @click="nextStep()"
                         :disabled="!isCurrentStepComplete()"
-                        class="px-8 py-3.5 bg-black text-white font-headline text-base uppercase tracking-[2px] border-[3px] border-black hover:bg-white hover:text-black active:bg-black active:text-white active:border-[5px] disabled:border-[#CCCCCC] disabled:bg-[#F5F5F5] disabled:text-[#888888] disabled:cursor-not-allowed transition-none cursor-pointer"
+                        class="w-full sm:w-auto min-h-[44px] px-8 py-3 bg-navy text-cream font-sans font-medium text-base rounded-sm border border-line hover:opacity-90 disabled:border-line disabled:text-muted disabled:opacity-60 disabled:cursor-not-allowed transition-all cursor-pointer flex items-center justify-center"
                     >
                         Lanjut
                     </button>
@@ -149,7 +163,7 @@
                         type="submit"
                         x-show="currentStep === totalSteps"
                         :disabled="!isCurrentStepComplete()"
-                        class="px-8 py-3.5 bg-black text-white font-headline text-base uppercase tracking-[2px] border-[3px] border-black hover:bg-white hover:text-black active:bg-black active:text-white active:border-[5px] disabled:border-[#CCCCCC] disabled:bg-[#F5F5F5] disabled:text-[#888888] disabled:cursor-not-allowed transition-none cursor-pointer"
+                        class="w-full sm:w-auto min-h-[44px] px-8 py-3 bg-navy text-cream font-sans font-medium text-base rounded-sm border border-line hover:opacity-90 disabled:border-line disabled:text-muted disabled:opacity-60 disabled:cursor-not-allowed transition-all cursor-pointer flex items-center justify-center"
                     >
                         Kirim
                     </button>

@@ -83,15 +83,55 @@ class AssessmentFlowTest extends TestCase
         $response->assertSee('type="submit"', false);
     }
 
-    public function test_assessment_page_uses_rawblock_styling_and_circular_radio_buttons(): void
+    public function test_assessment_page_uses_relationship_project_design_system_and_step_indicator(): void
     {
         $this->seed();
 
         $response = $this->withSession(['name' => 'Budi Santoso'])->get('/assessment');
 
         $response->assertOk();
+
+        // Step header heading typography scale
+        $response->assertSee('text-2xl', false);
+        $response->assertSee('md:text-5xl', false);
+        $response->assertSee('text-navy', false);
+
+        // 5-dot step indicator
+        $response->assertSee('w-2.5 h-2.5 rounded-full', false);
+        $response->assertSee('bg-sage', false);
+        $response->assertSee('bg-navy', false);
+        $response->assertSee('border-line', false);
+        $response->assertSee('justify-center', false);
+        $response->assertSee('gap-3', false);
+
+        // Description callout card
+        $response->assertSee('bg-cream', false);
+        $response->assertSee('border-line', false);
+        $response->assertSee('rounded-lg', false);
+
+        // Statement fieldset
+        $response->assertSee('bg-white', false);
+        $response->assertSee('p-4 sm:p-6', false);
+
+        // Statement number badge
+        $response->assertSee('rounded-sm', false);
+
+        // Likert rating options
+        $response->assertSee('grid-cols-1', false);
+        $response->assertSee('sm:grid-cols-5', false);
+        $response->assertSee('min-h-[44px]', false);
         $response->assertSee('radio-circle', false);
-        $response->assertSee('font-headline', false);
-        $response->assertSee('font-body', false);
+
+        // Navigation row & buttons
+        $response->assertSee('flex-col gap-3', false);
+        $response->assertSee('sm:flex-row sm:justify-between', false);
+        $response->assertSee('border-navy', false);
+
+        // No brutalist legacy tokens
+        $response->assertDontSee('font-headline', false);
+        $response->assertDontSee('border-black', false);
+        $response->assertDontSee('border-[5px]', false);
+        $response->assertDontSee('border-[3px]', false);
+        $response->assertDontSee('bg-[#F0F0F0]', false);
     }
 }
