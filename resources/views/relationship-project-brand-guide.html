@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Relationship Project — Brand Identity</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600&family=Newsreader:ital,wght@0,400;1,400;1,500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#1E293B;
+    --navy-ink:#151E2B;
+    --sage:#A8C3A0;
+    --sage-deep:#7C9B72;
+    --cream:#FAF9F6;
+    --terracotta:#C97C5D;
+    --terracotta-deep:#A85E42;
+    --line:#E4E1D8;
+    --muted:#6B7280;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{
+    background:var(--cream);
+    color:var(--navy);
+    font-family:'Plus Jakarta Sans', sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  .editorial{ font-family:'Newsreader', serif; font-style:italic; }
+  .wrap{ max-width:1080px; margin:0 auto; padding:0 32px; }
+
+  /* ---------- Cover ---------- */
+  .cover{
+    padding:120px 32px 100px;
+    text-align:center;
+    border-bottom:1px solid var(--line);
+  }
+  .cover .eyebrow{
+    font-size:12px; letter-spacing:0.16em; text-transform:uppercase;
+    color:var(--terracotta-deep); font-weight:500; margin-bottom:28px;
+  }
+  .cover h1{
+    font-size:64px; font-weight:500; letter-spacing:-0.02em; line-height:1.05;
+    margin-bottom:20px;
+  }
+  .cover .sub{
+    font-size:19px; color:var(--muted); max-width:560px; margin:0 auto;
+    line-height:1.6; font-weight:400;
+  }
+  .cover .mark{ margin:48px auto 0; width:64px; height:64px; }
+
+  /* ---------- Section shell ---------- */
+  section{ padding:90px 0; border-bottom:1px solid var(--line); }
+  .section-head{ margin-bottom:56px; }
+  .section-head .num{
+    font-size:12px; letter-spacing:0.14em; color:var(--terracotta-deep);
+    font-weight:500; margin-bottom:14px; text-transform:uppercase;
+  }
+  .section-head h2{ font-size:34px; font-weight:500; letter-spacing:-0.01em; margin-bottom:14px; }
+  .section-head p{ font-size:16px; color:var(--muted); max-width:600px; line-height:1.65; }
+
+  /* ---------- Logo concepts ---------- */
+  .logo-grid{ display:grid; grid-template-columns:1fr 1fr; gap:24px; }
+  .logo-card{
+    background:#fff; border:1px solid var(--line); border-radius:16px; overflow:hidden;
+  }
+  .logo-card.full{ grid-column:1 / -1; }
+  .logo-stage{
+    height:220px; display:flex; align-items:center; justify-content:center;
+    background:var(--cream);
+  }
+  .logo-stage.dark{ background:var(--navy); }
+  .logo-meta{ padding:24px 28px 28px; }
+  .logo-meta .tag{
+    font-size:11px; letter-spacing:0.1em; text-transform:uppercase;
+    color:var(--terracotta-deep); font-weight:500; margin-bottom:8px;
+  }
+  .logo-meta h3{ font-size:19px; font-weight:500; margin-bottom:8px; }
+  .logo-meta p{ font-size:14.5px; color:var(--muted); line-height:1.6; }
+
+  /* ---------- Color ---------- */
+  .color-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:20px; }
+  .swatch{ border-radius:14px; overflow:hidden; border:1px solid var(--line); }
+  .swatch .block{ height:130px; }
+  .swatch .info{ padding:16px 18px; background:#fff; }
+  .swatch .info .name{ font-size:14.5px; font-weight:500; margin-bottom:4px; }
+  .swatch .info .hex{ font-size:13px; color:var(--muted); font-family:monospace; }
+  .swatch .info .role{ font-size:12.5px; color:var(--terracotta-deep); margin-top:6px; font-weight:500; }
+
+  /* ---------- Type ---------- */
+  .type-block{ background:#fff; border:1px solid var(--line); border-radius:16px; padding:44px 44px; }
+  .type-row{ padding:26px 0; border-bottom:1px solid var(--line); display:flex; align-items:baseline; justify-content:space-between; gap:24px; }
+  .type-row:last-child{ border-bottom:none; padding-bottom:0; }
+  .type-row .label{ font-size:12.5px; color:var(--muted); min-width:150px; letter-spacing:0.04em; text-transform:uppercase; }
+  .type-row .sample{ flex:1; }
+  .t-display{ font-size:40px; font-weight:500; letter-spacing:-0.01em; }
+  .t-heading{ font-size:26px; font-weight:500; }
+  .t-body{ font-size:17px; font-weight:400; line-height:1.6; color:var(--navy); max-width:520px; }
+  .t-editorial{ font-size:26px; }
+  .t-caption{ font-size:13px; color:var(--muted); letter-spacing:0.05em; text-transform:uppercase; }
+
+  /* ---------- Mockups ---------- */
+  .mock-grid{ display:grid; grid-template-columns:1fr 1fr; gap:24px; }
+  .mock-card{ background:#fff; border:1px solid var(--line); border-radius:16px; padding:28px; }
+  .mock-card .cap{ font-size:13px; color:var(--muted); margin-top:18px; font-weight:500; }
+
+  /* Instagram mockup */
+  .ig-frame{ border:1px solid var(--line); border-radius:12px; overflow:hidden; }
+  .ig-top{ display:flex; align-items:center; gap:16px; padding:20px; }
+  .ig-avatar{ width:64px; height:64px; border-radius:50%; background:var(--navy); display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+  .ig-name{ font-size:15px; font-weight:600; }
+  .ig-handle{ font-size:13px; color:var(--muted); margin-top:2px; }
+  .ig-stats{ display:flex; gap:22px; margin-top:10px; font-size:13px; }
+  .ig-stats b{ font-weight:600; }
+  .ig-bio{ padding:0 20px 18px; font-size:13.5px; line-height:1.55; color:var(--navy); }
+  .ig-bio .muted{ color:var(--muted); }
+  .ig-highlights{ display:flex; gap:16px; padding:0 20px 20px; }
+  .hl{ text-align:center; font-size:11px; color:var(--muted); }
+  .hl-circle{ width:52px; height:52px; border-radius:50%; border:1px solid var(--line); margin-bottom:6px; display:flex; align-items:center; justify-content:center; }
+  .ig-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:2px; }
+  .ig-grid div{ aspect-ratio:1; }
+
+  /* Website header mockup */
+  .web-frame{ border:1px solid var(--line); border-radius:12px; overflow:hidden; }
+  .web-nav{ display:flex; align-items:center; justify-content:space-between; padding:18px 26px; background:var(--cream); }
+  .web-links{ display:flex; gap:28px; font-size:13.5px; color:var(--navy); font-weight:500; }
+  .web-cta{ background:var(--navy); color:var(--cream); font-size:13px; font-weight:500; padding:9px 18px; border-radius:8px; }
+  .web-hero{ padding:56px 26px; text-align:center; background:#fff; }
+  .web-hero h4{ font-size:24px; font-weight:500; max-width:380px; margin:0 auto 10px; line-height:1.35; }
+  .web-hero p{ font-size:13.5px; color:var(--muted); max-width:340px; margin:0 auto; }
+
+  /* App icon mockup */
+  .icon-row{ display:flex; align-items:flex-end; gap:20px; flex-wrap:wrap; }
+  .app-icon{ border-radius:22%; background:var(--navy); display:flex; align-items:center; justify-content:center; }
+  .homescreen{ background:var(--sage); border-radius:20px; padding:24px 20px; width:220px; }
+  .hs-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:16px; }
+  .hs-cell{ display:flex; flex-direction:column; align-items:center; gap:6px; }
+  .hs-icon{ width:42px; height:42px; border-radius:22%; background:rgba(255,255,255,0.55); }
+  .hs-icon.active{ background:var(--navy); }
+  .hs-label{ font-size:8px; color:var(--navy-ink); }
+
+  /* Favicon mockup */
+  .browser{ border:1px solid var(--line); border-radius:10px; overflow:hidden; }
+  .browser-bar{ background:#EFEDE6; padding:10px 14px; display:flex; align-items:center; gap:8px; }
+  .dot{ width:9px; height:9px; border-radius:50%; background:#D8D5CB; }
+  .tab{ background:#fff; border-radius:8px 8px 0 0; padding:8px 14px; display:flex; align-items:center; gap:8px; margin-left:12px; font-size:12px; color:var(--navy); border:1px solid var(--line); border-bottom:none; }
+  .browser-body{ background:#fff; height:70px; }
+  .fav-16, .fav-32{ background:var(--navy); border-radius:5px; flex-shrink:0; }
+  .fav-16{ width:16px; height:16px; }
+  .fav-32{ width:32px; height:32px; border-radius:8px; }
+
+  .footer{ padding:60px 0 100px; text-align:center; color:var(--muted); font-size:13.5px; }
+</style>
+</head>
+<body>
+
+<div class="cover">
+  <div class="eyebrow">Brand identity — v1</div>
+  <h1>Relationship<br>Project</h1>
+  <p class="sub">A modern relationship lifestyle brand for Indonesian couples — calm, warm, premium, and intentional. Not dating. Not therapy. Not weddings.</p>
+  <svg class="mark" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="18" cy="32" r="7" fill="#1E293B"/>
+    <circle cx="46" cy="32" r="7" fill="#C97C5D"/>
+    <path d="M25 32C31 22, 35 42, 39 32" stroke="#A8C3A0" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+  </svg>
+</div>
+
+<div class="wrap">
+
+  <!-- ============ LOGO CONCEPTS ============ -->
+  <section>
+    <div class="section-head">
+      <div class="num">01 — Logo concepts</div>
+      <h2>Five directions</h2>
+      <p>Each concept stands alone as a usable primary mark. All share the same restrained, non-literal approach — no hearts, no rings, no romantic clichés. The connection between two people is suggested through form and space, never spelled out.</p>
+    </div>
+
+    <div class="logo-grid">
+
+      <!-- Concept 1: Typography only -->
+      <div class="logo-card">
+        <div class="logo-stage">
+          <svg width="280" height="70" viewBox="0 0 280 70" xmlns="http://www.w3.org/2000/svg">
+            <text x="140" y="34" text-anchor="middle" font-family="Plus Jakarta Sans" font-size="20" font-weight="500" letter-spacing="2" fill="#1E293B">relationship</text>
+            <text x="140" y="56" text-anchor="middle" font-family="Plus Jakarta Sans" font-size="20" font-weight="500" letter-spacing="2" fill="#1E293B">project<tspan fill="#C97C5D">.</tspan></text>
+          </svg>
+        </div>
+        <div class="logo-meta">
+          <div class="tag">Concept 01</div>
+          <h3>Typography only</h3>
+          <p>Set entirely in lowercase Plus Jakarta Sans with wide tracking, stacked in two calm lines. The single terracotta period is the only accent — quiet, confident, and easy to license across sizes without a symbol to protect.</p>
+        </div>
+      </div>
+
+      <!-- Concept 2: RP monogram -->
+      <div class="logo-card">
+        <div class="logo-stage dark">
+          <svg width="120" height="120" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="60" cy="60" r="52" fill="none" stroke="#A8C3A0" stroke-width="1"/>
+            <text x="60" y="78" text-anchor="middle" font-family="Plus Jakarta Sans" font-size="52" font-weight="500" fill="#FAF9F6">R<tspan fill="#C97C5D">P</tspan></text>
+          </svg>
+        </div>
+        <div class="logo-meta">
+          <div class="tag">Concept 02</div>
+          <h3>RP monogram</h3>
+          <p>An interlocked R and P share a single stroke weight, ringed by a thin sage circle — a signet-like mark that reads as premium and personal. Works reversed on navy or as a single flat colour at favicon size.</p>
+        </div>
+      </div>
+
+      <!-- Concept 3: Two connected dots -->
+      <div class="logo-card">
+        <div class="logo-stage">
+          <svg width="240" height="100" viewBox="0 0 240 100" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="60" cy="40" r="9" fill="#1E293B"/>
+            <circle cx="140" cy="40" r="9" fill="#C97C5D"/>
+            <path d="M72 40C90 24, 110 56, 128 40" stroke="#A8C3A0" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+            <text x="100" y="80" text-anchor="middle" font-family="Plus Jakarta Sans" font-size="14" font-weight="500" letter-spacing="1.5" fill="#1E293B">relationship project</text>
+          </svg>
+        </div>
+        <div class="logo-meta">
+          <div class="tag">Concept 03</div>
+          <h3>Two connected dots</h3>
+          <p>Two people, drawn as simple weighted dots, joined by one unhurried curve rather than a straight line — growth, not a transaction. The most flexible mark for animation: the curve can gently breathe in-app.</p>
+        </div>
+      </div>
+
+      <!-- Concept 4: Minimal abstract connection symbol -->
+      <div class="logo-card">
+        <div class="logo-stage dark">
+          <svg width="120" height="120" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+            <path d="M30 40C55 40, 55 80, 80 80" stroke="#A8C3A0" stroke-width="9" fill="none" stroke-linecap="round"/>
+            <path d="M30 80C55 80, 55 40, 80 40" stroke="#C97C5D" stroke-width="9" fill="none" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div class="logo-meta">
+          <div class="tag">Concept 04</div>
+          <h3>Abstract connection symbol</h3>
+          <p>Two ribbon strokes cross once and separate again — two individual paths that meet, without forming a closed loop or heart. Reads as woven, not tangled. The strongest candidate for an app icon glyph.</p>
+        </div>
+      </div>
+
+      <!-- Concept 5: Editorial wordmark -->
+      <div class="logo-card full">
+        <div class="logo-stage" style="height:180px;">
+          <div style="display:flex; align-items:center; gap:18px;">
+            <span class="editorial" style="font-size:38px; color:#1E293B;">Relationship</span>
+            <span style="width:1px; height:32px; background:#C97C5D;"></span>
+            <span style="font-family:'Plus Jakarta Sans'; font-weight:500; font-size:15px; letter-spacing:0.24em; color:#1E293B; text-transform:uppercase;">Project</span>
+          </div>
+        </div>
+        <div class="logo-meta">
+          <div class="tag">Concept 05</div>
+          <h3>Editorial wordmark</h3>
+          <p>A serif italic for "Relationship" carries warmth and voice, set against a tracked-out uppercase sans "Project" for structure — the same tension found in Kinfolk or Cereal magazine mastheads. A thin terracotta rule separates the two registers. Best suited to editorial content, packaging, and print.</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ============ COLOR ============ -->
+  <section>
+    <div class="section-head">
+      <div class="num">02 — Color</div>
+      <h2>Usage</h2>
+      <p>Midnight navy carries authority and calm; sage signals growth and softness; terracotta is used sparingly as the single warm accent — never as a dominant field. Warm off-white replaces pure white everywhere.</p>
+    </div>
+    <div class="color-grid">
+      <div class="swatch">
+        <div class="block" style="background:#1E293B;"></div>
+        <div class="info"><div class="name">Midnight navy</div><div class="hex">#1E293B</div><div class="role">Primary — text, wordmark, icon fields</div></div>
+      </div>
+      <div class="swatch">
+        <div class="block" style="background:#A8C3A0;"></div>
+        <div class="info"><div class="name">Soft sage green</div><div class="hex">#A8C3A0</div><div class="role">Secondary — connective elements, success states</div></div>
+      </div>
+      <div class="swatch">
+        <div class="block" style="background:#FAF9F6; border-bottom:1px solid var(--line);"></div>
+        <div class="info"><div class="name">Warm off-white</div><div class="hex">#FAF9F6</div><div class="role">Background — replaces pure white</div></div>
+      </div>
+      <div class="swatch">
+        <div class="block" style="background:#C97C5D;"></div>
+        <div class="info"><div class="name">Terracotta</div><div class="hex">#C97C5D</div><div class="role">Accent — CTAs, single highlight only</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ TYPE ============ -->
+  <section>
+    <div class="section-head">
+      <div class="num">03 — Typography</div>
+      <h2>System</h2>
+      <p>Plus Jakarta Sans is the workhorse — UI, body copy, product. A serif italic (shown here as Newsreader; General Sans or Satoshi remain the approved sans alternates) is reserved for editorial moments only, never for interface text.</p>
+    </div>
+    <div class="type-block">
+      <div class="type-row"><div class="label">Display</div><div class="sample t-display">Build something intentional</div></div>
+      <div class="type-row"><div class="label">Heading</div><div class="sample t-heading">Conversation cards, weekly</div></div>
+      <div class="type-row"><div class="label">Body</div><div class="sample t-body">Practical systems, guided workbooks, and small weekly rituals — designed for two people who want to grow more intentional together.</div></div>
+      <div class="type-row"><div class="label">Editorial accent</div><div class="sample t-editorial editorial">for the quiet, ordinary days</div></div>
+      <div class="type-row"><div class="label">Caption / UI label</div><div class="sample t-caption">Week 04 · Communication</div></div>
+    </div>
+  </section>
+
+  <!-- ============ MOCKUPS ============ -->
+  <section style="border-bottom:none;">
+    <div class="section-head">
+      <div class="num">04 — Applications</div>
+      <h2>In the wild</h2>
+      <p>The connected-dots mark (concept 03/04) carries the identity into product surfaces; the typographic lockup (concept 01) anchors marketing and web.</p>
+    </div>
+
+    <div class="mock-grid">
+
+      <!-- Instagram -->
+      <div class="mock-card">
+        <div class="ig-frame">
+          <div class="ig-top">
+            <div class="ig-avatar">
+              <svg width="30" height="30" viewBox="0 0 60 60"><circle cx="15" cy="30" r="6" fill="#FAF9F6"/><circle cx="45" cy="30" r="6" fill="#C97C5D"/><path d="M23 30C32 18,38 42,47 30" stroke="#A8C3A0" stroke-width="2.5" fill="none" stroke-linecap="round"/></svg>
+            </div>
+            <div>
+              <div class="ig-name">Relationship Project</div>
+              <div class="ig-handle">@relationshipproject</div>
+              <div class="ig-stats"><span><b>128</b> posts</span><span><b>41.2k</b> followers</span></div>
+            </div>
+          </div>
+          <div class="ig-bio">
+            practical tools for stronger, more intentional relationships<br>
+            <span class="muted">workbooks · conversation cards · weekly challenges</span><br>
+            <span style="color:#C97C5D;">↓ this week's card</span>
+          </div>
+          <div class="ig-highlights">
+            <div class="hl"><div class="hl-circle" style="background:#1E293B;"></div>cards</div>
+            <div class="hl"><div class="hl-circle" style="background:#A8C3A0;"></div>rituals</div>
+            <div class="hl"><div class="hl-circle" style="background:#C97C5D;"></div>stories</div>
+          </div>
+          <div class="ig-grid">
+            <div style="background:#1E293B;"></div><div style="background:#A8C3A0;"></div><div style="background:#EFEDE6;"></div>
+            <div style="background:#C97C5D;"></div><div style="background:#1E293B;"></div><div style="background:#EFEDE6;"></div>
+            <div style="background:#A8C3A0;"></div><div style="background:#EFEDE6;"></div><div style="background:#1E293B;"></div>
+          </div>
+        </div>
+        <div class="cap">Instagram profile</div>
+      </div>
+
+      <!-- Website header -->
+      <div class="mock-card">
+        <div class="web-frame">
+          <div class="web-nav">
+            <svg width="150" height="20" viewBox="0 0 150 20"><text x="0" y="15" font-family="Plus Jakarta Sans" font-size="13" font-weight="500" letter-spacing="1" fill="#1E293B">relationship project<tspan fill="#C97C5D">.</tspan></text></svg>
+            <div class="web-links"><span>Workbooks</span><span>Cards</span><span>About</span></div>
+            <div class="web-cta">Get started</div>
+          </div>
+          <div class="web-hero">
+            <h4>Build a relationship you're intentional about</h4>
+            <p>Guided workbooks and conversation cards for couples who want to grow together.</p>
+          </div>
+        </div>
+        <div class="cap">Website header</div>
+      </div>
+
+      <!-- App icon -->
+      <div class="mock-card">
+        <div class="icon-row">
+          <div class="app-icon" style="width:88px; height:88px;">
+            <svg width="46" height="46" viewBox="0 0 60 60"><circle cx="15" cy="30" r="6" fill="#FAF9F6"/><circle cx="45" cy="30" r="6" fill="#C97C5D"/><path d="M23 30C32 18,38 42,47 30" stroke="#A8C3A0" stroke-width="3" fill="none" stroke-linecap="round"/></svg>
+          </div>
+          <div class="homescreen">
+            <div class="hs-grid">
+              <div class="hs-cell"><div class="hs-icon active" style="display:flex; align-items:center; justify-content:center;"><svg width="20" height="20" viewBox="0 0 60 60"><circle cx="15" cy="30" r="6" fill="#FAF9F6"/><circle cx="45" cy="30" r="6" fill="#C97C5D"/><path d="M23 30C32 18,38 42,47 30" stroke="#A8C3A0" stroke-width="3" fill="none" stroke-linecap="round"/></svg></div><div class="hs-label">RP</div></div>
+              <div class="hs-cell"><div class="hs-icon"></div><div class="hs-label">&nbsp;</div></div>
+              <div class="hs-cell"><div class="hs-icon"></div><div class="hs-label">&nbsp;</div></div>
+              <div class="hs-cell"><div class="hs-icon"></div><div class="hs-label">&nbsp;</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="cap">Mobile app icon</div>
+      </div>
+
+      <!-- Favicon -->
+      <div class="mock-card">
+        <div class="browser">
+          <div class="browser-bar">
+            <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+            <div class="tab">
+              <div class="fav-16" style="display:flex; align-items:center; justify-content:center;"><svg width="10" height="10" viewBox="0 0 60 60"><circle cx="15" cy="30" r="7" fill="#FAF9F6"/><circle cx="45" cy="30" r="7" fill="#C97C5D"/></svg></div>
+              relationshipproject.com
+            </div>
+          </div>
+          <div class="browser-body"></div>
+        </div>
+        <div style="display:flex; align-items:center; gap:14px; margin-top:18px;">
+          <div class="fav-32" style="display:flex; align-items:center; justify-content:center;"><svg width="18" height="18" viewBox="0 0 60 60"><circle cx="15" cy="30" r="7" fill="#FAF9F6"/><circle cx="45" cy="30" r="7" fill="#C97C5D"/></svg></div>
+          <span style="font-size:13px; color:var(--muted);">Simplified two-dot mark, no wordmark, at 16px and 32px</span>
+        </div>
+        <div class="cap">Favicon</div>
+      </div>
+
+    </div>
+  </section>
+
+</div>
+
+<div class="footer">Relationship Project — brand identity v1</div>
+
+</body>
+</html>
