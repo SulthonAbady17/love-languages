@@ -5,51 +5,31 @@
 @source '../views/**/*.blade.php';
 
 @theme {
-    --color-black: #000000;
-    --color-white: #ffffff;
-    --color-blue: #0000ff;
+    --color-navy: #1E293B;
+    --color-navy-ink: #151E2B;
+    --color-sage: #A8C3A0;
+    --color-cream: #FAF9F6;
+    --color-terracotta: #C97C5D;
+    --color-line: #E4E1D8;
+    --color-muted: #6B7280;
+
     --color-success: #008000;
-    --color-warning: #ffa500;
-    --color-error: #ff0000;
+    --color-error: #FF0000;
 
-    --font-headline: 'Archivo Black', sans-serif;
-    --font-sans: 'Work Sans', ui-sans-serif, system-ui, sans-serif;
-    --font-body: 'Work Sans', ui-sans-serif, system-ui, sans-serif;
-    --font-mono: 'Space Mono', ui-monospace, monospace;
+    --font-sans: 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif;
+    --font-body: 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif;
+    --font-editorial: 'Newsreader', Georgia, serif;
 
-    --radius-*: initial;
-    --radius: 0px;
-    --radius-xs: 0px;
-    --radius-sm: 0px;
-    --radius-md: 0px;
-    --radius-lg: 0px;
-    --radius-xl: 0px;
-    --radius-2xl: 0px;
-    --radius-3xl: 0px;
-    --radius-full: 0px;
-
-    --shadow-*: initial;
-    --shadow: none;
-    --shadow-xs: none;
-    --shadow-sm: none;
-    --shadow-md: none;
-    --shadow-lg: none;
-    --shadow-xl: none;
-    --shadow-2xl: none;
-    --inset-shadow-*: initial;
-    --drop-shadow-*: initial;
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 16px;
 }
 
 @layer base {
-    *, ::before, ::after {
-        border-radius: 0;
-        box-shadow: none;
-    }
-
     body {
         font-family: var(--font-body);
-        background-color: var(--color-white);
-        color: var(--color-black);
+        background-color: var(--color-cream);
+        color: var(--color-navy);
     }
 
     [x-cloak] {
@@ -59,37 +39,5 @@
     input[type="radio"].radio-circle,
     .radio-circle {
         border-radius: 9999px !important;
-    }
-
-    input[type="radio"].radio-circle {
-        appearance: none;
-        -webkit-appearance: none;
-        width: 20px;
-        height: 20px;
-        border: 3px solid #000000;
-        background-color: #ffffff;
-        display: inline-grid;
-        place-content: center;
-        cursor: pointer;
-        margin: 0;
-        outline: none;
-    }
-
-    input[type="radio"].radio-circle::before {
-        content: "";
-        width: 10px;
-        height: 10px;
-        border-radius: 9999px !important;
-        transform: scale(0);
-        transition: 120ms transform ease-in-out;
-        background-color: #000000;
-    }
-
-    input[type="radio"].radio-circle:checked::before {
-        transform: scale(1);
-    }
-
-    input[type="radio"].radio-circle:focus {
-        border-width: 5px;
     }
 }

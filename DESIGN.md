@@ -1,139 +1,181 @@
-# RawBlock Design System
+# Relationship Project Design System
 
 ## Overview
 
-RawBlock is an unapologetic, anti-design system that strips interfaces down to their structural bones. Built for experimental portfolios and avant-garde art sites, it embraces thick borders, system-level aesthetics, and the raw power of black-on-white. There are no rounded corners, no shadows, no polish. Every element looks like it was assembled from HTML primitives -- because that is the point. This is brutalism as a design language.
+Relationship Project is a modern relationship lifestyle brand designed for Indonesian couples. The brand identity is calm, warm, premium, and intentional — emphasizing growth, quiet partnership, and mutual understanding. It is explicitly **not** dating, **not** couples therapy, and **not** wedding planning.
+
+The design system translates this identity into a cohesive, mobile-first digital experience across all views. Stark monochrome aesthetics, harsh borders, and heavy shadows are rejected in favor of warm tones, editorial typography, subtle borders, and intentional rounding.
+
+`DESIGN.md` is the canonical source of truth for all color tokens, typography scales, radius values, component guidelines, and implementation rules in the application.
 
 ---
 
 ## Colors
 
-- **Black** (#000000): Text, borders, fills
-- **White** (#FFFFFF): Background, inverse text
-- **Blue** (#0000FF): Links only (hyperlink blue)
-- **Surface Base** (#FFFFFF): App background
-- **Surface Inverted** (#000000): Inverted sections
-- **Success** (#008000): Success (pure green)
-- **Warning** (#FFA500): Warning (pure orange)
-- **Error** (#FF0000): Error (pure red)
-- **Info** (#0000FF): Info (same as link blue)
+The palette balances deep midnight navy for grounded authority, warm off-white (cream) for approachable calm, soft sage green for connection and growth, and terracotta for a singular warm accent.
 
-## Typography
+### Palette Tokens
 
-- **Headline Font**: Archivo Black
-- **Body Font**: Work Sans
-- **Mono Font**: Space Mono
+| Token Name | CSS Variable | Hex | Role & Usage |
+|---|---|---|---|
+| **Navy** | `--color-navy` | `#1E293B` | Primary: body text, wordmark, primary button fills, hero backgrounds, completed step dots |
+| **Navy Ink** | `--color-navy-ink` | `#151E2B` | Deep navy for small high-contrast labels, badges, and icon details |
+| **Sage** | `--color-sage` | `#A8C3A0` | Secondary: connective elements, logo mark connecting curve, step indicator active dot |
+| **Cream** | `--color-cream` | `#FAF9F6` | Surface / Background: replaces pure white for page background, callout backgrounds, inverse text on navy |
+| **Terracotta** | `--color-terracotta` | `#C97C5D` | Accent: eyebrow labels, logo period mark, single focal highlights (used sparingly, never as large fills) |
+| **Line** | `--color-line` | `#E4E1D8` | Structural: 1px borders, card outlines, dividers, inactive step dot borders |
+| **Muted** | `--color-muted` | `#6B7280` | Secondary text: descriptions, captions, unselected states, secondary body copy |
 
-- **h1**: Archivo Black 64px regular, 1.0 line height
-- **h2**: Archivo Black 48px regular, 1.05 line height
-- **h3**: Archivo Black 32px regular, 1.1 line height
-- **h4**: Work Sans 22px semibold, 1.2 line height
-- **body**: Work Sans 16px regular, 1.6 line height
-- **small**: Work Sans 14px regular, 1.5 line height
-- **tiny**: Work Sans 12px regular, 1.4 line height
-- **mono**: Space Mono 15px regular, 1.5 line height
+### Semantic Validation Tokens
+
+Used strictly for form validation feedback and status alerts:
+
+- **Error**: `--color-error` (`#FF0000`) — validation error messages and input alert states.
+- **Success**: `--color-success` (`#008000`) — success confirmations and positive indicators.
 
 ---
 
-## Spacing
+## Typography
 
-Base unit: 8px (intentionally irregular usage)
-Spacing is deliberately inconsistent to create visual tension. Use the scale below as a starting point, then break it when the design demands it.
-- **sp-1**: 4px
-- **sp-2**: 8px
-- **sp-3**: 16px
-- **sp-4**: 24px
-- **sp-5**: 40px
-- **sp-6**: 64px
-- **sp-7**: 80px
-- **sp-8**: 120px
+The typography system pairs **Plus Jakarta Sans** as the contemporary, human workhorse for all interface and body copy with **Newsreader Italic** as a warm serif accent reserved exclusively for editorial moments.
 
-## Border Radius
+### Font Families
 
-- **radius-none** (0px): All elements -- no rounding
-Every single element uses 0px border radius. No exceptions.
+- **Sans / Body (`--font-sans`, `--font-body`)**: `'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif`
+  - Loaded weights: 400 (Regular), 500 (Medium), 600 (SemiBold).
+  - Used for all page headings, body copy, navigation, buttons, form controls, and UI labels.
+- **Editorial Accent (`--font-editorial`)**: `'Newsreader', Georgia, serif`
+  - Loaded weights: 400 Italic, 500 Italic.
+  - Used **only** for the top Love Language reveal on the Results page. Never used for general interface elements, buttons, or body copy.
+- **Monospace (`--font-mono`)**: `ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace`
+  - Retained solely for code, raw tokens, or technical URL display.
 
-## Elevation
+### Typography Scale
 
-RawBlock uses **no shadows**. Visual hierarchy is achieved exclusively through border weight and scale contrast.
-- **shadow-none**: None. All elements.
-Use border-thin (1px), border-thick (3px), or border-heavy (5px) to define element boundaries.
+| Level | Font Family | Size | Weight | Tracking / Line Height | Notes |
+|---|---|---|---|---|---|
+| **Display** | Plus Jakarta Sans | 64px (`4xl`–`5xl` / `text-[64px]`) | 500 | Tracking −0.02em, Line-height 1.05 | Welcome hero header on desktop |
+| **Heading** | Plus Jakarta Sans | 34px (`text-2xl`–`text-4xl`) | 500 | Tracking −0.01em, Line-height 1.2 | Assessment step headers, section titles |
+| **Subheading** | Plus Jakarta Sans | 26px (`text-xl`–`text-2xl`) | 500 | Tracking normal, Line-height 1.3 | Category headings, modal titles |
+| **Body** | Plus Jakarta Sans | 16–17px (`text-base`) | 400 | Tracking normal, Line-height 1.6–1.65 | Standard reading copy, descriptions |
+| **Eyebrow / UI Label** | Plus Jakarta Sans | 12px (`text-xs`) | 500 | Tracking 0.14–0.16em, Uppercase | Terracotta accent label above headings |
+| **Caption** | Plus Jakarta Sans | 13px (`text-xs`–`text-sm`) | 400 | Tracking normal, Line-height 1.5 | Muted secondary notes, helper copy |
+| **Editorial Accent** | Newsreader Italic | 26px+ (`text-3xl`–`text-[56px]`) | 400–500 Italic | Italic, Line-height 1.15 | Results page top Love Language name only |
+
+---
+
+## Border Radius Scale
+
+All interactive elements and surface containers follow an intentional, softened radius scale:
+
+| Token | CSS Variable | Value | Usage |
+|---|---|---|---|
+| **Small** | `--radius-sm` | `8px` (`rounded-sm`) | Buttons, text inputs, small badges, statement number tags |
+| **Medium** | `--radius-md` | `12px` (`rounded-md`) | Sub-containers, small cards, aside callouts |
+| **Large** | `--radius-lg` | `16px` (`rounded-lg`) | Main cards, statement fieldsets, hero banner blocks |
+| **Full / Circle** | `rounded-full` | `9999px` | Circular radio button selectors (`.radio-circle`) |
+
+> [!NOTE]
+> Harsh 0px corners from brutalist systems are completely removed. Border radius creates a gentle, tactile experience.
+
+---
+
+## Elevation & Shadows
+
+The Relationship Project design system does **not** use drop shadows (`box-shadow`).
+
+Visual hierarchy and depth are achieved entirely through:
+1. **Surface contrast**: Warm cream background (`#FAF9F6`) against pure white card surfaces (`#FFFFFF`) or rich navy hero fills (`#1E293B`).
+2. **Subtle line borders**: Clean 1px borders using `--color-line` (`#E4E1D8`).
+3. **Typography scale**: Crisp proportional contrast between terracotta eyebrows, large headings, and readable body text.
+
+---
+
+## Responsive Layout & Shell
+
+All screens are designed **mobile-first**: base Tailwind utility classes target small mobile viewports (≥320px), progressively enhanced with `sm:` (≥640px), `md:` (≥768px), and `lg:` (≥1024px).
+
+### Page Container
+- **Mobile**: Full-bleed with horizontal padding (`px-4 py-8`).
+- **Tablet / Desktop**: Centered readable single-column container (`max-w-3xl mx-auto`).
+- **Body**: Cream background (`bg-cream`), navy text (`text-navy`), top padding (`pt-16 sm:pt-20`) to prevent overlap with the fixed top navigation bar.
+
+### Top Navigation Bar
+- A fixed header pinned to the top of all pages (`fixed top-0 inset-x-0 z-50 bg-cream border-b border-line`).
+- Contains the brand mark:
+  - **Concept 03 SVG Mark**: Two weighted dots (Navy `#1E293B` and Terracotta `#C97C5D`) connected by a gentle unhurried Sage green curve (`#A8C3A0`), symbolizing partnership and growth.
+  - **Wordmark**: `relationship project` in lowercase Plus Jakarta Sans (Medium, tracking 0.08em, Navy) followed by a Terracotta period (`.`).
+
+---
 
 ## Components
 
 ### Buttons
-#### Primary
-black (#000000) fill, white (#FFFFFF) text, 3px black border, square. 2px tracking. uppercase text-transform. Hover: background white, text black (full inversion). Active: background black, text white, border 5px.
-#### Secondary
-white fill, black text, 3px black border, square. Hover: background black, text white.
-#### Ghost
-transparent, black text, no border. underline text-decoration. Hover: text blue.
-#### Destructive
-error (#FF0000) fill, white text, 3px black border, square. Hover: background black, text error.
-#### Sizes
-Sizes: Small (6px 16px, 12px, 32px), Medium (10px 24px, 14px, 44px), Large (16px 40px, 18px, 56px).
-#### Disabled State
-surface-sunken fill, content-tertiary text, 3px #CCCCCC border.
-- disabled cursor
+- **Primary Button**:
+  - Navy fill (`bg-navy`), cream text (`text-cream`), 1px line border (`border border-line`), `rounded-sm`.
+  - Hover: Opacity 90% (`hover:opacity-90`).
+  - Minimum touch target height: 44px (`min-h-[44px]`). Full width on mobile (`w-full`), auto on tablet/desktop (`sm:w-auto`).
+- **Secondary Button**:
+  - White fill (`bg-white`), navy text (`text-navy`), 1px line border (`border border-line`), `rounded-sm`.
+  - Hover: Navy fill (`hover:bg-navy hover:text-cream`).
+  - Minimum touch target height: 44px.
+- **Disabled State**:
+  - Muted border, muted text, `cursor-not-allowed`, opacity 60%.
+
+### Cards & Fieldsets
+- White background (`bg-white`), 1px border (`border border-line`), rounded corners (`rounded-lg`), generous padding (`p-4 sm:p-6`).
+- No shadows.
+
+### Text Inputs
+- White background (`bg-white`), 1px border (`border border-line`), navy text (`text-navy`), `rounded-sm`.
+- Padding: `px-3.5 py-3`, minimum height 44px.
+- Focus: Outline none, border and ring in Navy (`focus:border-navy focus:ring-1 focus:ring-navy`).
+- Error state: Border in `--color-error` (`border-error`).
+
+### Statement Fieldset & Rating Options
+- Retains semantic `<fieldset>` and `<legend>` for accessibility.
+- Statement number badge: Navy fill (`bg-navy`), cream text (`text-cream`), `rounded-sm`, font-medium.
+- Likert Rating scale:
+  - Mobile: Stacked 1-column list (`grid-cols-1 gap-2.5`).
+  - Tablet/Desktop: 5-column grid (`sm:grid-cols-5 gap-2`).
+  - Touch target: Minimum height 44px (`min-h-[44px]`), flex items centered.
+  - Unselected state: White background, navy text, 1px line border (`border border-line`), `rounded-sm`.
+  - Selected state: Navy background (`bg-navy`), cream text (`text-cream`), line border, `rounded-sm`.
+
+### Step Indicator (Assessment Flow)
+- 5 dots positioned under the "Langkah X dari 5" progress label.
+- Dot dimensions: 10px diameter with touch-safe spacing (`gap-3`).
+- **Completed steps**: Navy fill (`bg-navy`).
+- **Current active step**: Sage fill (`bg-sage`).
+- **Upcoming steps**: Transparent fill with 1px line border (`border border-line`).
+
+### Result Page Hero
+- Container: Navy fill (`bg-navy`), cream text (`text-cream`), large radius (`rounded-lg`), generous padding (`p-6 sm:p-10`).
+- Eyebrow: "BAHASA CINTA UTAMA" in terracotta (`text-terracotta`), uppercase, tracked.
+- Love Language Name: Rendered in Newsreader Italic (`font-editorial italic`), display scale (`text-3xl sm:text-5xl md:text-[56px]`).
+- Description: Plus Jakarta Sans body copy in cream text (`text-cream/90`).
+
+### Permanent Link Aside
+- Surface: Cream background (`bg-cream`), line border (`border border-line`), `rounded-lg`.
+- Link display: Monospace font, truncated on small screens (`truncate`).
+- Copy Button: Navy fill (`bg-navy`), cream icon (`text-cream`), `rounded-sm`, minimum 44px touch target.
+
 ---
 
-### Cards
-#### Default
-white fill, 3px black border, square, no shadow. sp-4/(24px) padding.
-#### Elevated
-white fill, 5px black border, square, none (heavier border = more importance) shadow. sp-4 padding.
----
+## Do / Don't Rules
 
-### Inputs
-surface-sunken (#F0F0F0) fill, content-primary text, 3px black border, square. Space Mono 15px. 10px/12px padding.
-- **Default**: 3px black border.
-- **Hover**: 3px black border, background #E8E8E8 other.
-- **Focus**: 5px black border, outline none other.
-- **Error**: 3px error border.
-- **Disabled**: 3px #CCCCCC border, background #F5F5F5 other.
-#### Label
-content-primary text. Archivo Black 14px regular uppercase. 4px margin-bottom.
-#### Helper Text
-content-secondary (default) | error (error state) text. Work Sans 12px regular. 4px margin-top.
----
+### Do:
+- **DO** use Plus Jakarta Sans for all UI copy, navigation, buttons, labels, and headings.
+- **DO** reserve Newsreader Italic strictly for editorial moments (the top Love Language name on the Result page).
+- **DO** default the page background to warm off-white Cream (`#FAF9F6`), not stark white.
+- **DO** use Terracotta (`#C97C5D`) with restraint as a focused accent (eyebrow text, logo period), keeping it rare and meaningful.
+- **DO** build every component mobile-first with minimum 44px touch targets.
+- **DO** use named Tailwind utility tokens (`bg-navy`, `text-cream`, `border-line`, `rounded-sm`, `rounded-lg`) rather than hardcoded hex codes.
 
-### Chips
-#### Filter Chip
-white fill, black text, 2px black border, square. 4px/12px padding, uppercase, 10px, tracking 1px text-transform. Active: background black, text white.
-#### Status Chip
-square, 2px respective color border. 11px semibold uppercase tracking 1px. 2px/10px padding.
-- **Active**: #FFFFFF fill, #008000 text, #008000 border.
-- **Warning**: #FFFFFF fill, #FFA500 text, #FFA500 border.
-- **Error**: #FFFFFF fill, #FF0000 text, #FF0000 border.
-- **Default**: #FFFFFF fill, #000000 text, #000000 border.
----
-
-### Lists
-transparent, Work Sans, 16px text. 3px black divider, 12px 0px item padding. Hover: text-decoration underline. Active: background black, text white, full-width.
-- No trailing icons; text only
----
-
-### Checkboxes
-20px x 20px, 3px black border, square. white unchecked background, black checked background, white, 3px stroke checkmark. Focus: 5px border. Disabled: border #CCCCCC, background #F5F5F5.
----
-
-### Radio Buttons
-20px x 20px, 3px black border. circle (the one exception to 0px radius) shape. Unchecked: white fill. Selected: black border, inner dot 10px black. Focus: 5px border. Disabled: border #CCCCCC.
----
-
-### Tooltips
-black fill, white, 13px, Space Mono text, square, none (inverted block) border, no shadow. 8px/12px padding, none (positioned directly adjacent) arrow, 260px max width.
----
-
-## Do's and Don'ts
-
-1. **Do** use thick borders (3-5px) as the primary visual organizer; they replace shadows entirely.
-2. **Don't** round any corners -- ever. Sharp edges are non-negotiable in this system.
-3. **Do** use full color inversions (black to white, white to black) for hover and active states.
-4. **Don't** use opacity for disabled states; use lighter border colors and grey fills instead.
-5. **Do** use Archivo Black at large sizes (48-64px) for maximum visual impact.
-6. **Don't** use the blue (#0000FF) for anything other than hyperlinks; it is reserved.
-7. **Do** embrace intentional spacing irregularity -- asymmetric layouts are encouraged.
-8. **Do** use uppercase + tracking for buttons and labels to amplify the raw aesthetic.
-9. **Don't** add decorative images, icons, or illustrations; content and typography do the work.
-10. **Don't** polish or refine; if something looks too "designed," strip it back further.
+### Don't:
+- **DON'T** use brutalist RawBlock styling (no 3px/5px black borders, no sharp 0px radius resets, no pure black background blocks).
+- **DON'T** use drop shadows (`box-shadow`) anywhere in the application.
+- **DON'T** use romantic clichés (hearts, rings, cupid imagery, or wedding motifs) in iconography or branding.
+- **DON'T** use Newsreader for body text, inputs, buttons, or form labels.
+- **DON'T** allow horizontal scrolling on mobile viewports down to 320px width.
+- **DON'T** introduce arbitrary colors outside the defined brand palette.
