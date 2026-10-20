@@ -4,13 +4,13 @@
 
 **Blocked by:** None (can start immediately)
 
-**Status:** ready-for-agent
+**Status:** complete
 
-- [ ] A "Compare with Partner" section is visible on the Result Page between the permanent-link aside and the feedback section
-- [ ] The section contains a Result Token input field and a submit button
-- [ ] Submitting a valid partner token (different from the page's own token) redirects to `/compare/{tokenA}/{tokenB}`
-- [ ] Submitting an unknown token redirects back to the Result Page with an inline flash error
-- [ ] Submitting the page's own token redirects back with a flash error ("You can't compare with yourself")
-- [ ] A malformed token (fails the `^[a-z0-9]{16}$` route constraint) returns 404 before reaching the controller
-- [ ] An unknown `tokenA` in the comparison URL returns 404
-- [ ] `CompareControllerTest` covers all the above scenarios with HTTP assertions
+- [x] A "Compare with Partner" section is visible on the Result Page between the permanent-link aside and the feedback section
+- [x] The section contains a Result Token input field and a submit button
+- [x] Submitting a valid partner token (different from the page's own token) redirects to `/compare/{tokenA}/{tokenB}`
+- [x] Submitting an unknown token redirects back to the Result Page with an inline flash error
+- [x] Submitting the page's own token redirects back with a flash error ("You can't compare with yourself")
+- [x] A malformed token (fails the `^[a-z0-9]{16}$` route constraint) returns 404 before reaching the controller
+- [x] An unknown `tokenA` in the comparison URL returns 404
+- [x] `CompareControllerTest` covers all the above scenarios with HTTP assertions

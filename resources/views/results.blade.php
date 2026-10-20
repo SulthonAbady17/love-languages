@@ -123,6 +123,42 @@
         </div>
     </aside>
 
+    {{-- Compare with Partner --}}
+    <section id="compare" class="bg-white border border-line rounded-lg p-4 sm:p-6 space-y-3">
+        <p class="font-sans font-medium text-xs uppercase tracking-[0.15em] text-terracotta">
+            Bandingkan dengan Pasangan
+        </p>
+        <p class="font-body text-base leading-relaxed text-muted">
+            Masukkan Result Token pasanganmu untuk melihat profil kalian berdampingan.
+        </p>
+        @if (session('error'))
+            <p class="font-sans text-xs text-error">
+                {{ session('error') }}
+            </p>
+        @endif
+        <form method="GET" action="{{ route('compare.start', $user->token) }}" class="space-y-3">
+            <div class="space-y-1.5">
+                <label for="partner-token" class="font-sans font-medium text-sm text-navy">
+                    Result Token
+                </label>
+                <input
+                    id="partner-token"
+                    name="tokenB"
+                    type="text"
+                    autocomplete="off"
+                    required
+                    class="w-full min-h-[44px] px-3.5 py-3 bg-white text-navy font-sans text-base rounded-sm border border-line focus:border-navy focus:ring-navy focus:ring-1 focus:outline-none transition-colors"
+                >
+            </div>
+            <button
+                type="submit"
+                class="w-full sm:w-auto min-h-[44px] px-8 py-3 bg-navy text-cream font-sans font-medium text-base rounded-sm border border-line hover:opacity-90 transition-opacity cursor-pointer flex sm:inline-flex items-center justify-center"
+            >
+                BANDINGKAN
+            </button>
+        </form>
+    </section>
+
     @if ($feedback)
         <section id="feedback" class="bg-white border border-line rounded-lg p-4 sm:p-6 space-y-3">
             <p class="font-body text-base leading-relaxed text-navy">
