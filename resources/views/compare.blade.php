@@ -16,6 +16,12 @@
         </h1>
     </header>
 
+    <x-copy-link
+        id="comparison-permalink"
+        :url="route('compare.show', [$initiator->token, $partner->token])"
+        message="Simpan tautan ini untuk melihat perbandingan kalian kembali"
+    />
+
     <section class="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6">
         @foreach([$initiator, $partner] as $participant)
             <article data-participant="{{ $participant->token }}" class="bg-white border border-line rounded-lg overflow-hidden">

@@ -21,7 +21,8 @@ class CompareControllerTest extends TestCase
 
         $response->assertOk();
         $response->assertSee('Bandingkan dengan Pasangan');
-        $response->assertSee('Result Token');
+        $response->assertSee('Tautan Hasil Pasangan');
+        $response->assertDontSee('Result Token');
         $response->assertSee('name="tokenB"', false);
         $response->assertSee(route('compare.start', $user->token), false);
 
@@ -29,6 +30,7 @@ class CompareControllerTest extends TestCase
         $this->assertStringContainsString('method="GET"', $compare);
         $this->assertStringContainsString('name="tokenB"', $compare);
         $this->assertStringContainsString('BANDINGKAN', $compare);
+        $this->assertStringContainsString('aria-label="Bandingkan"', $compare);
 
         $html = $response->getContent();
         $asidePosition = strpos($html, 'id="permanent-link"');
@@ -54,6 +56,34 @@ class CompareControllerTest extends TestCase
         $response->assertRedirect('/compare/'.$initiator->token.'/'.$partner->token);
     }
 
+    public function test_submitting_a_partner_permalink_redirects_to_the_comparison_url(): void
+    {
+        $this->seed();
+        $initiator = $this->completedParticipant('Budi Santoso');
+        $partner = $this->completedParticipant('Siti Aminah');
+
+        $response = $this->get(route('compare.start', [
+            'tokenA' => $initiator->token,
+            'tokenB' => 'https://example.com/results/'.$partner->token.'/?utm_source=share',
+        ]));
+
+        $response->assertRedirect('/compare/'.$initiator->token.'/'.$partner->token);
+    }
+
+    public function test_malformed_partner_permalink_redirects_back_to_the_result_page_with_an_inline_error(): void
+    {
+        $this->seed();
+        $initiator = $this->completedParticipant('Budi Santoso');
+
+        $response = $this->get(route('compare.start', [
+            'tokenA' => $initiator->token,
+            'tokenB' => 'https://example.com/bukan-hasil',
+        ]));
+
+        $response->assertRedirect('/results/'.$initiator->token);
+        $response->assertSessionHas('error', 'Tautan hasil pasangan tidak ditemukan. Periksa kembali tautannya.');
+    }
+
     public function test_unknown_partner_token_redirects_back_to_the_result_page_with_an_inline_error(): void
     {
         $this->seed();
@@ -66,12 +96,12 @@ class CompareControllerTest extends TestCase
         ]));
 
         $response->assertRedirect('/results/'.$initiator->token);
-        $response->assertSessionHas('error', 'Result Token tidak ditemukan. Periksa kembali token pasanganmu.');
+        $response->assertSessionHas('error', 'Tautan hasil pasangan tidak ditemukan. Periksa kembali tautannya.');
 
         $page = $this->get('/results/'.$initiator->token);
         $page->assertOk();
         $this->assertStringContainsString(
-            'Result Token tidak ditemukan. Periksa kembali token pasanganmu.',
+            'Tautan hasil pasangan tidak ditemukan. Periksa kembali tautannya.',
             $this->compareSection($page->getContent()),
         );
     }
@@ -84,7 +114,7 @@ class CompareControllerTest extends TestCase
         $response = $this->get('/compare/'.$initiator->token.'?tokenB[]=x');
 
         $response->assertRedirect('/results/'.$initiator->token);
-        $response->assertSessionHas('error', 'Result Token tidak ditemukan. Periksa kembali token pasanganmu.');
+        $response->assertSessionHas('error', 'Tautan hasil pasangan tidak ditemukan. Periksa kembali tautannya.');
     }
 
     public function test_submitting_the_pages_own_token_redirects_back_with_an_inline_error(): void
@@ -206,6 +236,21 @@ class CompareControllerTest extends TestCase
         $response->assertOk();
         $response->assertSee('href="'.route('results.show', $initiator->token).'"', false);
         $response->assertSee('Kembali ke Hasil');
+    }
+
+    public function test_comparison_page_has_a_copyable_permalink_to_revisit_it(): void
+    {
+        $this->seed();
+        $initiator = $this->completedParticipant('Budi Santoso');
+        $partner = $this->completedParticipant('Siti Aminah');
+
+        $response = $this->get('/compare/'.$initiator->token.'/'.$partner->token);
+
+        $response->assertOk();
+        $response->assertSee('id="comparison-permalink"', false);
+        $response->assertSee('Simpan tautan ini untuk melihat perbandingan kalian kembali');
+        $response->assertSee(route('compare.show', [$initiator->token, $partner->token]), false);
+        $response->assertSee('aria-label="Salin Tautan"', false);
     }
 
     public function test_an_unknown_token_in_the_comparison_url_returns_404(): void

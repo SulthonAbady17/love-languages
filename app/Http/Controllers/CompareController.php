@@ -9,14 +9,14 @@ use Illuminate\Http\Request;
 
 class CompareController extends Controller
 {
-    private const UNKNOWN_TOKEN_ERROR = 'Result Token tidak ditemukan. Periksa kembali token pasanganmu.';
+    private const UNKNOWN_PARTNER_ERROR = 'Tautan hasil pasangan tidak ditemukan. Periksa kembali tautannya.';
 
     private const SELF_COMPARE_ERROR = 'Kamu tidak bisa membandingkan dengan dirimu sendiri.';
 
     public function start(Request $request, string $tokenA): RedirectResponse
     {
-        $tokenB = $request->query('tokenB');
-        $tokenB = is_string($tokenB) ? trim($tokenB) : '';
+        $partnerReference = $request->query('tokenB');
+        $tokenB = is_string($partnerReference) ? $this->partnerTokenFrom($partnerReference) : '';
 
         User::where('token', $tokenA)->firstOrFail();
 
@@ -56,9 +56,24 @@ class CompareController extends Controller
         if (! User::where('token', $tokenB)->exists()) {
             return redirect()
                 ->route('results.show', $tokenA)
-                ->with('error', self::UNKNOWN_TOKEN_ERROR);
+                ->with('error', self::UNKNOWN_PARTNER_ERROR);
         }
 
         return null;
+    }
+
+    /**
+     * Extract the Result Token from a pasted Result Permalink, falling back to a bare token.
+     */
+    private function partnerTokenFrom(string $reference): string
+    {
+        $reference = trim($reference);
+        $path = parse_url($reference, PHP_URL_PATH);
+
+        if (is_string($path) && preg_match('~/results/([a-z0-9]{16})/?$~', $path, $matches) === 1) {
+            return $matches[1];
+        }
+
+        return preg_match('/^[a-z0-9]{16}$/', $reference) === 1 ? $reference : '';
     }
 }

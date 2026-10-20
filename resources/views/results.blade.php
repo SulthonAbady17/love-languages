@@ -65,63 +65,11 @@
         @endforeach
     </section>
 
-    {{-- Permanent link note --}}
-    <aside
+    <x-copy-link
         id="permanent-link"
-        x-data="{
-            copied: false,
-            linkUrl: @js(route('results.show', $user->token)),
-            async copyLink() {
-                let success = false;
-                try {
-                    await navigator.clipboard.writeText(this.linkUrl);
-                    success = true;
-                } catch {
-                    // navigator.clipboard needs a secure context; fall back for http://*.test
-                    const textarea = document.createElement('textarea');
-                    textarea.value = this.linkUrl;
-                    textarea.style.position = 'fixed';
-                    textarea.style.opacity = '0';
-                    document.body.appendChild(textarea);
-                    textarea.select();
-                    success = document.execCommand('copy');
-                    textarea.remove();
-                }
-                if (success) {
-                    this.copied = true;
-                    setTimeout(() => { this.copied = false; }, 2000);
-                }
-            }
-        }"
-        class="bg-cream border border-line rounded-lg p-4 sm:p-6 space-y-2"
-    >
-        <p class="font-body text-sm text-muted">
-            Simpan tautan ini untuk melihat hasilmu kembali
-        </p>
-
-        {{-- Permalink --}}
-        <div class="flex flex-wrap items-center gap-3">
-            <p class="font-mono text-sm text-navy truncate flex-1 min-w-0">
-                {{ route('results.show', $user->token) }}
-            </p>
-            <button
-                type="button"
-                @click="copyLink()"
-                aria-label="Salin Tautan"
-                title="Salin Tautan"
-                class="min-h-[44px] min-w-[44px] p-2.5 shrink-0 bg-navy text-cream rounded-sm border border-line hover:opacity-90 transition-opacity cursor-pointer inline-flex items-center justify-center"
-            >
-                <svg x-show="!copied" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-                    <rect x="9" y="9" width="12" height="12" />
-                    <path d="M5 15H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v1" />
-                </svg>
-                <svg x-show="copied" x-cloak class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-                    <path d="M4 12.5l5 5L20 6" />
-                </svg>
-            </button>
-            <span class="sr-only" aria-live="polite" x-text="copied ? 'Tersalin' : ''"></span>
-        </div>
-    </aside>
+        :url="route('results.show', $user->token)"
+        message="Simpan tautan ini untuk melihat hasilmu kembali"
+    />
 
     {{-- Compare with Partner --}}
     <section id="compare" class="bg-white border border-line rounded-lg p-4 sm:p-6 space-y-3">
@@ -129,7 +77,7 @@
             Bandingkan dengan Pasangan
         </p>
         <p class="font-body text-base leading-relaxed text-muted">
-            Masukkan Result Token pasanganmu untuk melihat profil kalian berdampingan.
+            Tempel tautan hasil pasanganmu untuk melihat profil kalian berdampingan.
         </p>
         @if (session('error'))
             <p class="font-sans text-xs text-error">
@@ -137,25 +85,35 @@
             </p>
         @endif
         <form method="GET" action="{{ route('compare.start', $user->token) }}" class="space-y-3">
-            <div class="space-y-1.5">
-                <label for="partner-token" class="font-sans font-medium text-sm text-navy">
-                    Result Token
-                </label>
+            <div class="flex flex-col gap-3 sm:flex-row">
                 <input
-                    id="partner-token"
+                    id="partner-link"
                     name="tokenB"
                     type="text"
                     autocomplete="off"
                     required
-                    class="w-full min-h-[44px] px-3.5 py-3 bg-white text-navy font-sans text-base rounded-sm border border-line focus:border-navy focus:ring-navy focus:ring-1 focus:outline-none transition-colors"
+                    aria-label="Tautan Hasil Pasangan"
+                    placeholder="Tautan Hasil Pasangan"
+                    class="w-full sm:flex-1 h-12 px-3.5 bg-white text-navy font-sans text-base rounded-sm border border-line focus:border-navy focus:ring-navy focus:ring-1 focus:outline-none transition-colors"
                 >
+                <button
+                    type="submit"
+                    class="flex sm:hidden w-full h-12 px-8 bg-navy text-cream font-sans font-medium text-base rounded-sm border border-line hover:opacity-90 transition-opacity cursor-pointer items-center justify-center"
+                >
+                    BANDINGKAN
+                </button>
+                <button
+                    type="submit"
+                    aria-label="Bandingkan"
+                    title="Bandingkan"
+                    class="hidden sm:inline-flex h-12 w-20 shrink-0 bg-navy text-cream rounded-sm border border-line hover:opacity-90 transition-opacity cursor-pointer items-center justify-center"
+                >
+                    <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                        <line x1="5" y1="12" x2="19" y2="12" />
+                        <polyline points="12 5 19 12 12 19" />
+                    </svg>
+                </button>
             </div>
-            <button
-                type="submit"
-                class="w-full sm:w-auto min-h-[44px] px-8 py-3 bg-navy text-cream font-sans font-medium text-base rounded-sm border border-line hover:opacity-90 transition-opacity cursor-pointer flex sm:inline-flex items-center justify-center"
-            >
-                BANDINGKAN
-            </button>
         </form>
     </section>
 
@@ -187,12 +145,14 @@
                         {{ $message }}
                     </p>
                 @enderror
-                <button
-                    type="submit"
-                    class="w-full sm:w-auto min-h-[44px] px-8 py-3 bg-navy text-cream font-sans font-medium text-base rounded-sm border border-line hover:opacity-90 transition-opacity cursor-pointer flex sm:inline-flex items-center justify-center"
-                >
-                    KIRIM FEEDBACK
-                </button>
+                <div class="sm:flex sm:justify-end">
+                    <button
+                        type="submit"
+                        class="w-full sm:w-auto min-h-[44px] px-8 py-3 bg-navy text-cream font-sans font-medium text-base rounded-sm border border-line hover:opacity-90 transition-opacity cursor-pointer flex sm:inline-flex items-center justify-center"
+                    >
+                        KIRIM FEEDBACK
+                    </button>
+                </div>
             </form>
         </section>
     @endif

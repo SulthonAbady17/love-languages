@@ -19,10 +19,13 @@ A Participant's rating for a single Statement. An integer from 1 (Strongly Disag
 The computed average Likert Response score for one Love Language within one Assessment. Calculated as: sum of Likert Responses for that Love Language ÷ number of Statements in that Love Language. Stored as a float.
 
 ## Result Token
-A unique, opaque 16-character lowercase alphanumeric string generated when an Assessment is completed. Embedded in the result page URL. The only way for a Participant to retrieve their Results later. Not a password; not a secret — just a stable identifier.
+A unique, opaque 16-character lowercase alphanumeric string generated when an Assessment is completed. Embedded in the Result Permalink; Participants never see or exchange it as a standalone value. Not a password; not a secret — just a stable identifier.
 
 ## Result Page
-The page at `/results/{token}` that displays a Participant's ranked Love Language Results. The top-scoring Love Language is highlighted. Each Love Language shows a short description. This URL is the Participant's permanent link.
+The page at `/results/{token}` that displays a Participant's ranked Love Language Results. The top-scoring Love Language is highlighted. Each Love Language shows a short description. Its URL is the Participant's Result Permalink.
+
+## Result Permalink
+The URL of a Participant's Result Page. The only address a Participant shares with someone else; the Result Token inside it is an implementation detail.
 
 ## Advice
 AI-generated guidance in Bahasa Indonesia about a Participant's top-ranked Love Language, written to address their full score ranking. Generated exactly once when the Assessment is completed, stored with it, and shown on the Result Page. Never regenerated for an Assessment that already has one; an Assessment may have none.
@@ -33,8 +36,11 @@ A Participant's free-text message about their Assessment experience, stored one 
 ## Comparison
 A side-by-side view of two Participants' Results derived on every request from their existing data. Not persisted. Identified in the URL by two Result Tokens: the Initiating Participant's token first, the Partner's token second. The two orderings (`/compare/{tokenA}/{tokenB}` and `/compare/{tokenB}/{tokenA}`) are distinct pages.
 
+## Comparison Permalink
+The URL of a Comparison Page. Stable, so either Participant can save it and reopen the same side-by-side view.
+
 ## Initiating Participant
 The Participant who submits the comparison form on a Result Page. Their Result Token appears first in the Comparison URL and their card appears first on the Comparison Page.
 
 ## Partner
-The second Participant in a Comparison. Identified by their Result Token, which the Initiating Participant enters into the comparison form.
+The second Participant in a Comparison. Identified by their Result Permalink, which the Initiating Participant pastes into the comparison form.
