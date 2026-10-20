@@ -35,9 +35,13 @@ class CompareController extends Controller
             return $response;
         }
 
+        $initiator->load('rankedResults');
+        $partner = User::where('token', $tokenB)->firstOrFail();
+        $partner->load('rankedResults');
+
         return view('compare', [
             'initiator' => $initiator,
-            'partner' => User::where('token', $tokenB)->firstOrFail(),
+            'partner' => $partner,
         ]);
     }
 

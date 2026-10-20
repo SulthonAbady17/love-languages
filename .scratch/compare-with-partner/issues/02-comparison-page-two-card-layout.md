@@ -4,14 +4,14 @@
 
 **Blocked by:** 01 — Compare form on Result Page
 
-**Status:** ready-for-agent
+**Status:** complete
 
-- [ ] `/compare/{tokenA}/{tokenB}` renders a full Comparison Page (not the stub)
-- [ ] The Initiating Participant's card appears first (left on desktop, top on mobile)
-- [ ] Each card header shows the Participant's name
-- [ ] Each card body lists all five Love Languages in that Participant's own score-descending order
-- [ ] Each row shows rank number, Love Language name, and score as `x.x/5.0`
-- [ ] Each row includes a progress bar whose width reflects `value / 5.0`
-- [ ] Cards are side by side on desktop and stacked on mobile
-- [ ] A back link is present and targets `/results/{tokenA}`
-- [ ] `CompareControllerTest` covers: both names visible, Love Languages in correct rank order per card, score format, back link target
+- [x] `/compare/{tokenA}/{tokenB}` renders a full Comparison Page (not the stub)
+- [x] The Initiating Participant's card appears first (left on desktop, top on mobile)
+- [x] Each card header shows the Participant's name
+- [x] Each card body lists all five Love Languages in that Participant's own score-descending order
+- [x] Each row shows rank number, Love Language name, and score as `x.x/5.0`
+- [x] Each row includes a progress bar whose width reflects `value / 5.0`
+- [x] Cards are side by side on desktop and stacked on mobile
+- [x] A back link is present and targets `/results/{tokenA}`
+- [x] `CompareControllerTest` covers: both names visible, Love Languages in correct rank order per card, score format, back link target
