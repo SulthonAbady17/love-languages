@@ -29,3 +29,12 @@ AI-generated guidance in Bahasa Indonesia about a Participant's top-ranked Love 
 
 ## Feedback
 A Participant's free-text message about their Assessment experience, stored one per Participant — the database itself refuses a second row for the same Participant. Created only after the Assessment is completed. Immutable once written, and invisible to its author: the Result Page shows either the feedback form or the thank-you, never the stored content.
+
+## Comparison
+A side-by-side view of two Participants' Results derived on every request from their existing data. Not persisted. Identified in the URL by two Result Tokens: the Initiating Participant's token first, the Partner's token second. The two orderings (`/compare/{tokenA}/{tokenB}` and `/compare/{tokenB}/{tokenA}`) are distinct pages.
+
+## Initiating Participant
+The Participant who submits the comparison form on a Result Page. Their Result Token appears first in the Comparison URL and their card appears first on the Comparison Page.
+
+## Partner
+The second Participant in a Comparison. Identified by their Result Token, which the Initiating Participant enters into the comparison form.
