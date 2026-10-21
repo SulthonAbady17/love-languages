@@ -2,6 +2,7 @@ Table users {
   id integer [primary key]
   name text
   token varchar(32) [unique]
+  advice text [note: 'nullable — Result Page Advice, generated once']
   created_at timestamp
   updated_at timestamp
 }
@@ -52,4 +53,16 @@ Table feedback {
   updated_at timestamp
 
   Index (user_id) [unique]
+}
+
+Table comparisons {
+  id integer [primary key]
+  initiator_id integer [ref: > users.id, note: 'cascade delete — Initiating Participant']
+  partner_id integer [ref: > users.id, note: 'cascade delete — Partner']
+  token varchar(32) [unique, note: 'Comparison Token']
+  advice text [note: 'nullable — Comparison Advice, generated once']
+  created_at timestamp
+  updated_at timestamp
+
+  Index (initiator_id, partner_id) [unique, note: 'ordered pair identifies the Comparison; reverse order is distinct']
 }

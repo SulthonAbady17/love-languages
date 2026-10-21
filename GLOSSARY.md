@@ -34,13 +34,16 @@ AI-generated guidance in Bahasa Indonesia about a Participant's top-ranked Love 
 A Participant's free-text message about their Assessment experience, stored one per Participant — the database itself refuses a second row for the same Participant. Created only after the Assessment is completed. Immutable once written, and invisible to its author: the Result Page shows either the feedback form or the thank-you, never the stored content.
 
 ## Comparison
-A side-by-side view of two Participants' Results derived on every request from their existing data. Not persisted. Identified in the URL by two Result Tokens: the Initiating Participant's token first, the Partner's token second. The two orderings (`/compare/{tokenA}/{tokenB}` and `/compare/{tokenB}/{tokenA}`) are distinct pages.
+A persisted side-by-side view of two Participants' Results, stored as one row per ordered pair. The pair (initiator, partner) exists at most once; the reverse order is a distinct Comparison, so whoever initiates owns their own page. Created by submitting the comparison form on a Result Page, never derived on the fly.
 
 ## Comparison Permalink
-The URL of a Comparison Page. Stable, so either Participant can save it and reopen the same side-by-side view.
+The URL of a Comparison Page: `/compare/{comparisonToken}`, carrying exactly one Comparison Token. Short and stable, so either Participant can save it and reopen the same Comparison.
+
+## Comparison Token
+A unique, opaque 16-character lowercase alphanumeric string identifying one Comparison. Same shape and generator as the Result Token, and the same route constraint applies. Embedded in the Comparison Permalink; Participants never see or exchange it as a standalone value. Not a password; not a secret — just a stable identifier.
 
 ## Initiating Participant
-The Participant who submits the comparison form on a Result Page. Their Result Token appears first in the Comparison URL and their card appears first on the Comparison Page.
+The Participant who submits the comparison form on a Result Page. They own the Comparison for that ordered pair and their card appears first on the Comparison Page. Their Result Token no longer appears in the Comparison Permalink.
 
 ## Partner
 The second Participant in a Comparison. Identified by their Result Permalink, which the Initiating Participant pastes into the comparison form.

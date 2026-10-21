@@ -84,7 +84,8 @@
                 {{ session('error') }}
             </p>
         @endif
-        <form method="GET" action="{{ route('compare.start', $user->token) }}" class="space-y-3">
+        <form method="POST" action="{{ route('compare.start', $user->token) }}" class="space-y-3">
+            @csrf
             <div class="flex flex-col gap-3 sm:flex-row">
                 <input
                     id="partner-link"

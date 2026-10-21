@@ -18,7 +18,7 @@
 
     <x-copy-link
         id="comparison-permalink"
-        :url="route('compare.show', [$initiator->token, $partner->token])"
+        :url="route('compare.show', $comparison->token)"
         message="Simpan tautan ini untuk melihat perbandingan kalian kembali"
     />
 

@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Comparison;
 use App\Models\User;
+use App\Support\Token;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -13,53 +15,47 @@ class CompareController extends Controller
 
     private const SELF_COMPARE_ERROR = 'Kamu tidak bisa membandingkan dengan dirimu sendiri.';
 
-    public function start(Request $request, string $tokenA): RedirectResponse
+    public function start(Request $request, string $token): RedirectResponse
     {
-        $partnerReference = $request->query('tokenB');
-        $tokenB = is_string($partnerReference) ? $this->partnerTokenFrom($partnerReference) : '';
+        $initiator = User::where('token', $token)->firstOrFail();
 
-        User::where('token', $tokenA)->firstOrFail();
+        $partnerReference = $request->input('tokenB');
+        $partnerToken = is_string($partnerReference) ? $this->partnerTokenFrom($partnerReference) : '';
+        $partner = $partnerToken === '' ? null : User::where('token', $partnerToken)->first();
 
-        if ($response = $this->invalidPartnerResponse($tokenA, $tokenB)) {
-            return $response;
+        if ($partner?->is($initiator)) {
+            return $this->backWithError($initiator, self::SELF_COMPARE_ERROR);
         }
 
-        return redirect()->route('compare.show', [$tokenA, $tokenB]);
+        if ($partner === null) {
+            return $this->backWithError($initiator, self::UNKNOWN_PARTNER_ERROR);
+        }
+
+        $comparison = Comparison::firstOrCreate(
+            ['initiator_id' => $initiator->id, 'partner_id' => $partner->id],
+            ['token' => Token::generate()],
+        );
+
+        return redirect()->route('compare.show', $comparison->token);
     }
 
-    public function show(string $tokenA, string $tokenB): View|RedirectResponse
+    public function show(string $token): View
     {
-        $initiator = User::where('token', $tokenA)->firstOrFail();
-
-        if ($response = $this->invalidPartnerResponse($tokenA, $tokenB)) {
-            return $response;
-        }
-
-        $initiator->load('rankedResults');
-        $partner = User::where('token', $tokenB)->firstOrFail();
-        $partner->load('rankedResults');
+        $comparison = Comparison::where('token', $token)->firstOrFail();
+        $comparison->load(['initiator.rankedResults', 'partner.rankedResults']);
 
         return view('compare', [
-            'initiator' => $initiator,
-            'partner' => $partner,
+            'comparison' => $comparison,
+            'initiator' => $comparison->initiator,
+            'partner' => $comparison->partner,
         ]);
     }
 
-    private function invalidPartnerResponse(string $tokenA, string $tokenB): ?RedirectResponse
+    private function backWithError(User $initiator, string $error): RedirectResponse
     {
-        if ($tokenB === $tokenA) {
-            return redirect()
-                ->route('results.show', $tokenA)
-                ->with('error', self::SELF_COMPARE_ERROR);
-        }
-
-        if (! User::where('token', $tokenB)->exists()) {
-            return redirect()
-                ->route('results.show', $tokenA)
-                ->with('error', self::UNKNOWN_PARTNER_ERROR);
-        }
-
-        return null;
+        return redirect()
+            ->route('results.show', $initiator->token)
+            ->with('error', $error);
     }
 
     /**

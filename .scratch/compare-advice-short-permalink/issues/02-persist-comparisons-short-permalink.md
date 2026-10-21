@@ -4,21 +4,25 @@
 
 **Blocked by:** 01: Rename ResultToken to Token
 
-**Status:** ready-for-agent
+**Status:** resolved
 
-- [ ] A Comparison row is uniquely identified by its ordered pair; the pair (initiator, partner) can only exist once, and the reverse order is a distinct Comparison.
-- [ ] POST with a valid partner Result Token → 302 to `/compare/{token}` where token is 16-character lowercase alphanumeric; the Comparison row exists for that ordered pair.
-- [ ] A pasted Result Permalink (trailing slash and query string included) is accepted exactly like a bare Result Token.
-- [ ] Resubmitting the same ordered pair redirects to the same Comparison Token; no second row is created.
-- [ ] Reverse order (partner as initiator) creates a second Comparison with a different token; each Comparison Page shows its own initiator's card first.
-- [ ] The Comparison Page renders both scorecards unchanged: names, Love Languages in each Participant's own rank order, scores as `x.x/5.0`, progress bars scaled to 5.0, initiator-first ordering, side-by-side desktop and stacked mobile.
-- [ ] The copy-link component on the Comparison Page shows the single-token Comparison Permalink; its message is unchanged.
-- [ ] The back link targets the initiator's Result Page.
-- [ ] GET `/compare/{token}` with an unknown or malformed token → 404 (route constraint rejects malformed before the controller).
-- [ ] Legacy `GET /compare/{tokenA}/{tokenB}` (either order) → 404, no redirect.
-- [ ] The compare form on the Result Page is a POST form with CSRF, still positioned between the permanent-link section and the feedback section.
-- [ ] Self-comparison, unknown partner, and malformed partner input keep their existing inline flash errors on the Result Page; the compare section is still reachable when visiting any Participant's Result Page.
-- [ ] No "Ringkasan & Saran" section renders (advice does not exist yet).
-- [ ] The existing Compare feature test (CompareControllerTest) covers all of the above through the two routes and is green.
-- [ ] Glossary rewritten: Comparison (persisted, ordered pair), Comparison Permalink (single-token URL), Comparison Token (new entry), Initiating Participant (owns the Comparison, card first; token no longer in the URL).
-- [ ] ERD updated with the comparisons table and the previously missing users advice column.
+- [x] A Comparison row is uniquely identified by its ordered pair; the pair (initiator, partner) can only exist once, and the reverse order is a distinct Comparison.
+- [x] POST with a valid partner Result Token → 302 to `/compare/{token}` where token is 16-character lowercase alphanumeric; the Comparison row exists for that ordered pair.
+- [x] A pasted Result Permalink (trailing slash and query string included) is accepted exactly like a bare Result Token.
+- [x] Resubmitting the same ordered pair redirects to the same Comparison Token; no second row is created.
+- [x] Reverse order (partner as initiator) creates a second Comparison with a different token; each Comparison Page shows its own initiator's card first.
+- [x] The Comparison Page renders both scorecards unchanged: names, Love Languages in each Participant's own rank order, scores as `x.x/5.0`, progress bars scaled to 5.0, initiator-first ordering, side-by-side desktop and stacked mobile.
+- [x] The copy-link component on the Comparison Page shows the single-token Comparison Permalink; its message is unchanged.
+- [x] The back link targets the initiator's Result Page.
+- [x] GET `/compare/{token}` with an unknown or malformed token → 404 (route constraint rejects malformed before the controller).
+- [x] Legacy `GET /compare/{tokenA}/{tokenB}` (either order) → 404, no redirect.
+- [x] The compare form on the Result Page is a POST form with CSRF, still positioned between the permanent-link section and the feedback section.
+- [x] Self-comparison, unknown partner, and malformed partner input keep their existing inline flash errors on the Result Page; the compare section is still reachable when visiting any Participant's Result Page.
+- [x] No "Ringkasan & Saran" section renders (advice does not exist yet).
+- [x] The existing Compare feature test (CompareControllerTest) covers all of the above through the two routes and is green.
+- [x] Glossary rewritten: Comparison (persisted, ordered pair), Comparison Permalink (single-token URL), Comparison Token (new entry), Initiating Participant (owns the Comparison, card first; token no longer in the URL).
+- [x] ERD updated with the comparisons table and the previously missing users advice column.
+
+## Answer
+
+The `comparisons` table (initiator/partner FKs cascade, `token` varchar(32) unique, nullable `advice`, composite unique on the ordered pair) plus the `Comparison` model. `routes/web.php` now exposes exactly two comparison routes: `POST /compare/{token}` (`compare.start`) and `GET /compare/{token}` (`compare.show`), both constrained to `^[a-z0-9]{16}$`; the legacy two-token route is deleted, so old links 404. `CompareController::start` validates the three guards as before, then `firstOrCreate`s the ordered pair with a `Token::generate()` value and 302s to the single-token permalink; `show` resolves the Comparison and eager-loads both participants' ranked Results. The Result Page form is POST + CSRF (position unchanged); the Comparison Page copy-link points at the single-token URL; no advice section renders. Glossary Comparison/Comparison Permalink/Initiating Participant rewritten plus a new Comparison Token entry; ERD gains `comparisons` and the missing `users.advice`. `CompareControllerTest` reworked to 19 tests through the two routes — full suite green (79 tests, 595 assertions).
