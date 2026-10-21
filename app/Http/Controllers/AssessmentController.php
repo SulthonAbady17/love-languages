@@ -8,7 +8,7 @@ use App\Models\LoveLanguage;
 use App\Models\Result;
 use App\Models\Statement;
 use App\Models\User;
-use App\Support\ResultToken;
+use App\Support\Token;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Database\UniqueConstraintViolationException;
@@ -97,7 +97,7 @@ class AssessmentController extends Controller
                 return DB::transaction(function () use ($request, $statements, $validated): User {
                     $user = User::create([
                         'name' => $request->session()->get('name'),
-                        'token' => ResultToken::generate(),
+                        'token' => Token::generate(),
                     ]);
 
                     foreach ($statements as $statement) {

@@ -2,14 +2,14 @@
 
 namespace App\Support;
 
-class ResultToken
+class Token
 {
     private const LENGTH = 16;
 
     private const CHARACTERS = 'abcdefghijklmnopqrstuvwxyz0123456789';
 
     /**
-     * A short, unguessable Result Token: 16 characters drawn uniformly from a-z0-9.
+     * A short, unguessable token: 16 characters drawn uniformly from a-z0-9.
      */
     public static function generate(): string
     {
