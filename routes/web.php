@@ -15,6 +15,6 @@ Route::post('/assessment', [AssessmentController::class, 'store'])->name('assess
 
 Route::get('/results/{token}', [ResultController::class, 'show'])->name('results.show')->where('token', '^[a-z0-9]{16}$');
 
-Route::post('/compare/{token}', [CompareController::class, 'start'])->name('compare.start')->where('token', '^[a-z0-9]{16}$');
+Route::post('/compare/{token}', [CompareController::class, 'start'])->name('compare.start')->where('token', '^[a-z0-9]{16}$')->middleware('throttle:5,1');
 Route::get('/compare/{token}', [CompareController::class, 'show'])->name('compare.show')->where('token', '^[a-z0-9]{16}$');
 Route::post('/results/{token}/feedback', [ResultController::class, 'storeFeedback'])->name('results.feedback')->where('token', '^[a-z0-9]{16}$')->middleware('throttle:5,1');

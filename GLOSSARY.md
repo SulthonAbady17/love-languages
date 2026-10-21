@@ -28,7 +28,7 @@ The page at `/results/{token}` that displays a Participant's ranked Love Languag
 The URL of a Participant's Result Page. The only address a Participant shares with someone else; the Result Token inside it is an implementation detail.
 
 ## Advice
-AI-generated guidance in Bahasa Indonesia about a Participant's top-ranked Love Language, written to address their full score ranking. Generated exactly once when the Assessment is completed, stored with it, and shown on the Result Page. Never regenerated for an Assessment that already has one; an Assessment may have none.
+AI-generated guidance in Bahasa Indonesia about a Participant's top-ranked Love Language, written to address their full score ranking. Generated exactly once when the Assessment is completed, stored with it, and shown on the Result Page. Follows the shared rule both Advice kinds obey: generated once, may be absent, never regenerated.
 
 ## Feedback
 A Participant's free-text message about their Assessment experience, stored one per Participant — the database itself refuses a second row for the same Participant. Created only after the Assessment is completed. Immutable once written, and invisible to its author: the Result Page shows either the feedback form or the thank-you, never the stored content.
@@ -41,6 +41,9 @@ The URL of a Comparison Page: `/compare/{comparisonToken}`, carrying exactly one
 
 ## Comparison Token
 A unique, opaque 16-character lowercase alphanumeric string identifying one Comparison. Same shape and generator as the Result Token, and the same route constraint applies. Embedded in the Comparison Permalink; Participants never see or exchange it as a standalone value. Not a password; not a secret — just a stable identifier.
+
+## Comparison Advice
+AI-generated guidance in Bahasa Indonesia for a pair: a ringkasan of how the two Love Language profiles fit together, then saran for the pair. Neither Participant's name appears in the text. Generated exactly once when the Comparison is created, stored on it, and shown on the Comparison Page beneath both scorecards. Follows the shared rule both Advice kinds obey: generated once, may be absent, never regenerated.
 
 ## Initiating Participant
 The Participant who submits the comparison form on a Result Page. They own the Comparison for that ordered pair and their card appears first on the Comparison Page. Their Result Token no longer appears in the Comparison Permalink.

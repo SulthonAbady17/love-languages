@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Ai\Agents\ComparisonAdviceAgent;
 use App\Models\Comparison;
 use App\Models\User;
 use App\Support\Token;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+use Throwable;
 
 class CompareController extends Controller
 {
@@ -36,6 +39,10 @@ class CompareController extends Controller
             ['token' => Token::generate()],
         );
 
+        if ($comparison->wasRecentlyCreated) {
+            $this->generateAdvice($comparison, $initiator, $partner);
+        }
+
         return redirect()->route('compare.show', $comparison->token);
     }
 
@@ -56,6 +63,30 @@ class CompareController extends Controller
         return redirect()
             ->route('results.show', $initiator->token)
             ->with('error', $error);
+    }
+
+    /**
+     * Generate the Comparison Advice for the pair behind a freshly created Comparison.
+     *
+     * A provider failure must never lose a Comparison, so exceptions are logged and swallowed.
+     */
+    private function generateAdvice(Comparison $comparison, User $initiator, User $partner): void
+    {
+        try {
+            $initiator->load('rankedResults');
+            $partner->load('rankedResults');
+
+            $comparison->update([
+                'advice' => (new ComparisonAdviceAgent(
+                    $initiator->name,
+                    $initiator->rankedResults,
+                    $partner->name,
+                    $partner->rankedResults,
+                ))->generate(),
+            ]);
+        } catch (Throwable $exception) {
+            Log::error('Comparison advice generation failed.', ['exception' => $exception]);
+        }
     }
 
     /**

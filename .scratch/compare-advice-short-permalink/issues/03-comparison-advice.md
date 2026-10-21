@@ -4,15 +4,15 @@
 
 **Blocked by:** 02: Persist Comparisons behind a short permalink
 
-**Status:** ready-for-agent
+**Status:** resolved
 
-- [ ] First-time creation of a Comparison prompts the agent exactly once; the fake returns two paragraphs and both render under the scorecards, separated by a line break.
-- [ ] The section label is "Ringkasan & Saran"; the section appears below both cards; markup mirrors the Result Page's Advice section (terracotta uppercase label, body prose).
-- [ ] The agent receives both Participants' ranked Results and names, and is instructed never to emit either name.
-- [ ] Provider failure at creation is swallowed: the redirect still happens, the Comparison Page returns 200 with scorecards, the section is absent, the row keeps null advice.
-- [ ] Resubmitting an existing ordered pair triggers no additional prompt (the agent fake confirms exactly one prompt across both submissions) and never changes the stored advice.
-- [ ] A Comparison with null advice renders no empty section and no error.
-- [ ] The creation route is rate-limited at 5 requests per minute.
-- [ ] The Result Page's own Advice (single-profile) is completely unchanged.
-- [ ] All advice scenarios are covered through the existing Compare feature test seam using the agent fake (including the throw-on-prompt form) and are green.
-- [ ] Glossary gains Comparison Advice and the shared "generated once, may be absent, never regenerated" rule covering both Advice kinds.
+- [x] First-time creation of a Comparison prompts the agent exactly once; the fake returns two paragraphs and both render under the scorecards, separated by a line break.
+- [x] The section label is "Ringkasan & Saran"; the section appears below both cards; markup mirrors the Result Page's Advice section (terracotta uppercase label, body prose).
+- [x] The agent receives both Participants' ranked Results and names, and is instructed never to emit either name.
+- [x] Provider failure at creation is swallowed: the redirect still happens, the Comparison Page returns 200 with scorecards, the section is absent, the row keeps null advice.
+- [x] Resubmitting an existing ordered pair triggers no additional prompt (the agent fake confirms exactly one prompt across both submissions) and never changes the stored advice.
+- [x] A Comparison with null advice renders no empty section and no error.
+- [x] The creation route is rate-limited at 5 requests per minute.
+- [x] The Result Page's own Advice (single-profile) is completely unchanged.
+- [x] All advice scenarios are covered through the existing Compare feature test seam using the agent fake (including the throw-on-prompt form) and are green.
+- [x] Glossary gains Comparison Advice and the shared "generated once, may be absent, never regenerated" rule covering both Advice kinds.

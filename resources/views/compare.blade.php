@@ -65,5 +65,17 @@
             </article>
         @endforeach
     </section>
+
+    @if($comparison->advice)
+        {{-- Ringkasan & Saran: the Comparison Advice for both profiles --}}
+        <section id="comparison-advice" class="bg-white border border-line rounded-lg p-4 sm:p-6 space-y-3">
+            <p class="font-sans font-medium text-xs uppercase tracking-[0.15em] text-terracotta">
+                Ringkasan &amp; Saran
+            </p>
+            <p class="font-body text-base leading-relaxed text-navy">
+                {!! nl2br(e($comparison->advice)) !!}
+            </p>
+        </section>
+    @endif
 </main>
 @endsection

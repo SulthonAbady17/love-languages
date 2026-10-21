@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Ai\Agents\ComparisonAdviceAgent;
 use App\Models\Comparison;
 use App\Models\LoveLanguage;
 use App\Models\Result;
@@ -10,11 +11,20 @@ use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Testing\TestResponse;
+use Laravel\Ai\Prompts\AgentPrompt;
+use RuntimeException;
 use Tests\TestCase;
 
 class CompareControllerTest extends TestCase
 {
     use RefreshDatabase;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        ComparisonAdviceAgent::fake();
+    }
 
     public function test_result_page_renders_a_post_compare_form_with_csrf_between_the_permanent_link_and_feedback(): void
     {
@@ -289,16 +299,143 @@ class CompareControllerTest extends TestCase
         $this->get('/compare/'.$partner->token.'/'.$initiator->token)->assertNotFound();
     }
 
-    public function test_the_comparison_page_renders_no_advice_section(): void
+    public function test_the_first_creation_prompts_the_agent_once_and_renders_both_advice_paragraphs_under_the_scorecards(): void
     {
         $this->seed();
+        ComparisonAdviceAgent::fake([
+            "Profil kalian saling melengkapi. Kualitas waktu menonjol di kedua ranking.\nSaling izinkan memberi dan menerima waktu berkualitas setiap hari.",
+        ]);
         $initiator = $this->completedParticipant('Budi Santoso');
         $partner = $this->completedParticipant('Siti Aminah');
 
         $response = $this->openComparison($initiator, $partner);
 
         $response->assertOk();
-        $response->assertDontSee('Ringkasan &amp; Saran');
+        ComparisonAdviceAgent::assertPromptedTimes(1);
+
+        $html = $response->getContent();
+        $response->assertSee('Ringkasan & Saran');
+        $response->assertSee('id="comparison-advice"', false);
+        $response->assertSee('Profil kalian saling melengkapi. Kualitas waktu menonjol di kedua ranking.');
+        $response->assertSee('Saling izinkan memberi dan menerima waktu berkualitas setiap hari.');
+
+        $section = $this->adviceSection($html);
+        $this->assertStringContainsString('Profil kalian saling melengkapi. Kualitas waktu menonjol di kedua ranking.<br />', $section);
+
+        $advicePosition = strpos($html, 'id="comparison-advice"');
+        $this->assertIsInt($advicePosition);
+        foreach ([$initiator->token, $partner->token] as $token) {
+            $cardPosition = strpos($html, 'data-participant="'.$token.'"');
+            $this->assertIsInt($cardPosition);
+            $this->assertLessThan($advicePosition, $cardPosition, 'The advice section should come after both scorecards.');
+        }
+    }
+
+    public function test_the_agent_is_prompted_with_both_participants_ranked_results_and_names(): void
+    {
+        $this->seed();
+        $initiator = $this->completedParticipant('Budi Santoso', [1.0, 2.2, 3.0, 4.4, 4.6]);
+        $partner = $this->completedParticipant('Siti Aminah', [2.6, 5.0, 1.2, 3.8, 4.0]);
+
+        $this->openComparison($initiator, $partner);
+
+        ComparisonAdviceAgent::assertPromptedTimes(1);
+        ComparisonAdviceAgent::assertPrompted(fn (AgentPrompt $prompt): bool => $prompt->contains('Budi Santoso')
+            && $prompt->contains('Siti Aminah')
+            && $prompt->contains('1. Physical Touch — 4.6')
+            && $prompt->contains('1. Quality Time — 5'));
+    }
+
+    public function test_provider_failure_at_creation_is_swallowed_and_the_comparison_survives_without_advice(): void
+    {
+        $this->seed();
+        ComparisonAdviceAgent::fake(fn () => throw new RuntimeException('Groq unavailable.'));
+        $initiator = $this->completedParticipant('Budi Santoso');
+        $partner = $this->completedParticipant('Siti Aminah');
+
+        $response = $this->post('/compare/'.$initiator->token, ['tokenB' => $partner->token]);
+
+        $response->assertRedirect();
+        $token = $this->tokenFrom($response);
+        $this->assertDatabaseHas('comparisons', ['token' => $token, 'advice' => null]);
+
+        $page = $this->get('/compare/'.$token);
+        $page->assertOk();
+        $page->assertSee('Budi Santoso');
+        $page->assertSee('Siti Aminah');
+        $page->assertDontSee('id="comparison-advice"', false);
+        $page->assertDontSee('Ringkasan & Saran');
+    }
+
+    public function test_resubmitting_an_existing_pair_prompts_the_agent_once_and_never_changes_the_stored_advice(): void
+    {
+        $this->seed();
+        ComparisonAdviceAgent::fake(['Teks saran yang pertama.']);
+        $initiator = $this->completedParticipant('Budi Santoso');
+        $partner = $this->completedParticipant('Siti Aminah');
+
+        $first = $this->post('/compare/'.$initiator->token, ['tokenB' => $partner->token]);
+        $second = $this->post('/compare/'.$initiator->token, ['tokenB' => $partner->token]);
+
+        $first->assertRedirect();
+        $second->assertRedirect();
+        $this->assertSame($first->headers->get('Location'), $second->headers->get('Location'));
+        ComparisonAdviceAgent::assertPromptedTimes(1);
+        $this->assertSame('Teks saran yang pertama.', DB::table('comparisons')->value('advice'));
+
+        $this->get('/compare/'.$this->tokenFrom($first))
+            ->assertOk()
+            ->assertSee('Teks saran yang pertama.');
+    }
+
+    public function test_a_comparison_left_without_advice_is_never_regenerated_on_resubmit(): void
+    {
+        $this->seed();
+        ComparisonAdviceAgent::fake(fn () => throw new RuntimeException('Groq unavailable.'));
+        $initiator = $this->completedParticipant('Budi Santoso');
+        $partner = $this->completedParticipant('Siti Aminah');
+
+        $first = $this->post('/compare/'.$initiator->token, ['tokenB' => $partner->token]);
+        $second = $this->post('/compare/'.$initiator->token, ['tokenB' => $partner->token]);
+
+        $first->assertRedirect();
+        $second->assertRedirect();
+        $this->assertSame($first->headers->get('Location'), $second->headers->get('Location'));
+        ComparisonAdviceAgent::assertPromptedTimes(1);
+        $this->assertNull(DB::table('comparisons')->value('advice'));
+    }
+
+    public function test_the_comparison_creation_route_is_rate_limited_to_five_requests_per_minute(): void
+    {
+        $this->seed();
+        $initiator = $this->completedParticipant('Budi Santoso');
+        $partner = $this->completedParticipant('Siti Aminah');
+
+        for ($attempt = 0; $attempt < 5; $attempt++) {
+            $this->post('/compare/'.$initiator->token, ['tokenB' => $partner->token])->assertRedirect();
+        }
+
+        $this->post('/compare/'.$initiator->token, ['tokenB' => $partner->token])->assertStatus(429);
+        ComparisonAdviceAgent::assertPromptedTimes(1);
+    }
+
+    public function test_a_comparison_with_null_advice_renders_no_empty_section_and_no_error(): void
+    {
+        $this->seed();
+        $initiator = $this->completedParticipant('Budi Santoso');
+        $partner = $this->completedParticipant('Siti Aminah');
+        $comparison = Comparison::factory()->create([
+            'initiator_id' => $initiator->id,
+            'partner_id' => $partner->id,
+            'advice' => null,
+        ]);
+
+        $response = $this->get('/compare/'.$comparison->token);
+
+        $response->assertOk();
+        $response->assertSee('Budi Santoso');
+        $response->assertSee('Siti Aminah');
+        $response->assertDontSee('id="comparison-advice"', false);
         $response->assertDontSee('Ringkasan & Saran');
     }
 
@@ -417,6 +554,16 @@ class CompareControllerTest extends TestCase
     private function compareSection(string $html): string
     {
         preg_match('/<section id="compare".*?<\/section>/s', $html, $matches);
+
+        return $matches[0] ?? '';
+    }
+
+    /**
+     * The "Ringkasan & Saran" section on the Comparison Page.
+     */
+    private function adviceSection(string $html): string
+    {
+        preg_match('/<section id="comparison-advice".*?<\/section>/s', $html, $matches);
 
         return $matches[0] ?? '';
     }
