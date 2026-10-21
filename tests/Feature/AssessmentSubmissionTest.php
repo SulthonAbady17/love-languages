@@ -39,6 +39,16 @@ class AssessmentSubmissionTest extends TestCase
         ['values' => [4, 5, 4, 5, 5], 'expected' => 4.6],
     ];
 
+    public function test_advice_agent_instructions_pin_the_english_love_language_names(): void
+    {
+        $agent = new AdviceAgent(collect());
+
+        $instructions = (string) $agent->instructions();
+
+        $this->assertStringContainsString('Quality Time', $instructions);
+        $this->assertStringContainsString('never translate them', $instructions);
+    }
+
     public function test_valid_submission_creates_user_answers_and_results_then_redirects_to_result_page(): void
     {
         $this->seed();

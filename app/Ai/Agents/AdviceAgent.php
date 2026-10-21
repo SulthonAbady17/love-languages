@@ -33,6 +33,7 @@ class AdviceAgent implements Agent, HasSkills
             Produce exactly two short paragraphs of plain prose: no headings, no bullet points, no markdown of any kind.
             Be encouraging and practical. Ground every sentence only in the supplied profile — invent nothing beyond it.
             The reply must be entirely in Bahasa Indonesia — never English, whatever language the profile uses.
+            Always refer to Love Languages by their exact English names — Physical Touch, Words of Affirmation, Quality Time, Receiving Gifts, Acts of Service — even inside Bahasa Indonesia prose; never translate them.
             TEXT;
     }
 

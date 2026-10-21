@@ -7,7 +7,7 @@ The full set of 25 statements a Participant answers in one sitting to determine 
 A person taking the Assessment. Identified only by a self-reported name. Has no password or account. Receives a unique Result Token after completing the Assessment.
 
 ## Love Language
-One of five psychological categories that describe how a person prefers to give and receive affection. The five Love Languages are: Words of Affirmation, Quality Time, Receiving Gifts, Acts of Service, and Physical Touch. Replaces the word "Category" everywhere in the codebase and UI.
+One of five psychological categories that describe how a person prefers to give and receive affection. The five Love Languages are: Words of Affirmation, Quality Time, Receiving Gifts, Acts of Service, and Physical Touch. Replaces the word "Category" everywhere in the codebase and UI. Advice and Comparison Advice always refer to them by these English names, never translated, even inside Bahasa Indonesia prose.
 
 ## Statement
 A single declarative sentence that a Participant rates on a 1–5 Likert scale. Each Statement belongs to exactly one Love Language. There are exactly 5 Statements per Love Language (25 total).

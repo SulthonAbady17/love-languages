@@ -26,6 +26,16 @@ class CompareControllerTest extends TestCase
         ComparisonAdviceAgent::fake();
     }
 
+    public function test_comparison_advice_agent_instructions_pin_the_english_love_language_names(): void
+    {
+        $agent = new ComparisonAdviceAgent('Budi', collect(), 'Siti', collect());
+
+        $instructions = (string) $agent->instructions();
+
+        $this->assertStringContainsString('Quality Time', $instructions);
+        $this->assertStringContainsString('never translate them', $instructions);
+    }
+
     public function test_result_page_renders_a_post_compare_form_with_csrf_between_the_permanent_link_and_feedback(): void
     {
         $this->seed();

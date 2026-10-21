@@ -37,10 +37,11 @@ class ComparisonAdviceAgent implements Agent, HasSkills
 
             Before writing, load the stop-slop skill with the LoadSkill tool and follow it.
             Produce exactly two short paragraphs of plain prose: no headings, no bullet points, no markdown of any kind.
-            The first paragraph is a ringkasan of how the two profiles fit together; the second paragraph is practical saran for the pair.
+            The first paragraph is a summary (ringkasan) of how the two profiles fit together; the second paragraph is practical advice (saran) for the pair.
             Never include either person's name in your reply.
             Be encouraging and practical. Ground every sentence only in the supplied profiles — invent nothing beyond them.
             The reply must be entirely in Bahasa Indonesia — never English, whatever language the profiles use.
+            Always refer to Love Languages by their exact English names — Physical Touch, Words of Affirmation, Quality Time, Receiving Gifts, Acts of Service — even inside Bahasa Indonesia prose; never translate them.
             TEXT;
     }
 
